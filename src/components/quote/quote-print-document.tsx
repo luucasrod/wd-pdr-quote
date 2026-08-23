@@ -1,5 +1,6 @@
 import { useLanguage } from "@/i18n/language-context"
 import type { SavedQuote, Client, Insurer } from "@/types/crm"
+import wdLogoIcon from "@/assets/brand/wd-logo-icon.png"
 
 interface QuotePrintDocumentProps {
   quote: SavedQuote
@@ -14,13 +15,19 @@ export function QuotePrintDocument({ quote, client, insurer }: QuotePrintDocumen
   return (
     <div id="print-quote" className="hidden print:block" style={{ fontFamily: "Inter, sans-serif" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "2px solid #0a0a0b", paddingBottom: 16, marginBottom: 24 }}>
-        <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>
-            WD <span style={{ color: "#f5a623" }}>PDR</span>
-          </h1>
-          <p style={{ fontSize: 11, color: "#5c5c64", margin: "2px 0 0", textTransform: "uppercase", letterSpacing: 1 }}>
-            Paintless Dent Removal
-          </p>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <img src={wdLogoIcon} alt="" style={{ height: 52, width: "auto" }} />
+          <div>
+            <h1 style={{ fontSize: 20, fontWeight: 800, margin: 0 }}>
+              WD <span style={{ color: "#f5a623" }}>PDR</span>
+            </h1>
+            <p style={{ fontSize: 10.5, color: "#5c5c64", margin: "2px 0 0", textTransform: "uppercase", letterSpacing: 1 }}>
+              Paintless Dent Removal
+            </p>
+            <p style={{ fontSize: 10, color: "#85858d", margin: "3px 0 0" }}>
+              +351 936 077 121 · wd.pdr@gmail.com
+            </p>
+          </div>
         </div>
         <div style={{ textAlign: "right", fontSize: 12, color: "#5c5c64" }}>
           <p style={{ margin: 0 }}>{new Date(quote.createdAt).toLocaleDateString(language)}</p>
@@ -64,11 +71,15 @@ export function QuotePrintDocument({ quote, client, insurer }: QuotePrintDocumen
       </div>
 
       {quote.notes && (
-        <div style={{ fontSize: 12, color: "#5c5c64" }}>
+        <div style={{ fontSize: 12, color: "#5c5c64", marginBottom: 24 }}>
           <p style={{ fontWeight: 700, marginBottom: 4 }}>{t.quoteMeta.notesLabel}</p>
           <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{quote.notes}</p>
         </div>
       )}
+
+      <div style={{ borderTop: "1px solid #eeeef0", paddingTop: 12, fontSize: 10, color: "#85858d", textAlign: "center" }}>
+        Rua Santo André, Edifício Europa, Lote 4 – Escritório 5, 2410-541 Leiria · @wd.pdr
+      </div>
     </div>
   )
 }

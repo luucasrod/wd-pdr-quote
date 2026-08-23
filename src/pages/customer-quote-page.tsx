@@ -168,11 +168,21 @@ export function CustomerQuotePage() {
 
         {step === "vehicle" && (
           <>
-            <div className="mb-8 text-center">
-              <h1 className="text-[24px] font-bold tracking-[-0.02em] text-[var(--color-ink-950)] sm:text-[28px]">
+            <div className="relative mb-10 -mt-2 overflow-hidden rounded-[var(--radius-2xl)] px-6 py-12 text-center sm:py-16">
+              <div
+                className="pointer-events-none absolute inset-0 -z-10"
+                style={{
+                  background:
+                    "radial-gradient(60% 100% at 50% 0%, rgba(245,166,35,0.14) 0%, rgba(245,166,35,0) 70%)",
+                }}
+              />
+              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-amber-200)] bg-[var(--color-amber-50)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--color-amber-800)]">
+                WD PDR · Leiria
+              </span>
+              <h1 className="text-[26px] font-bold leading-[1.15] tracking-[-0.02em] text-[var(--color-ink-950)] sm:text-[32px]">
                 {t.customer.heroTitle}
               </h1>
-              <p className="mt-1.5 text-[14px] text-[var(--color-ink-500)]">{t.customer.heroSubtitle}</p>
+              <p className="mx-auto mt-2 max-w-[440px] text-[14.5px] text-[var(--color-ink-500)]">{t.customer.heroSubtitle}</p>
             </div>
             <VehicleTypeSelect
               onSelect={(type) => {

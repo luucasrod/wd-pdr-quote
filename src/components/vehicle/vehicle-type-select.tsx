@@ -38,7 +38,8 @@ export function VehicleTypeSelect({ onSelect }: VehicleTypeSelectProps) {
               whileTap={{ scale: 0.97 }}
               className="text-left"
             >
-              <Card className="flex h-full flex-col items-center gap-4 border-[var(--color-ink-100)] p-5 transition-shadow hover:border-[var(--color-amber-300)] hover:shadow-[var(--shadow-soft-md)]">
+              <Card className="group relative flex h-full flex-col items-center gap-4 overflow-hidden border-[var(--color-ink-100)] p-5 transition-shadow hover:border-[var(--color-amber-300)] hover:shadow-[var(--shadow-soft-md)]">
+                <span className="absolute inset-x-0 top-0 h-[3px] scale-x-0 bg-[var(--color-amber-500)] transition-transform duration-300 group-hover:scale-x-100" />
                 <div className="flex h-20 w-full items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink-50)] p-2">
                   <img
                     src={thumb.src}
