@@ -7,7 +7,6 @@ import type { ContactFormData } from "@/components/customer/customer-contact-for
 import { CustomerDoneScreen } from "@/components/customer/customer-done-screen"
 import { VehicleTypeSelect } from "@/components/vehicle/vehicle-type-select"
 import { VehicleViewer } from "@/components/vehicle/vehicle-viewer"
-import { QuotePrintDocument } from "@/components/quote/quote-print-document"
 import { Button } from "@/components/ui/button"
 import { DEFAULT_MARKER_SIZE, SEVERITY_SEQUENCE } from "@/types/vehicle"
 import type { DamageSeverity, VehicleType, VehicleView, ViewMarkers } from "@/types/vehicle"
@@ -223,12 +222,15 @@ export function CustomerQuotePage() {
           <CustomerContactForm onBack={() => setStep("damage")} onSubmit={handleSubmit} submitting={submitting} />
         )}
 
-        {step === "done" && savedQuote && (
-          <CustomerDoneScreen totalPrice={savedQuote.totals.totalPrice} onNewRequest={handleNewRequest} />
+        {step === "done" && savedQuote && savedClient && (
+          <CustomerDoneScreen
+            quote={savedQuote}
+            client={savedClient}
+            totalPrice={savedQuote.totals.totalPrice}
+            onNewRequest={handleNewRequest}
+          />
         )}
       </main>
-
-      {savedQuote && savedClient && <QuotePrintDocument quote={savedQuote} client={savedClient} />}
     </div>
   )
 }

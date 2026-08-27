@@ -1,4 +1,5 @@
-import { ArrowLeft, Printer, Trash2 } from "lucide-react"
+import { useState } from "react"
+import { ArrowLeft, Download, Loader2, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Select } from "@/components/ui/form"
@@ -7,7 +8,7 @@ import { useQuotes } from "@/hooks/use-quotes"
 import { useClients } from "@/hooks/use-clients"
 import { useInsurers } from "@/hooks/use-insurers"
 import { StatusBadge } from "@/components/quote/status-badge"
-import { QuotePrintDocument } from "@/components/quote/quote-print-document"
+import { downloadQuotePdf } from "@/lib/generate-quote-pdf"
 import type { QuoteStatus } from "@/types/crm"
 
 interface QuoteDetailViewProps {
@@ -22,6 +23,7 @@ export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
   const { getQuoteById, updateQuote, removeQuote } = useQuotes()
   const { getClientById } = useClients()
   const { getInsurerById } = useInsurers()
+  const [downloading, setDownloading] = useState(false)
 
   const quote = getQuoteById(quoteId)
   if (!quote) {
@@ -39,16 +41,25 @@ export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
   const client = getClientById(quote.clientId)
   const insurer = getInsurerById(quote.insurerId)
 
+  async function handleDownload() {
+    setDownloading(true)
+    try {
+      await downloadQuotePdf({ quote: quote!, client, insurer, t, language })
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 print:hidden">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="ghost" size="sm" onClick={onBack}>
           <ArrowLeft className="h-3.5 w-3.5" />
           {t.quoteMeta.backToList}
         </Button>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => window.print()}>
-            <Printer className="h-3.5 w-3.5" />
+          <Button variant="outline" size="sm" onClick={handleDownload} disabled={downloading}>
+            {downloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
             {t.quoteMeta.print}
           </Button>
           <Button
@@ -67,7 +78,7 @@ export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
         </div>
       </div>
 
-      <Card className="print:hidden">
+      <Card>
         <CardHeader className="flex-row items-center justify-between gap-3">
           <div>
             <CardTitle>{t.typeSelect.types[quote.vehicleType].label}</CardTitle>
@@ -143,8 +154,6 @@ export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
           </div>
         </CardContent>
       </Card>
-
-      <QuotePrintDocument quote={quote} client={client} insurer={insurer} />
     </div>
   )
 }

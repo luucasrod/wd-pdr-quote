@@ -1,16 +1,31 @@
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { CheckCircle2, Printer, RotateCcw } from "lucide-react"
+import { CheckCircle2, Download, Loader2, RotateCcw } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/i18n/language-context"
+import { downloadQuotePdf } from "@/lib/generate-quote-pdf"
+import type { SavedQuote, Client } from "@/types/crm"
 
 interface CustomerDoneScreenProps {
+  quote: SavedQuote
+  client: Client
   totalPrice: number
   onNewRequest: () => void
 }
 
-export function CustomerDoneScreen({ totalPrice, onNewRequest }: CustomerDoneScreenProps) {
+export function CustomerDoneScreen({ quote, client, totalPrice, onNewRequest }: CustomerDoneScreenProps) {
   const { t, language } = useLanguage()
+  const [downloading, setDownloading] = useState(false)
+
+  async function handleDownload() {
+    setDownloading(true)
+    try {
+      await downloadQuotePdf({ quote, client, t, language })
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
     <div className="mx-auto max-w-[480px] text-center">
@@ -35,8 +50,8 @@ export function CustomerDoneScreen({ totalPrice, onNewRequest }: CustomerDoneScr
       </Card>
 
       <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-        <Button variant="accent" size="lg" className="flex-1" onClick={() => window.print()}>
-          <Printer className="h-4 w-4" />
+        <Button variant="accent" size="lg" className="flex-1" onClick={handleDownload} disabled={downloading}>
+          {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
           {t.customer.downloadPdf}
         </Button>
         <Button variant="outline" size="lg" className="flex-1" onClick={onNewRequest}>
