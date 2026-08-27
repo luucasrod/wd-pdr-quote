@@ -208,6 +208,7 @@ export interface TranslationShape {
     notesLabel: string
     notesPlaceholder: string
     consentLabel: string
+    privacyLinkLabel: string
     submitButton: string
     submittingButton: string
     doneTitle: string
@@ -417,7 +418,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       plateLabel: "Matrícula (opcional)",
       notesLabel: "Alguma observação?",
       notesPlaceholder: "Opcional…",
-      consentLabel: "Aceito ser contactado pela WD Martelinho sobre este orçamento.",
+      consentLabel: "Aceito ser contactado pela WD PDR sobre este orçamento.",
+      privacyLinkLabel: "Ver política de privacidade",
       submitButton: "Enviar Pedido",
       submittingButton: "A enviar…",
       doneTitle: "Pedido enviado! 🎉",
@@ -625,7 +627,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       plateLabel: "Plate (optional)",
       notesLabel: "Any notes?",
       notesPlaceholder: "Optional…",
-      consentLabel: "I agree to be contacted by WD Martelinho about this quote.",
+      consentLabel: "I agree to be contacted by WD PDR about this quote.",
+      privacyLinkLabel: "View privacy policy",
       submitButton: "Send Request",
       submittingButton: "Sending…",
       doneTitle: "Request sent! 🎉",
@@ -833,7 +836,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       plateLabel: "Kennzeichen (optional)",
       notesLabel: "Anmerkungen?",
       notesPlaceholder: "Optional…",
-      consentLabel: "Ich stimme zu, von WD Martelinho zu diesem Angebot kontaktiert zu werden.",
+      consentLabel: "Ich stimme zu, von WD PDR zu diesem Angebot kontaktiert zu werden.",
+      privacyLinkLabel: "Datenschutzerklärung ansehen",
       submitButton: "Anfrage senden",
       submittingButton: "Wird gesendet…",
       doneTitle: "Anfrage gesendet! 🎉",
@@ -1041,7 +1045,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       plateLabel: "Plaque (facultatif)",
       notesLabel: "Une remarque ?",
       notesPlaceholder: "Facultatif…",
-      consentLabel: "J'accepte d'être contacté par WD Martelinho au sujet de ce devis.",
+      consentLabel: "J'accepte d'être contacté par WD PDR au sujet de ce devis.",
+      privacyLinkLabel: "Voir la politique de confidentialité",
       submitButton: "Envoyer la Demande",
       submittingButton: "Envoi…",
       doneTitle: "Demande envoyée ! 🎉",
@@ -1249,7 +1254,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       plateLabel: "Matrícula (opcional)",
       notesLabel: "¿Alguna observación?",
       notesPlaceholder: "Opcional…",
-      consentLabel: "Acepto ser contactado por WD Martelinho sobre este presupuesto.",
+      consentLabel: "Acepto ser contactado por WD PDR sobre este presupuesto.",
+      privacyLinkLabel: "Ver política de privacidad",
       submitButton: "Enviar Solicitud",
       submittingButton: "Enviando…",
       doneTitle: "¡Solicitud enviada! 🎉",

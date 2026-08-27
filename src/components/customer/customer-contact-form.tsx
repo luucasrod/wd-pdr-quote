@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import { ArrowLeft, Send } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -98,6 +99,15 @@ export function CustomerContactForm({ onBack, onSubmit, submitting }: CustomerCo
               />
               {t.customer.consentLabel}
             </label>
+
+            <Link
+              to="/privacidade"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="-mt-2 text-[12px] text-[var(--color-amber-700)] underline underline-offset-2"
+            >
+              {t.customer.privacyLinkLabel}
+            </Link>
 
             <p className="text-[11px] text-[var(--color-ink-400)]">* {t.customer.requiredFieldsNote}</p>
 
