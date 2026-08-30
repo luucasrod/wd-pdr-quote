@@ -52,19 +52,22 @@ export function PartTypeTable({ partTypes, onAdd, onUpdate, onRemove, onReset }:
                   <input
                     type="number"
                     value={pt.percent}
+                    disabled={pt.id === "standard"}
                     onChange={(e) => onUpdate(pt.id, { percent: Number(e.target.value) })}
-                    className="w-full min-w-0 rounded-[var(--radius-sm)] px-2 py-1.5 text-center text-[13px] font-semibold outline-none focus:bg-[var(--color-amber-50)]"
+                    className="w-full min-w-0 rounded-[var(--radius-sm)] px-2 py-1.5 text-center text-[13px] font-semibold outline-none focus:bg-[var(--color-amber-50)] disabled:text-[var(--color-ink-400)]"
                   />
                   <span className="text-[12px] text-[var(--color-ink-400)]">%</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onRemove(pt.id)}
-                  aria-label={t.settingsPage.remove}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-400)] hover:bg-[var(--color-severity-severe-soft)] hover:text-[var(--color-severity-severe)]"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                {pt.id !== "standard" && (
+                  <button
+                    type="button"
+                    onClick={() => onRemove(pt.id)}
+                    aria-label={t.settingsPage.remove}
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-400)] hover:bg-[var(--color-severity-severe-soft)] hover:text-[var(--color-severity-severe)]"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
               </motion.div>
             ))}
           </AnimatePresence>
