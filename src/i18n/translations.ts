@@ -217,6 +217,14 @@ export interface TranslationShape {
     newRequest: string
     requiredFieldsNote: string
   }
+  auth: {
+    title: string
+    subtitle: string
+    passcodeLabel: string
+    passcodePlaceholder: string
+    submitButton: string
+    errorMessage: string
+  }
 }
 
 export const TRANSLATIONS: Record<Language, TranslationShape> = {
@@ -428,6 +436,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newRequest: "Novo Pedido",
       requiredFieldsNote: "Campos obrigatórios",
     },
+    auth: {
+      title: "Área da Oficina",
+      subtitle: "Introduza o código de acesso para continuar",
+      passcodeLabel: "Código de acesso",
+      passcodePlaceholder: "••••",
+      submitButton: "Entrar",
+      errorMessage: "Código incorreto. Tente novamente.",
+    },
   },
   en: {
     common: {
@@ -636,6 +652,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       downloadPdf: "Download PDF",
       newRequest: "New Request",
       requiredFieldsNote: "Required fields",
+    },
+    auth: {
+      title: "Workshop Area",
+      subtitle: "Enter the access code to continue",
+      passcodeLabel: "Access code",
+      passcodePlaceholder: "••••",
+      submitButton: "Enter",
+      errorMessage: "Incorrect code. Please try again.",
     },
   },
   de: {
@@ -846,6 +870,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newRequest: "Neue Anfrage",
       requiredFieldsNote: "Pflichtfelder",
     },
+    auth: {
+      title: "Werkstattbereich",
+      subtitle: "Geben Sie den Zugangscode ein, um fortzufahren",
+      passcodeLabel: "Zugangscode",
+      passcodePlaceholder: "••••",
+      submitButton: "Anmelden",
+      errorMessage: "Falscher Code. Bitte versuchen Sie es erneut.",
+    },
   },
   fr: {
     common: {
@@ -1055,6 +1087,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newRequest: "Nouvelle Demande",
       requiredFieldsNote: "Champs obligatoires",
     },
+    auth: {
+      title: "Espace Atelier",
+      subtitle: "Saisissez le code d'accès pour continuer",
+      passcodeLabel: "Code d'accès",
+      passcodePlaceholder: "••••",
+      submitButton: "Entrer",
+      errorMessage: "Code incorrect. Veuillez réessayer.",
+    },
   },
   es: {
     common: {
@@ -1263,6 +1303,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       downloadPdf: "Descargar PDF",
       newRequest: "Nueva Solicitud",
       requiredFieldsNote: "Campos obligatorios",
+    },
+    auth: {
+      title: "Área del Taller",
+      subtitle: "Introduzca el código de acceso para continuar",
+      passcodeLabel: "Código de acceso",
+      passcodePlaceholder: "••••",
+      submitButton: "Entrar",
+      errorMessage: "Código incorrecto. Inténtelo de nuevo.",
     },
   },
 }
