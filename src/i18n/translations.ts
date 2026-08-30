@@ -217,6 +217,17 @@ export interface TranslationShape {
     newRequest: string
     requiredFieldsNote: string
   }
+  notFound: {
+    code: string
+    title: string
+    subtitle: string
+    backHome: string
+  }
+  errorBoundary: {
+    title: string
+    subtitle: string
+    reload: string
+  }
 }
 
 export const TRANSLATIONS: Record<Language, TranslationShape> = {
@@ -280,7 +291,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       colMinor: "Ligeiras",
       colMedium: "Médias",
       colSevere: "Severas",
-      colAluminum: "Alumínio",
+      colAluminum: "Tipo",
       colAW: "AW",
       subtotal: "Subtotal (peças)",
       prep: "Preparação (0,2 AW/peça, máx. 1 AW)",
@@ -422,11 +433,22 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       privacyLinkLabel: "Ver política de privacidade",
       submitButton: "Enviar Pedido",
       submittingButton: "A enviar…",
-      doneTitle: "Pedido enviado! 🎉",
-      doneSubtitle: "A oficina já recebeu o seu pedido e vai entrar em contacto em breve.",
+      doneTitle: "Orçamento guardado! 🎉",
+      doneSubtitle: "Descarregue o PDF e contacte a oficina para enviar o seu pedido.",
       downloadPdf: "Descarregar PDF",
       newRequest: "Novo Pedido",
       requiredFieldsNote: "Campos obrigatórios",
+    },
+    notFound: {
+      code: "404",
+      title: "Página não encontrada",
+      subtitle: "O endereço que procura não existe ou foi alterado.",
+      backHome: "Voltar ao início",
+    },
+    errorBoundary: {
+      title: "Algo correu mal",
+      subtitle: "Não foi possível mostrar esta página. Tente recarregar.",
+      reload: "Recarregar",
     },
   },
   en: {
@@ -489,7 +511,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       colMinor: "Minor",
       colMedium: "Medium",
       colSevere: "Severe",
-      colAluminum: "Aluminium",
+      colAluminum: "Type",
       colAW: "AW",
       subtotal: "Subtotal (parts)",
       prep: "Prep (0.2 AW/part, max 1 AW)",
@@ -631,11 +653,22 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       privacyLinkLabel: "View privacy policy",
       submitButton: "Send Request",
       submittingButton: "Sending…",
-      doneTitle: "Request sent! 🎉",
-      doneSubtitle: "The shop has received your request and will be in touch shortly.",
+      doneTitle: "Quote saved! 🎉",
+      doneSubtitle: "Download the PDF and contact the shop to send your request.",
       downloadPdf: "Download PDF",
       newRequest: "New Request",
       requiredFieldsNote: "Required fields",
+    },
+    notFound: {
+      code: "404",
+      title: "Page not found",
+      subtitle: "The address you are looking for does not exist or has changed.",
+      backHome: "Back to home",
+    },
+    errorBoundary: {
+      title: "Something went wrong",
+      subtitle: "We could not display this page. Please try reloading it.",
+      reload: "Reload",
     },
   },
   de: {
@@ -698,7 +731,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       colMinor: "Leicht",
       colMedium: "Mittel",
       colSevere: "Stark",
-      colAluminum: "Aluminium",
+      colAluminum: "Typ",
       colAW: "AW",
       subtotal: "Zwischensumme (Bauteile)",
       prep: "Vorbereitung (0,2 AW/Bauteil, max. 1 AW)",
@@ -840,11 +873,22 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       privacyLinkLabel: "Datenschutzerklärung ansehen",
       submitButton: "Anfrage senden",
       submittingButton: "Wird gesendet…",
-      doneTitle: "Anfrage gesendet! 🎉",
-      doneSubtitle: "Die Werkstatt hat Ihre Anfrage erhalten und meldet sich in Kürze.",
+      doneTitle: "Angebot gespeichert! 🎉",
+      doneSubtitle: "Laden Sie das PDF herunter und kontaktieren Sie die Werkstatt, um Ihre Anfrage zu senden.",
       downloadPdf: "PDF herunterladen",
       newRequest: "Neue Anfrage",
       requiredFieldsNote: "Pflichtfelder",
+    },
+    notFound: {
+      code: "404",
+      title: "Seite nicht gefunden",
+      subtitle: "Die gesuchte Adresse existiert nicht oder wurde geändert.",
+      backHome: "Zur Startseite",
+    },
+    errorBoundary: {
+      title: "Etwas ist schiefgelaufen",
+      subtitle: "Diese Seite konnte nicht angezeigt werden. Bitte laden Sie sie neu.",
+      reload: "Neu laden",
     },
   },
   fr: {
@@ -907,7 +951,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       colMinor: "Léger",
       colMedium: "Moyen",
       colSevere: "Fort",
-      colAluminum: "Aluminium",
+      colAluminum: "Type",
       colAW: "AW",
       subtotal: "Sous-total (pièces)",
       prep: "Préparation (0,2 AW/pièce, max 1 AW)",
@@ -1049,11 +1093,22 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       privacyLinkLabel: "Voir la politique de confidentialité",
       submitButton: "Envoyer la Demande",
       submittingButton: "Envoi…",
-      doneTitle: "Demande envoyée ! 🎉",
-      doneSubtitle: "L'atelier a bien reçu votre demande et vous contactera prochainement.",
+      doneTitle: "Devis enregistré ! 🎉",
+      doneSubtitle: "Téléchargez le PDF et contactez l’atelier pour envoyer votre demande.",
       downloadPdf: "Télécharger le PDF",
       newRequest: "Nouvelle Demande",
       requiredFieldsNote: "Champs obligatoires",
+    },
+    notFound: {
+      code: "404",
+      title: "Page introuvable",
+      subtitle: "L’adresse que vous recherchez n’existe pas ou a été modifiée.",
+      backHome: "Retour à l’accueil",
+    },
+    errorBoundary: {
+      title: "Un problème est survenu",
+      subtitle: "Impossible d’afficher cette page. Essayez de la recharger.",
+      reload: "Recharger",
     },
   },
   es: {
@@ -1116,7 +1171,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       colMinor: "Leves",
       colMedium: "Medias",
       colSevere: "Fuertes",
-      colAluminum: "Aluminio",
+      colAluminum: "Tipo",
       colAW: "AW",
       subtotal: "Subtotal (piezas)",
       prep: "Preparación (0,2 AW/pieza, máx. 1 AW)",
@@ -1258,11 +1313,22 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       privacyLinkLabel: "Ver política de privacidad",
       submitButton: "Enviar Solicitud",
       submittingButton: "Enviando…",
-      doneTitle: "¡Solicitud enviada! 🎉",
-      doneSubtitle: "El taller ya ha recibido tu solicitud y se pondrá en contacto pronto.",
+      doneTitle: "¡Presupuesto guardado! 🎉",
+      doneSubtitle: "Descarga el PDF y contacta con el taller para enviar tu solicitud.",
       downloadPdf: "Descargar PDF",
       newRequest: "Nueva Solicitud",
       requiredFieldsNote: "Campos obligatorios",
+    },
+    notFound: {
+      code: "404",
+      title: "Página no encontrada",
+      subtitle: "La dirección que buscas no existe o ha cambiado.",
+      backHome: "Volver al inicio",
+    },
+    errorBoundary: {
+      title: "Algo ha salido mal",
+      subtitle: "No se ha podido mostrar esta página. Intenta recargarla.",
+      reload: "Recargar",
     },
   },
 }

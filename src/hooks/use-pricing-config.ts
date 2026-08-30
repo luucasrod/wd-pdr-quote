@@ -19,6 +19,13 @@ function loadOrDefault<T>(key: string, fallback: T): T {
   }
 }
 
+function loadPartTypes(): PartTypeDef[] {
+  const saved = loadOrDefault(KEYS.partTypes, DEFAULT_PART_TYPES)
+  const standard = saved.find((partType) => partType.id === "standard")
+  if (!standard) return [{ id: "standard", label: "Padrão", percent: 0 }, ...saved]
+  return saved.map((partType) => partType.id === "standard" ? { ...partType, percent: 0 } : partType)
+}
+
 let idCounter = 0
 function newId() {
   idCounter += 1
@@ -28,7 +35,7 @@ function newId() {
 export function usePricingConfig() {
   const [hourlyTable, setHourlyTable] = useState<PriceTable>(() => loadOrDefault(KEYS.hourly, DEFAULT_HOURLY_TABLE))
   const [fixedTable, setFixedTable] = useState<PriceTable>(() => loadOrDefault(KEYS.fixed, DEFAULT_FIXED_TABLE))
-  const [partTypes, setPartTypes] = useState<PartTypeDef[]>(() => loadOrDefault(KEYS.partTypes, DEFAULT_PART_TYPES))
+  const [partTypes, setPartTypes] = useState<PartTypeDef[]>(loadPartTypes)
 
   useEffect(() => {
     localStorage.setItem(KEYS.hourly, JSON.stringify(hourlyTable))
@@ -66,9 +73,11 @@ export function usePricingConfig() {
     setPartTypes((prev) => [...prev, { id: newId(), label: "", percent: 0 }])
   }
   function updatePartType(id: string, patch: Partial<Omit<PartTypeDef, "id">>) {
-    setPartTypes((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)))
+    const safePatch = id === "standard" ? { ...patch, percent: 0 } : patch
+    setPartTypes((prev) => prev.map((p) => (p.id === id ? { ...p, ...safePatch } : p)))
   }
   function removePartType(id: string) {
+    if (id === "standard") return
     setPartTypes((prev) => prev.filter((p) => p.id !== id))
   }
 

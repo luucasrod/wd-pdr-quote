@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom"
 import { CustomerQuotePage } from "@/pages/customer-quote-page"
 import { OwnerApp } from "@/pages/owner-app"
 import { PrivacyPolicyPage } from "@/pages/privacy-policy-page"
+import { NotFoundPage } from "@/pages/not-found-page"
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Route path="/" element={<CustomerQuotePage />} />
       <Route path="/privacidade" element={<PrivacyPolicyPage />} />
       <Route path="/oficina/*" element={<OwnerApp />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }

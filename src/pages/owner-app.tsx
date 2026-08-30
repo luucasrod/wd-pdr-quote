@@ -37,7 +37,7 @@ export function OwnerApp() {
   const [view, setView] = useState<VehicleView>("right")
   const [markersByView, setMarkersByView] = useState<ViewMarkers>({})
   const [brushSize, setBrushSize] = useState(DEFAULT_MARKER_SIZE)
-  const [aluParts, setAluParts] = useState<Set<PartId>>(new Set())
+  const [partTypeByPart, setPartTypeByPart] = useState<Partial<Record<PartId, string>>>({})
   const [finishHours, setFinishHours] = useState(0)
   const [surcharge1, setSurcharge1] = useState(false)
   const [surcharge2, setSurcharge2] = useState(false)
@@ -61,24 +61,19 @@ export function OwnerApp() {
   const markers = markersByView[view] ?? []
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
 
-  const aluSurchargePercent = useMemo(
-    () => pricingConfig.partTypes.find((p) => p.id === "aluminum")?.percent ?? 20,
-    [pricingConfig.partTypes]
-  )
-
   const totals = useMemo(
     () =>
       computeQuoteTotals({
         markers: allMarkers,
-        aluParts,
+        partTypeByPart,
         hourlyTable: pricingConfig.hourlyTable,
-        aluSurchargePercent,
+        partTypes: pricingConfig.partTypes,
         finishHours,
         surcharge1,
         surcharge2,
         hourlyRate,
       }),
-    [allMarkers, aluParts, pricingConfig.hourlyTable, aluSurchargePercent, finishHours, surcharge1, surcharge2, hourlyRate]
+    [allMarkers, partTypeByPart, pricingConfig.hourlyTable, pricingConfig.partTypes, finishHours, surcharge1, surcharge2, hourlyRate]
   )
 
   function addMarker(x: number, y: number) {
@@ -110,20 +105,15 @@ export function OwnerApp() {
     setJustSaved(false)
   }
 
-  function toggleAlu(partId: PartId) {
-    setAluParts((prev) => {
-      const next = new Set(prev)
-      if (next.has(partId)) next.delete(partId)
-      else next.add(partId)
-      return next
-    })
+  function setPartType(partId: PartId, typeId: string) {
+    setPartTypeByPart((prev) => ({ ...prev, [partId]: typeId }))
   }
 
   function resetQuoteState() {
     setVehicleType(null)
     setMarkersByView({})
     setView("right")
-    setAluParts(new Set())
+    setPartTypeByPart({})
     setFinishHours(0)
     setSurcharge1(false)
     setSurcharge2(false)
@@ -225,7 +215,8 @@ export function OwnerApp() {
               <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
                 <QuotePricingPanel
                   totals={totals}
-                  onToggleAlu={toggleAlu}
+                  partTypes={pricingConfig.partTypes}
+                  onPartTypeChange={setPartType}
                   finishHours={finishHours}
                   onFinishHoursChange={setFinishHours}
                   surcharge1={surcharge1}

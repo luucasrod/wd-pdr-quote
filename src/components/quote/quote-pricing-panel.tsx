@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import { Wrench, Euro } from "lucide-react"
 import type { PartBreakdown, QuoteTotals } from "@/lib/pricing"
 import type { PartId } from "@/data/pricing/parts"
+import type { PartTypeDef } from "@/data/pricing/pricing-config"
 import { SEVERITY_META } from "@/types/vehicle"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -18,7 +19,8 @@ const CURRENCY_LOCALE: Record<Language, string> = {
 
 interface QuotePricingPanelProps {
   totals: QuoteTotals
-  onToggleAlu: (partId: PartId) => void
+  partTypes: PartTypeDef[]
+  onPartTypeChange: (partId: PartId, typeId: string) => void
   finishHours: number
   onFinishHoursChange: (value: number) => void
   surcharge1: boolean
@@ -31,7 +33,8 @@ interface QuotePricingPanelProps {
 
 export function QuotePricingPanel({
   totals,
-  onToggleAlu,
+  partTypes,
+  onPartTypeChange,
   finishHours,
   onFinishHoursChange,
   surcharge1,
@@ -74,7 +77,13 @@ export function QuotePricingPanel({
               </thead>
               <tbody>
                 {totals.parts.map((p) => (
-                  <PartRow key={p.partId} part={p} t={t} onToggleAlu={() => onToggleAlu(p.partId)} />
+                  <PartRow
+                    key={p.partId}
+                    part={p}
+                    partTypes={partTypes}
+                    t={t}
+                    onPartTypeChange={(typeId) => onPartTypeChange(p.partId, typeId)}
+                  />
                 ))}
               </tbody>
             </table>
@@ -158,7 +167,17 @@ export function QuotePricingPanel({
   )
 }
 
-function PartRow({ part, t, onToggleAlu }: { part: PartBreakdown; t: TranslationShape; onToggleAlu: () => void }) {
+function PartRow({
+  part,
+  partTypes,
+  t,
+  onPartTypeChange,
+}: {
+  part: PartBreakdown
+  partTypes: PartTypeDef[]
+  t: TranslationShape
+  onPartTypeChange: (typeId: string) => void
+}) {
   const label = t.parts[part.partId]
   return (
     <tr className="border-b border-[var(--color-ink-50)] last:border-0">
@@ -167,16 +186,26 @@ function PartRow({ part, t, onToggleAlu }: { part: PartBreakdown; t: Translation
       <SeverityCell count={part.countMedium} variant="medium" active={part.predominantSeverity === "medium"} />
       <SeverityCell count={part.countSevere} variant="severe" active={part.predominantSeverity === "severe"} />
       <td className="px-2 py-2 text-center">
-        <input
-          type="checkbox"
-          checked={part.isAlu}
-          onChange={onToggleAlu}
-          className="h-4 w-4 accent-[var(--color-amber-500)]"
+        <select
+          value={part.partTypeId}
+          onChange={(event) => onPartTypeChange(event.target.value)}
+          className="max-w-36 rounded-[var(--radius-sm)] border border-[var(--color-ink-200)] bg-white px-2 py-1 text-[12px] outline-none focus:border-[var(--color-amber-400)]"
           aria-label={`${label} — ${t.pricing.colAluminum}`}
-        />
+        >
+          {partTypes.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.label || type.id}
+            </option>
+          ))}
+        </select>
       </td>
       <td className="py-2 pl-2 text-right font-semibold tabular-nums text-[var(--color-ink-950)]">
-        {part.hours.toFixed(2)}
+        <span>{part.hours.toFixed(2)}</span>
+        {part.partTypePercent !== 0 && (
+          <span className="ml-1 text-[10px] font-medium text-[var(--color-amber-700)]">
+            {part.partTypePercent > 0 ? "+" : ""}{part.partTypePercent}%
+          </span>
+        )}
       </td>
     </tr>
   )
