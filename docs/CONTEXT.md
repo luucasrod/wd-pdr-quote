@@ -1,7 +1,7 @@
 ﻿# 📋 CONTEXT — WD PDR Quote App
 
-**Data**: 2026-08-29  
-**Status**: P0 bloqueadores identificados — app não funciona como negócio hoje
+**Data**: 2026-08-30  
+**Status**: Phase 1 em andamento — 2/7 issues concluídas, 5 restantes
 
 ---
 
@@ -32,21 +32,40 @@
 
 ---
 
-## 🚀 Phase 1 (SEM BACKEND)
+## 🚀 Phase 1 (SEM BACKEND) — Em Andamento
 
-Destrava a app em 1 dia:
-- #1: Passcode em /oficina
-- #2: Rota 404
-- #3: Guardar marcadores em SavedQuote
-- #4: Ligar tipos de peça
-- #5: Tabela fixa (decidir)
-- #6: Corrigir texto "oficina já recebeu"
-- #7: Remover/implementar busca
+**✅ Concluídas:**
+- **#1**: Passcode em /oficina (Claude) — `d3ad713` → `claude-builder-main`
+  - Hook `use-oficina-auth`, componente gate, i18n, env var
+  - Smoke test passou (gate → reject → unlock → persist)
+  
+- **#2**: Rota 404 (Codex) — `82f4db4` → `codex-builder-main`
+  - Rota catch-all `*`, página 404 pública, ErrorBoundary global
 
-Depois: Supabase (fora Phase 1)
+**📋 Pendentes:**
+- **#3**: Guardar marcadores em SavedQuote (Claude)
+- **#4**: Ligar tipos de peça (Codex)
+- **#5**: Tabela fixa (Claude)
+- **#6**: Corrigir texto "oficina já recebeu" (Codex)
+- **#7**: Remover/implementar busca (Claude)
+
+Depois: Supabase (Phase 2)
 
 ---
 
-**Worktrees**: 
-- wd-pdr-quote-claude-builder/ → Claude trabalha aqui
-- wd-pdr-quote-codex-builder/ → Codex trabalha aqui
+## 📁 Workflow Atual
+
+**Branches remotas:**
+- `origin/main` — docs/CONTEXT.md, sem code
+- `origin/claude-builder-main` — Issues #1, #3, #5, #7
+- `origin/codex-builder-main` — Issues #2, #4, #6
+
+**Worktrees locais:**
+- `A:\CLIENTES\APPS-WEBSITE\WD\wd-pdr-quote-claude-builder/` → claude-builder-main
+- `A:\CLIENTES\APPS-WEBSITE\WD\wd-pdr-quote-codex-builder/` → codex-builder-main
+- `A:\CLIENTES\APPS-WEBSITE\WD\WD-PDR-Quote/` → main (docs only)
+
+**Setup:**
+- Claude connected via Claude for VS Code extension
+- Codex connected via GitHub Copilot (OpenAI)
+- Cada builder trabalha isolado, push automático após commit
