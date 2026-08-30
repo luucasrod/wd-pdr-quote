@@ -15,6 +15,7 @@ export interface TranslationShape {
     newQuote: string
     search: string
     searchPlaceholder: string
+    noResults: string
     settings: string
     quotes: string
     changeType: string
@@ -84,14 +85,12 @@ export interface TranslationShape {
     title: string
     subtitle: string
     back: string
-    tabFixed: string
     tabHourly: string
     tabPartTypes: string
     sizeSmall: string
     sizeMedium: string
     sizeLarge: string
     colQuantity: string
-    colFixedValue: string
     colHourValue: string
     addValue: string
     reset: string
@@ -99,7 +98,6 @@ export interface TranslationShape {
     partTypeLabel: string
     partTypePercent: string
     addPartType: string
-    fixedNotActiveNotice: string
   }
   nav: {
     dashboard: string
@@ -172,9 +170,11 @@ export interface TranslationShape {
     saveQuote: string
     savedToast: string
     print: string
+    edit: string
     backToList: string
     newClient: string
     statusLabel: string
+    breakdownTitle: string
   }
   dashboard: {
     title: string
@@ -228,6 +228,14 @@ export interface TranslationShape {
     subtitle: string
     reload: string
   }
+  auth: {
+    title: string
+    subtitle: string
+    passcodeLabel: string
+    passcodePlaceholder: string
+    submitButton: string
+    errorMessage: string
+  }
 }
 
 export const TRANSLATIONS: Record<Language, TranslationShape> = {
@@ -238,6 +246,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newQuote: "Novo Orçamento",
       search: "Procurar",
       searchPlaceholder: "Procurar orçamento, cliente ou matrícula…",
+      noResults: "Sem resultados",
       settings: "Definições",
       quotes: "Orçamentos",
       changeType: "trocar tipo",
@@ -306,14 +315,12 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       title: "Configurações de Orçamento",
       subtitle: "Monte as tabelas de preço do jeito que funcionar melhor para a sua oficina.",
       back: "Voltar",
-      tabFixed: "Tabela de Preço Fixo",
       tabHourly: "Tabela de Preços por Hora",
       tabPartTypes: "Tipos de Peça",
       sizeSmall: "Pequeno",
       sizeMedium: "Médio",
       sizeLarge: "Grande",
       colQuantity: "Quantidade",
-      colFixedValue: "Valor Fixo",
       colHourValue: "Valor em Horas",
       addValue: "Adicionar valor",
       reset: "Repor padrão",
@@ -321,7 +328,6 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       partTypeLabel: "Nome do tipo",
       partTypePercent: "Acréscimo %",
       addPartType: "Adicionar tipo de peça",
-      fixedNotActiveNotice: "Esta tabela ainda não está ligada ao cálculo do orçamento — por agora o orçamento usa a Tabela de Preços por Hora.",
     },
     nav: {
       dashboard: "Início",
@@ -394,9 +400,11 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       saveQuote: "Guardar Orçamento",
       savedToast: "Orçamento guardado",
       print: "Baixar PDF",
+      edit: "Editar Orçamento",
       backToList: "Ver Orçamentos",
       newClient: "+ Criar novo cliente",
       statusLabel: "Estado",
+      breakdownTitle: "Detalhe por Peça",
     },
     dashboard: {
       title: "Olá 👋",
@@ -450,6 +458,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       subtitle: "Não foi possível mostrar esta página. Tente recarregar.",
       reload: "Recarregar",
     },
+    auth: {
+      title: "Área da Oficina",
+      subtitle: "Introduza o código de acesso para continuar",
+      passcodeLabel: "Código de acesso",
+      passcodePlaceholder: "••••",
+      submitButton: "Entrar",
+      errorMessage: "Código incorreto. Tente novamente.",
+    },
   },
   en: {
     common: {
@@ -458,6 +474,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newQuote: "New Quote",
       search: "Search",
       searchPlaceholder: "Search quote, customer or plate…",
+      noResults: "No results",
       settings: "Settings",
       quotes: "Quotes",
       changeType: "change type",
@@ -526,14 +543,12 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       title: "Quote Settings",
       subtitle: "Set up your pricing tables the way that works best for your shop.",
       back: "Back",
-      tabFixed: "Fixed Price Table",
       tabHourly: "Hourly Price Table",
       tabPartTypes: "Part Types",
       sizeSmall: "Small",
       sizeMedium: "Medium",
       sizeLarge: "Large",
       colQuantity: "Quantity",
-      colFixedValue: "Fixed Value",
       colHourValue: "Hour Value",
       addValue: "Add value",
       reset: "Reset to default",
@@ -541,7 +556,6 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       partTypeLabel: "Type name",
       partTypePercent: "Surcharge %",
       addPartType: "Add part type",
-      fixedNotActiveNotice: "This table isn't wired into the quote calculation yet — quotes currently use the Hourly Price Table.",
     },
     nav: {
       dashboard: "Home",
@@ -614,9 +628,11 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       saveQuote: "Save Quote",
       savedToast: "Quote saved",
       print: "Download PDF",
+      edit: "Edit Quote",
       backToList: "View Quotes",
       newClient: "+ Create new client",
       statusLabel: "Status",
+      breakdownTitle: "Part Breakdown",
     },
     dashboard: {
       title: "Hi 👋",
@@ -670,6 +686,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       subtitle: "We could not display this page. Please try reloading it.",
       reload: "Reload",
     },
+    auth: {
+      title: "Workshop Area",
+      subtitle: "Enter the access code to continue",
+      passcodeLabel: "Access code",
+      passcodePlaceholder: "••••",
+      submitButton: "Enter",
+      errorMessage: "Incorrect code. Please try again.",
+    },
   },
   de: {
     common: {
@@ -678,6 +702,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newQuote: "Neues Angebot",
       search: "Suchen",
       searchPlaceholder: "Angebot, Kunde oder Kennzeichen suchen…",
+      noResults: "Keine Ergebnisse",
       settings: "Einstellungen",
       quotes: "Angebote",
       changeType: "Typ ändern",
@@ -746,14 +771,12 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       title: "Angebotseinstellungen",
       subtitle: "Richten Sie Ihre Preistabellen so ein, wie es für Ihre Werkstatt am besten passt.",
       back: "Zurück",
-      tabFixed: "Festpreistabelle",
       tabHourly: "Stundenpreistabelle",
       tabPartTypes: "Bauteiltypen",
       sizeSmall: "Klein",
       sizeMedium: "Mittel",
       sizeLarge: "Groß",
       colQuantity: "Anzahl",
-      colFixedValue: "Festwert",
       colHourValue: "Stundenwert",
       addValue: "Wert hinzufügen",
       reset: "Auf Standard zurücksetzen",
@@ -761,7 +784,6 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       partTypeLabel: "Typname",
       partTypePercent: "Zuschlag %",
       addPartType: "Bauteiltyp hinzufügen",
-      fixedNotActiveNotice: "Diese Tabelle ist noch nicht mit der Angebotsberechnung verknüpft — Angebote nutzen derzeit die Stundenpreistabelle.",
     },
     nav: {
       dashboard: "Start",
@@ -834,9 +856,11 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       saveQuote: "Angebot speichern",
       savedToast: "Angebot gespeichert",
       print: "PDF herunterladen",
+      edit: "Angebot bearbeiten",
       backToList: "Angebote ansehen",
       newClient: "+ Neuen Kunden anlegen",
       statusLabel: "Status",
+      breakdownTitle: "Aufschlüsselung nach Teil",
     },
     dashboard: {
       title: "Hallo 👋",
@@ -890,6 +914,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       subtitle: "Diese Seite konnte nicht angezeigt werden. Bitte laden Sie sie neu.",
       reload: "Neu laden",
     },
+    auth: {
+      title: "Werkstattbereich",
+      subtitle: "Geben Sie den Zugangscode ein, um fortzufahren",
+      passcodeLabel: "Zugangscode",
+      passcodePlaceholder: "••••",
+      submitButton: "Anmelden",
+      errorMessage: "Falscher Code. Bitte versuchen Sie es erneut.",
+    },
   },
   fr: {
     common: {
@@ -898,6 +930,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newQuote: "Nouveau Devis",
       search: "Rechercher",
       searchPlaceholder: "Rechercher devis, client ou plaque…",
+      noResults: "Aucun résultat",
       settings: "Paramètres",
       quotes: "Devis",
       changeType: "changer de type",
@@ -966,14 +999,12 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       title: "Paramètres de Devis",
       subtitle: "Configurez vos grilles tarifaires comme cela fonctionne le mieux pour votre atelier.",
       back: "Retour",
-      tabFixed: "Grille Tarif Fixe",
       tabHourly: "Grille Tarif Horaire",
       tabPartTypes: "Types de Pièce",
       sizeSmall: "Petit",
       sizeMedium: "Moyen",
       sizeLarge: "Grand",
       colQuantity: "Quantité",
-      colFixedValue: "Valeur Fixe",
       colHourValue: "Valeur en Heures",
       addValue: "Ajouter une valeur",
       reset: "Réinitialiser",
@@ -981,7 +1012,6 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       partTypeLabel: "Nom du type",
       partTypePercent: "Majoration %",
       addPartType: "Ajouter un type de pièce",
-      fixedNotActiveNotice: "Cette grille n'est pas encore reliée au calcul du devis — le devis utilise actuellement la Grille Tarif Horaire.",
     },
     nav: {
       dashboard: "Accueil",
@@ -1054,9 +1084,11 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       saveQuote: "Enregistrer le Devis",
       savedToast: "Devis enregistré",
       print: "Télécharger le PDF",
+      edit: "Modifier le Devis",
       backToList: "Voir les Devis",
       newClient: "+ Créer un nouveau client",
       statusLabel: "Statut",
+      breakdownTitle: "Détail par Pièce",
     },
     dashboard: {
       title: "Bonjour 👋",
@@ -1110,6 +1142,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       subtitle: "Impossible d’afficher cette page. Essayez de la recharger.",
       reload: "Recharger",
     },
+    auth: {
+      title: "Espace Atelier",
+      subtitle: "Saisissez le code d'accès pour continuer",
+      passcodeLabel: "Code d'accès",
+      passcodePlaceholder: "••••",
+      submitButton: "Entrer",
+      errorMessage: "Code incorrect. Veuillez réessayer.",
+    },
   },
   es: {
     common: {
@@ -1118,6 +1158,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newQuote: "Nuevo Presupuesto",
       search: "Buscar",
       searchPlaceholder: "Buscar presupuesto, cliente o matrícula…",
+      noResults: "Sin resultados",
       settings: "Ajustes",
       quotes: "Presupuestos",
       changeType: "cambiar tipo",
@@ -1186,14 +1227,12 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       title: "Ajustes de Presupuesto",
       subtitle: "Configura tus tablas de precios como mejor funcione para tu taller.",
       back: "Volver",
-      tabFixed: "Tabla de Precio Fijo",
       tabHourly: "Tabla de Precio por Hora",
       tabPartTypes: "Tipos de Pieza",
       sizeSmall: "Pequeño",
       sizeMedium: "Medio",
       sizeLarge: "Grande",
       colQuantity: "Cantidad",
-      colFixedValue: "Valor Fijo",
       colHourValue: "Valor en Horas",
       addValue: "Añadir valor",
       reset: "Restablecer",
@@ -1201,7 +1240,6 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       partTypeLabel: "Nombre del tipo",
       partTypePercent: "Recargo %",
       addPartType: "Añadir tipo de pieza",
-      fixedNotActiveNotice: "Esta tabla aún no está conectada al cálculo del presupuesto — el presupuesto usa actualmente la Tabla de Precio por Hora.",
     },
     nav: {
       dashboard: "Inicio",
@@ -1274,9 +1312,11 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       saveQuote: "Guardar Presupuesto",
       savedToast: "Presupuesto guardado",
       print: "Descargar PDF",
+      edit: "Editar Presupuesto",
       backToList: "Ver Presupuestos",
       newClient: "+ Crear nuevo cliente",
       statusLabel: "Estado",
+      breakdownTitle: "Detalle por Pieza",
     },
     dashboard: {
       title: "Hola 👋",
@@ -1329,6 +1369,14 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       title: "Algo ha salido mal",
       subtitle: "No se ha podido mostrar esta página. Intenta recargarla.",
       reload: "Recargar",
+    },
+    auth: {
+      title: "Área del Taller",
+      subtitle: "Introduzca el código de acceso para continuar",
+      passcodeLabel: "Código de acceso",
+      passcodePlaceholder: "••••",
+      submitButton: "Entrar",
+      errorMessage: "Código incorrecto. Inténtelo de nuevo.",
     },
   },
 }

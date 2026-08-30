@@ -22,16 +22,19 @@ import { inferPartId } from "@/lib/part-inference"
 import { useLanguage } from "@/i18n/language-context"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useQuotes } from "@/hooks/use-quotes"
+import { useClients } from "@/hooks/use-clients"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
 export function OwnerApp() {
   const { t } = useLanguage()
   const pricingConfig = usePricingConfig()
-  const { createQuote } = useQuotes()
+  const { quotes, createQuote, updateQuote, getQuoteById } = useQuotes()
+  const { getClientById } = useClients()
 
   const [page, setPage] = useState<Page>("dashboard")
   const [openQuoteId, setOpenQuoteId] = useState<string | null>(null)
+  const [editingQuoteId, setEditingQuoteId] = useState<string | null>(null)
 
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(null)
   const [view, setView] = useState<VehicleView>("right")
@@ -122,6 +125,7 @@ export function OwnerApp() {
     setPlate("")
     setNotes("")
     setJustSaved(false)
+    setEditingQuoteId(null)
   }
 
   function handleNewQuote() {
@@ -134,15 +138,47 @@ export function OwnerApp() {
     setPage("quoteDetail")
   }
 
+  function handleEditQuote(id: string) {
+    const quote = getQuoteById(id)
+    if (!quote) return
+    const restored = quote.markersByView ?? {}
+    // Retomar o contador acima do maior id ja usado, senao marcadores novos colidem com os restaurados.
+    const usedCounters = Object.values(restored)
+      .flatMap((list) => list ?? [])
+      .map((m) => Number(m.id.split("-")[1]) || 0)
+    markerCounter.current = Math.max(markerCounter.current, ...usedCounters, 0)
+    setVehicleType(quote.vehicleType)
+    setMarkersByView(restored)
+    setView("right")
+    setPartTypeByPart(
+      quote.partTypeByPart ?? Object.fromEntries((quote.aluParts ?? []).map((id) => [id, "aluminum"]))
+    )
+    setFinishHours(quote.finishHours ?? 0)
+    setSurcharge1(quote.surcharge1 ?? false)
+    setSurcharge2(quote.surcharge2 ?? false)
+    setClientId(quote.clientId)
+    setInsurerId(quote.insurerId)
+    setPlate(quote.plate)
+    setNotes(quote.notes)
+    setJustSaved(false)
+    setEditingQuoteId(id)
+    setPage("quote")
+  }
+
   function handleSaveQuote() {
     if (!vehicleType) return
-    createQuote({
-      status: "draft",
+    const payload = {
       clientId,
       insurerId,
       vehicleType,
       plate,
       notes,
+      markersByView,
+      partTypeByPart,
+      finishHours,
+      surcharge1,
+      surcharge2,
+      parts: totals.parts,
       totals: {
         subtotalHours: totals.subtotalHours,
         prepHours: totals.prepHours,
@@ -154,7 +190,12 @@ export function OwnerApp() {
       },
       partCount: totals.parts.length,
       markerCount: allMarkers.length,
-    })
+    }
+    if (editingQuoteId) {
+      updateQuote(editingQuoteId, payload)
+    } else {
+      createQuote({ ...payload, status: "draft" })
+    }
     setJustSaved(true)
     setTimeout(() => setJustSaved(false), 2000)
   }
@@ -165,7 +206,14 @@ export function OwnerApp() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <AppShell page={page} onNavigate={navigate} onNewQuote={handleNewQuote}>
+      <AppShell
+        page={page}
+        onNavigate={navigate}
+        onNewQuote={handleNewQuote}
+        onOpenQuote={handleOpenQuote}
+        quotes={quotes}
+        getClientById={getClientById}
+      >
         {page === "settings" && <SettingsPage onBack={() => setPage("dashboard")} pricingConfig={pricingConfig} />}
 
         {page === "dashboard" && (
@@ -175,7 +223,7 @@ export function OwnerApp() {
         {page === "quotesList" && <QuotesListPage onNewQuote={handleNewQuote} onOpenQuote={handleOpenQuote} />}
 
         {page === "quoteDetail" && openQuoteId && (
-          <QuoteDetailView quoteId={openQuoteId} onBack={() => setPage("quotesList")} />
+          <QuoteDetailView quoteId={openQuoteId} onBack={() => setPage("quotesList")} onEdit={handleEditQuote} />
         )}
 
         {page === "clients" && <ClientsPage />}

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowLeft, Euro, Clock3, Layers } from "lucide-react"
+import { ArrowLeft, Clock3, Layers } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -8,7 +8,7 @@ import { EditablePriceTable } from "@/components/settings/editable-price-table"
 import { PartTypeTable } from "@/components/settings/part-type-table"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
 
-type Tab = "fixed" | "hourly" | "partTypes"
+type Tab = "hourly" | "partTypes"
 
 interface SettingsPageProps {
   onBack: () => void
@@ -18,23 +18,11 @@ interface SettingsPageProps {
 export function SettingsPage({ onBack, pricingConfig }: SettingsPageProps) {
   const { t } = useLanguage()
   const [tab, setTab] = useState<Tab>("hourly")
-  const {
-    hourlyTable,
-    fixedTable,
-    partTypes,
-    hourlyOps,
-    fixedOps,
-    addPartType,
-    updatePartType,
-    removePartType,
-    resetHourly,
-    resetFixed,
-    resetPartTypes,
-  } = pricingConfig
+  const { hourlyTable, partTypes, hourlyOps, addPartType, updatePartType, removePartType, resetHourly, resetPartTypes } =
+    pricingConfig
 
-  const tabs: { id: Tab; label: string; icon: typeof Euro }[] = [
+  const tabs: { id: Tab; label: string; icon: typeof Clock3 }[] = [
     { id: "hourly", label: t.settingsPage.tabHourly, icon: Clock3 },
-    { id: "fixed", label: t.settingsPage.tabFixed, icon: Euro },
     { id: "partTypes", label: t.settingsPage.tabPartTypes, icon: Layers },
   ]
 
@@ -83,23 +71,6 @@ export function SettingsPage({ onBack, pricingConfig }: SettingsPageProps) {
             onRemoveRow={hourlyOps.removeRow}
             onReset={resetHourly}
           />
-        )}
-
-        {tab === "fixed" && (
-          <>
-            <p className="mb-4 rounded-[var(--radius-md)] bg-[var(--color-amber-50)] px-4 py-3 text-[12.5px] text-[var(--color-amber-800)]">
-              {t.settingsPage.fixedNotActiveNotice}
-            </p>
-            <EditablePriceTable
-              table={fixedTable}
-              valueLabel={t.settingsPage.colFixedValue}
-              valueSuffix="€"
-              onAddRow={fixedOps.addRow}
-              onUpdateRow={fixedOps.updateRow}
-              onRemoveRow={fixedOps.removeRow}
-              onReset={resetFixed}
-            />
-          </>
         )}
 
         {tab === "partTypes" && (

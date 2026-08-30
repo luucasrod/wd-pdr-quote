@@ -15,6 +15,7 @@ export interface PartBreakdown {
   totalCount: number
   predominantSeverity: DamageSeverity
   partTypeId: string
+  partTypeLabel: string
   partTypePercent: number
   baseHours: number
   hours: number // baseHours with the selected part-type surcharge applied
@@ -62,6 +63,7 @@ export function computePartBreakdown(
     const requestedTypeId = partTypeByPart[partId] ?? "standard"
     const partType = partTypes.find((type) => type.id === requestedTypeId)
     const partTypeId = partType?.id ?? "standard"
+    const partTypeLabel = partType?.label ?? ""
     const partTypePercent = partType?.percent ?? 0
     const baseHours = lookupPriceTable(hourlyTable[severity], totalCount)
     const hours = baseHours * (1 + partTypePercent / 100)
@@ -74,6 +76,7 @@ export function computePartBreakdown(
       totalCount,
       predominantSeverity: severity,
       partTypeId,
+      partTypeLabel,
       partTypePercent,
       baseHours,
       hours,

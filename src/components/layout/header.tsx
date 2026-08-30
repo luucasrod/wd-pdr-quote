@@ -1,19 +1,53 @@
+import { useEffect, useRef, useState } from "react"
 import { Search, Settings, Plus } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 import { LogoLockup } from "@/components/brand/logo-mark"
 import { Button } from "@/components/ui/button"
 import { LanguageSwitcher } from "@/components/layout/language-switcher"
 import { useLanguage } from "@/i18n/language-context"
 import { cn } from "@/lib/utils"
 import type { Page } from "@/types/nav"
+import type { Client, SavedQuote } from "@/types/crm"
 
 interface HeaderProps {
   page: Page
   onNavigate: (page: Page) => void
   onNewQuote: () => void
+  onOpenQuote: (id: string) => void
+  quotes: SavedQuote[]
+  getClientById: (id: string | null) => Client | undefined
 }
 
-export function Header({ page, onNavigate, onNewQuote }: HeaderProps) {
-  const { t } = useLanguage()
+export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getClientById }: HeaderProps) {
+  const { t, language } = useLanguage()
+  const [query, setQuery] = useState("")
+  const [searchOpen, setSearchOpen] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) setSearchOpen(false)
+    }
+    document.addEventListener("mousedown", onClickOutside)
+    return () => document.removeEventListener("mousedown", onClickOutside)
+  }, [])
+
+  const trimmedQuery = query.trim().toLowerCase()
+  const searchResults = trimmedQuery
+    ? quotes
+        .filter((q) => {
+          const client = getClientById(q.clientId)
+          const haystack = `${client?.name ?? ""} ${q.plate} ${t.typeSelect.types[q.vehicleType].label}`.toLowerCase()
+          return haystack.includes(trimmedQuery)
+        })
+        .slice(0, 6)
+    : []
+
+  function handleSelectResult(id: string) {
+    onOpenQuote(id)
+    setQuery("")
+    setSearchOpen(false)
+  }
 
   const navItems: { id: Page; label: string }[] = [
     { id: "dashboard", label: t.nav.dashboard },
@@ -49,13 +83,56 @@ export function Header({ page, onNavigate, onNewQuote }: HeaderProps) {
           ))}
         </nav>
 
-        <div className="relative ml-auto hidden max-w-xs flex-1 items-center lg:flex">
+        <div className="relative ml-auto hidden max-w-xs flex-1 items-center lg:flex" ref={searchRef}>
           <Search className="pointer-events-none absolute left-3.5 h-4 w-4 text-[var(--color-ink-400)]" />
           <input
             type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setSearchOpen(true)
+            }}
+            onFocus={() => setSearchOpen(true)}
             placeholder={t.common.searchPlaceholder}
             className="h-10 w-full rounded-[var(--radius-md)] border border-[var(--color-ink-100)] bg-[var(--color-ink-50)] pl-10 pr-3 text-[13.5px] text-[var(--color-ink-900)] placeholder:text-[var(--color-ink-400)] outline-none transition-all focus:border-[var(--color-amber-400)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(245,166,35,0.15)]"
           />
+
+          <AnimatePresence>
+            {searchOpen && trimmedQuery && (
+              <motion.div
+                initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                transition={{ duration: 0.15 }}
+                className="absolute left-0 top-[calc(100%+6px)] z-50 w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-ink-100)] bg-white py-1 shadow-[var(--shadow-soft-lg)]"
+              >
+                {searchResults.length === 0 ? (
+                  <p className="px-3 py-2.5 text-[13px] text-[var(--color-ink-400)]">{t.common.noResults}</p>
+                ) : (
+                  searchResults.map((q) => {
+                    const client = getClientById(q.clientId)
+                    return (
+                      <button
+                        key={q.id}
+                        type="button"
+                        onClick={() => handleSelectResult(q.id)}
+                        className="flex w-full flex-col gap-0.5 px-3 py-2 text-left transition-colors hover:bg-[var(--color-ink-50)]"
+                      >
+                        <span className="truncate text-[13px] font-medium text-[var(--color-ink-900)]">
+                          {client?.name ?? t.quotesList.noClient}
+                        </span>
+                        <span className="truncate text-[11.5px] text-[var(--color-ink-400)]">
+                          {t.typeSelect.types[q.vehicleType].label}
+                          {q.plate && ` · ${q.plate}`} ·{" "}
+                          {q.totals.totalPrice.toLocaleString(language, { style: "currency", currency: "EUR" })}
+                        </span>
+                      </button>
+                    )
+                  })
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="ml-auto flex items-center gap-2 md:ml-3">
