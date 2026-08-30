@@ -1,4 +1,6 @@
-import type { VehicleType } from "@/types/vehicle"
+import type { VehicleType, ViewMarkers } from "@/types/vehicle"
+import type { PartId } from "@/data/pricing/parts"
+import type { PartBreakdown } from "@/lib/pricing"
 
 export type QuoteStatus = "draft" | "sent" | "approved" | "rejected"
 
@@ -41,6 +43,16 @@ export interface SavedQuote {
   vehicleType: VehicleType
   plate: string
   notes: string
+  /** Damage state, so reopening a quote restores the marked photo/polygon instead of just the totals. */
+  markersByView?: ViewMarkers
+  partTypeByPart?: Partial<Record<PartId, string>>
+  /** @deprecated Modelo binario anterior ao suporte a varios tipos de peca. So leitura, para orcamentos antigos. */
+  aluParts?: PartId[]
+  finishHours?: number
+  surcharge1?: boolean
+  surcharge2?: boolean
+  /** Per-part hour breakdown snapshot, for the PDF and quote detail view. Absent on quotes saved before this field existed. */
+  parts?: PartBreakdown[]
   totals: SavedQuoteTotalsSnapshot
   partCount: number
   markerCount: number

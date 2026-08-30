@@ -52,15 +52,15 @@ export function CustomerQuotePage() {
     () =>
       computeQuoteTotals({
         markers: allMarkers,
-        aluParts: new Set(),
+        partTypeByPart: {},
         hourlyTable: pricingConfig.hourlyTable,
-        aluSurchargePercent: 0,
+        partTypes: pricingConfig.partTypes,
         finishHours: 0,
         surcharge1: false,
         surcharge2: false,
         hourlyRate,
       }),
-    [allMarkers, pricingConfig.hourlyTable, hourlyRate]
+    [allMarkers, pricingConfig.hourlyTable, pricingConfig.partTypes, hourlyRate]
   )
 
   function addMarker(x: number, y: number) {

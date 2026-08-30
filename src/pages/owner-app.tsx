@@ -22,22 +22,25 @@ import { inferPartId } from "@/lib/part-inference"
 import { useLanguage } from "@/i18n/language-context"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useQuotes } from "@/hooks/use-quotes"
+import { useClients } from "@/hooks/use-clients"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
 export function OwnerApp() {
   const { t } = useLanguage()
   const pricingConfig = usePricingConfig()
-  const { createQuote } = useQuotes()
+  const { quotes, createQuote, updateQuote, getQuoteById } = useQuotes()
+  const { getClientById } = useClients()
 
   const [page, setPage] = useState<Page>("dashboard")
   const [openQuoteId, setOpenQuoteId] = useState<string | null>(null)
+  const [editingQuoteId, setEditingQuoteId] = useState<string | null>(null)
 
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(null)
   const [view, setView] = useState<VehicleView>("right")
   const [markersByView, setMarkersByView] = useState<ViewMarkers>({})
   const [brushSize, setBrushSize] = useState(DEFAULT_MARKER_SIZE)
-  const [aluParts, setAluParts] = useState<Set<PartId>>(new Set())
+  const [partTypeByPart, setPartTypeByPart] = useState<Partial<Record<PartId, string>>>({})
   const [finishHours, setFinishHours] = useState(0)
   const [surcharge1, setSurcharge1] = useState(false)
   const [surcharge2, setSurcharge2] = useState(false)
@@ -61,24 +64,19 @@ export function OwnerApp() {
   const markers = markersByView[view] ?? []
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
 
-  const aluSurchargePercent = useMemo(
-    () => pricingConfig.partTypes.find((p) => p.id === "aluminum")?.percent ?? 20,
-    [pricingConfig.partTypes]
-  )
-
   const totals = useMemo(
     () =>
       computeQuoteTotals({
         markers: allMarkers,
-        aluParts,
+        partTypeByPart,
         hourlyTable: pricingConfig.hourlyTable,
-        aluSurchargePercent,
+        partTypes: pricingConfig.partTypes,
         finishHours,
         surcharge1,
         surcharge2,
         hourlyRate,
       }),
-    [allMarkers, aluParts, pricingConfig.hourlyTable, aluSurchargePercent, finishHours, surcharge1, surcharge2, hourlyRate]
+    [allMarkers, partTypeByPart, pricingConfig.hourlyTable, pricingConfig.partTypes, finishHours, surcharge1, surcharge2, hourlyRate]
   )
 
   function addMarker(x: number, y: number) {
@@ -110,20 +108,15 @@ export function OwnerApp() {
     setJustSaved(false)
   }
 
-  function toggleAlu(partId: PartId) {
-    setAluParts((prev) => {
-      const next = new Set(prev)
-      if (next.has(partId)) next.delete(partId)
-      else next.add(partId)
-      return next
-    })
+  function setPartType(partId: PartId, typeId: string) {
+    setPartTypeByPart((prev) => ({ ...prev, [partId]: typeId }))
   }
 
   function resetQuoteState() {
     setVehicleType(null)
     setMarkersByView({})
     setView("right")
-    setAluParts(new Set())
+    setPartTypeByPart({})
     setFinishHours(0)
     setSurcharge1(false)
     setSurcharge2(false)
@@ -132,6 +125,7 @@ export function OwnerApp() {
     setPlate("")
     setNotes("")
     setJustSaved(false)
+    setEditingQuoteId(null)
   }
 
   function handleNewQuote() {
@@ -144,15 +138,47 @@ export function OwnerApp() {
     setPage("quoteDetail")
   }
 
+  function handleEditQuote(id: string) {
+    const quote = getQuoteById(id)
+    if (!quote) return
+    const restored = quote.markersByView ?? {}
+    // Retomar o contador acima do maior id ja usado, senao marcadores novos colidem com os restaurados.
+    const usedCounters = Object.values(restored)
+      .flatMap((list) => list ?? [])
+      .map((m) => Number(m.id.split("-")[1]) || 0)
+    markerCounter.current = Math.max(markerCounter.current, ...usedCounters, 0)
+    setVehicleType(quote.vehicleType)
+    setMarkersByView(restored)
+    setView("right")
+    setPartTypeByPart(
+      quote.partTypeByPart ?? Object.fromEntries((quote.aluParts ?? []).map((id) => [id, "aluminum"]))
+    )
+    setFinishHours(quote.finishHours ?? 0)
+    setSurcharge1(quote.surcharge1 ?? false)
+    setSurcharge2(quote.surcharge2 ?? false)
+    setClientId(quote.clientId)
+    setInsurerId(quote.insurerId)
+    setPlate(quote.plate)
+    setNotes(quote.notes)
+    setJustSaved(false)
+    setEditingQuoteId(id)
+    setPage("quote")
+  }
+
   function handleSaveQuote() {
     if (!vehicleType) return
-    createQuote({
-      status: "draft",
+    const payload = {
       clientId,
       insurerId,
       vehicleType,
       plate,
       notes,
+      markersByView,
+      partTypeByPart,
+      finishHours,
+      surcharge1,
+      surcharge2,
+      parts: totals.parts,
       totals: {
         subtotalHours: totals.subtotalHours,
         prepHours: totals.prepHours,
@@ -164,7 +190,12 @@ export function OwnerApp() {
       },
       partCount: totals.parts.length,
       markerCount: allMarkers.length,
-    })
+    }
+    if (editingQuoteId) {
+      updateQuote(editingQuoteId, payload)
+    } else {
+      createQuote({ ...payload, status: "draft" })
+    }
     setJustSaved(true)
     setTimeout(() => setJustSaved(false), 2000)
   }
@@ -175,7 +206,14 @@ export function OwnerApp() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <AppShell page={page} onNavigate={navigate} onNewQuote={handleNewQuote}>
+      <AppShell
+        page={page}
+        onNavigate={navigate}
+        onNewQuote={handleNewQuote}
+        onOpenQuote={handleOpenQuote}
+        quotes={quotes}
+        getClientById={getClientById}
+      >
         {page === "settings" && <SettingsPage onBack={() => setPage("dashboard")} pricingConfig={pricingConfig} />}
 
         {page === "dashboard" && (
@@ -185,7 +223,7 @@ export function OwnerApp() {
         {page === "quotesList" && <QuotesListPage onNewQuote={handleNewQuote} onOpenQuote={handleOpenQuote} />}
 
         {page === "quoteDetail" && openQuoteId && (
-          <QuoteDetailView quoteId={openQuoteId} onBack={() => setPage("quotesList")} />
+          <QuoteDetailView quoteId={openQuoteId} onBack={() => setPage("quotesList")} onEdit={handleEditQuote} />
         )}
 
         {page === "clients" && <ClientsPage />}
@@ -199,9 +237,11 @@ export function OwnerApp() {
               <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div className="flex flex-col gap-1.5">
                   <h1 className="text-[26px] font-bold tracking-[-0.02em] text-[var(--color-ink-950)] sm:text-[30px]">
-                    {t.quotePage.title}
+                    {editingQuoteId ? t.quotePage.editTitle : t.quotePage.title}
                   </h1>
-                  <p className="text-[14.5px] text-[var(--color-ink-500)]">{t.quotePage.subtitle}</p>
+                  <p className="text-[14.5px] text-[var(--color-ink-500)]">
+                    {editingQuoteId ? t.quotePage.editSubtitle : t.quotePage.subtitle}
+                  </p>
                 </div>
                 <Button variant="outline" size="sm" onClick={() => setVehicleType(null)}>
                   <ArrowLeft className="h-3.5 w-3.5" />
@@ -225,7 +265,8 @@ export function OwnerApp() {
               <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
                 <QuotePricingPanel
                   totals={totals}
-                  onToggleAlu={toggleAlu}
+                  partTypes={pricingConfig.partTypes}
+                  onPartTypeChange={setPartType}
                   finishHours={finishHours}
                   onFinishHoursChange={setFinishHours}
                   surcharge1={surcharge1}
@@ -246,6 +287,7 @@ export function OwnerApp() {
                   onNotesChange={setNotes}
                   onSave={handleSaveQuote}
                   justSaved={justSaved}
+                  isEditing={editingQuoteId !== null}
                 />
               </div>
             </>

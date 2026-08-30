@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 import type { DamageSeverity } from "@/types/vehicle"
 import type { PriceTable, PriceRow, PartTypeDef } from "@/data/pricing/pricing-config"
-import { DEFAULT_HOURLY_TABLE, DEFAULT_FIXED_TABLE, DEFAULT_PART_TYPES } from "@/data/pricing/pricing-config"
+import { DEFAULT_HOURLY_TABLE, DEFAULT_PART_TYPES } from "@/data/pricing/pricing-config"
 
 const KEYS = {
   hourly: "wd-pdr-price-table-hourly",
-  fixed: "wd-pdr-price-table-fixed",
   partTypes: "wd-pdr-part-types",
 }
 
@@ -19,6 +18,13 @@ function loadOrDefault<T>(key: string, fallback: T): T {
   }
 }
 
+function loadPartTypes(): PartTypeDef[] {
+  const saved = loadOrDefault(KEYS.partTypes, DEFAULT_PART_TYPES)
+  const standard = saved.find((partType) => partType.id === "standard")
+  if (!standard) return [{ id: "standard", label: "Padrão", percent: 0 }, ...saved]
+  return saved.map((partType) => partType.id === "standard" ? { ...partType, percent: 0 } : partType)
+}
+
 let idCounter = 0
 function newId() {
   idCounter += 1
@@ -27,15 +33,11 @@ function newId() {
 
 export function usePricingConfig() {
   const [hourlyTable, setHourlyTable] = useState<PriceTable>(() => loadOrDefault(KEYS.hourly, DEFAULT_HOURLY_TABLE))
-  const [fixedTable, setFixedTable] = useState<PriceTable>(() => loadOrDefault(KEYS.fixed, DEFAULT_FIXED_TABLE))
-  const [partTypes, setPartTypes] = useState<PartTypeDef[]>(() => loadOrDefault(KEYS.partTypes, DEFAULT_PART_TYPES))
+  const [partTypes, setPartTypes] = useState<PartTypeDef[]>(loadPartTypes)
 
   useEffect(() => {
     localStorage.setItem(KEYS.hourly, JSON.stringify(hourlyTable))
   }, [hourlyTable])
-  useEffect(() => {
-    localStorage.setItem(KEYS.fixed, JSON.stringify(fixedTable))
-  }, [fixedTable])
   useEffect(() => {
     localStorage.setItem(KEYS.partTypes, JSON.stringify(partTypes))
   }, [partTypes])
@@ -66,17 +68,16 @@ export function usePricingConfig() {
     setPartTypes((prev) => [...prev, { id: newId(), label: "", percent: 0 }])
   }
   function updatePartType(id: string, patch: Partial<Omit<PartTypeDef, "id">>) {
-    setPartTypes((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)))
+    const safePatch = id === "standard" ? { ...patch, percent: 0 } : patch
+    setPartTypes((prev) => prev.map((p) => (p.id === id ? { ...p, ...safePatch } : p)))
   }
   function removePartType(id: string) {
+    if (id === "standard") return
     setPartTypes((prev) => prev.filter((p) => p.id !== id))
   }
 
   function resetHourly() {
     setHourlyTable(DEFAULT_HOURLY_TABLE)
-  }
-  function resetFixed() {
-    setFixedTable(DEFAULT_FIXED_TABLE)
   }
   function resetPartTypes() {
     setPartTypes(DEFAULT_PART_TYPES)
@@ -84,15 +85,12 @@ export function usePricingConfig() {
 
   return {
     hourlyTable,
-    fixedTable,
     partTypes,
     hourlyOps: makeTableOps(setHourlyTable),
-    fixedOps: makeTableOps(setFixedTable),
     addPartType,
     updatePartType,
     removePartType,
     resetHourly,
-    resetFixed,
     resetPartTypes,
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowLeft, Download, Loader2, Trash2 } from "lucide-react"
+import { ArrowLeft, Download, Loader2, Pencil, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Select } from "@/components/ui/form"
@@ -14,11 +14,12 @@ import type { QuoteStatus } from "@/types/crm"
 interface QuoteDetailViewProps {
   quoteId: string
   onBack: () => void
+  onEdit: (id: string) => void
 }
 
 const STATUSES: QuoteStatus[] = ["draft", "sent", "approved", "rejected"]
 
-export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
+export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProps) {
   const { t, language } = useLanguage()
   const { getQuoteById, updateQuote, removeQuote } = useQuotes()
   const { getClientById } = useClients()
@@ -58,6 +59,10 @@ export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
           {t.quoteMeta.backToList}
         </Button>
         <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => onEdit(quote.id)}>
+            <Pencil className="h-3.5 w-3.5" />
+            {t.quoteMeta.edit}
+          </Button>
           <Button variant="outline" size="sm" onClick={handleDownload} disabled={downloading}>
             {downloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
             {t.quoteMeta.print}
@@ -145,6 +150,21 @@ export function QuoteDetailView({ quoteId, onBack }: QuoteDetailViewProps) {
             <Row label={t.pricing.finish} value={`${quote.totals.finishHours.toFixed(2)} AW`} />
             <Row label={t.pricing.totalAW} value={`${quote.totals.totalHours.toFixed(2)} AW`} />
           </div>
+
+          {quote.parts && quote.parts.length > 0 && (
+            <div className="space-y-1.5 border-t border-[var(--color-ink-100)] pt-4">
+              <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">
+                {t.quoteMeta.breakdownTitle}
+              </p>
+              {quote.parts.map((p) => (
+                <Row
+                  key={p.partId}
+                  label={`${t.parts[p.partId]} · ${p.totalCount}× ${t.severity[p.predominantSeverity]}${p.partTypePercent ? ` · ${p.partTypeLabel}` : ""}`}
+                  value={`${p.hours.toFixed(2)} AW`}
+                />
+              ))}
+            </div>
+          )}
 
           <div className="flex items-center justify-between rounded-[var(--radius-md)] bg-[var(--color-ink-950)] px-4 py-3.5 text-white">
             <span className="text-[13px] font-medium text-white/70">{t.pricing.totalQuote}</span>

@@ -1,6 +1,6 @@
 import type { DamageMarker, DamageSeverity } from "@/types/vehicle"
 import type { PartId } from "@/data/pricing/parts"
-import type { PriceTable } from "@/data/pricing/pricing-config"
+import type { PartTypeDef, PriceTable } from "@/data/pricing/pricing-config"
 import { lookupPriceTable } from "@/data/pricing/pricing-config"
 
 /** Prep time: 0.2 AW per damaged part, capped at 1 AW per vehicle. */
@@ -14,9 +14,11 @@ export interface PartBreakdown {
   countSevere: number
   totalCount: number
   predominantSeverity: DamageSeverity
-  isAlu: boolean
+  partTypeId: string
+  partTypeLabel: string
+  partTypePercent: number
   baseHours: number
-  hours: number // baseHours with alu surcharge applied
+  hours: number // baseHours with the selected part-type surcharge applied
 }
 
 export interface QuoteTotals {
@@ -40,9 +42,9 @@ function predominantSeverity(minor: number, medium: number, severe: number): Dam
 
 export function computePartBreakdown(
   markers: DamageMarker[],
-  aluParts: Set<PartId>,
+  partTypeByPart: Partial<Record<PartId, string>>,
   hourlyTable: PriceTable,
-  aluSurchargePercent: number
+  partTypes: PartTypeDef[]
 ): PartBreakdown[] {
   const byPart = new Map<PartId, DamageMarker[]>()
   for (const m of markers) {
@@ -58,9 +60,13 @@ export function computePartBreakdown(
     const countSevere = list.filter((m) => m.severity === "severe").length
     const totalCount = list.length
     const severity = predominantSeverity(countMinor, countMedium, countSevere)
-    const isAlu = aluParts.has(partId)
+    const requestedTypeId = partTypeByPart[partId] ?? "standard"
+    const partType = partTypes.find((type) => type.id === requestedTypeId)
+    const partTypeId = partType?.id ?? "standard"
+    const partTypeLabel = partType?.label ?? ""
+    const partTypePercent = partType?.percent ?? 0
     const baseHours = lookupPriceTable(hourlyTable[severity], totalCount)
-    const hours = isAlu ? baseHours * (1 + aluSurchargePercent / 100) : baseHours
+    const hours = baseHours * (1 + partTypePercent / 100)
 
     result.push({
       partId,
@@ -69,7 +75,9 @@ export function computePartBreakdown(
       countSevere,
       totalCount,
       predominantSeverity: severity,
-      isAlu,
+      partTypeId,
+      partTypeLabel,
+      partTypePercent,
       baseHours,
       hours,
     })
@@ -80,16 +88,16 @@ export function computePartBreakdown(
 
 export function computeQuoteTotals(options: {
   markers: DamageMarker[]
-  aluParts: Set<PartId>
+  partTypeByPart: Partial<Record<PartId, string>>
   hourlyTable: PriceTable
-  aluSurchargePercent: number
+  partTypes: PartTypeDef[]
   finishHours: number
   surcharge1: boolean
   surcharge2: boolean
   hourlyRate: number
 }): QuoteTotals {
-  const { markers, aluParts, hourlyTable, aluSurchargePercent, finishHours, surcharge1, surcharge2, hourlyRate } = options
-  const parts = computePartBreakdown(markers, aluParts, hourlyTable, aluSurchargePercent)
+  const { markers, partTypeByPart, hourlyTable, partTypes, finishHours, surcharge1, surcharge2, hourlyRate } = options
+  const parts = computePartBreakdown(markers, partTypeByPart, hourlyTable, partTypes)
 
   const subtotalHours = parts.reduce((sum, p) => sum + p.hours, 0)
   const damagedPartCount = parts.filter((p) => p.totalCount > 0).length
