@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 import type { DamageSeverity } from "@/types/vehicle"
 import type { PriceTable, PriceRow, PartTypeDef } from "@/data/pricing/pricing-config"
-import { DEFAULT_HOURLY_TABLE, DEFAULT_FIXED_TABLE, DEFAULT_PART_TYPES } from "@/data/pricing/pricing-config"
+import { DEFAULT_HOURLY_TABLE, DEFAULT_PART_TYPES } from "@/data/pricing/pricing-config"
 
 const KEYS = {
   hourly: "wd-pdr-price-table-hourly",
-  fixed: "wd-pdr-price-table-fixed",
   partTypes: "wd-pdr-part-types",
 }
 
@@ -27,15 +26,11 @@ function newId() {
 
 export function usePricingConfig() {
   const [hourlyTable, setHourlyTable] = useState<PriceTable>(() => loadOrDefault(KEYS.hourly, DEFAULT_HOURLY_TABLE))
-  const [fixedTable, setFixedTable] = useState<PriceTable>(() => loadOrDefault(KEYS.fixed, DEFAULT_FIXED_TABLE))
   const [partTypes, setPartTypes] = useState<PartTypeDef[]>(() => loadOrDefault(KEYS.partTypes, DEFAULT_PART_TYPES))
 
   useEffect(() => {
     localStorage.setItem(KEYS.hourly, JSON.stringify(hourlyTable))
   }, [hourlyTable])
-  useEffect(() => {
-    localStorage.setItem(KEYS.fixed, JSON.stringify(fixedTable))
-  }, [fixedTable])
   useEffect(() => {
     localStorage.setItem(KEYS.partTypes, JSON.stringify(partTypes))
   }, [partTypes])
@@ -75,24 +70,18 @@ export function usePricingConfig() {
   function resetHourly() {
     setHourlyTable(DEFAULT_HOURLY_TABLE)
   }
-  function resetFixed() {
-    setFixedTable(DEFAULT_FIXED_TABLE)
-  }
   function resetPartTypes() {
     setPartTypes(DEFAULT_PART_TYPES)
   }
 
   return {
     hourlyTable,
-    fixedTable,
     partTypes,
     hourlyOps: makeTableOps(setHourlyTable),
-    fixedOps: makeTableOps(setFixedTable),
     addPartType,
     updatePartType,
     removePartType,
     resetHourly,
-    resetFixed,
     resetPartTypes,
   }
 }

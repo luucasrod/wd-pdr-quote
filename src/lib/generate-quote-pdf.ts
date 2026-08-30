@@ -53,9 +53,17 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
 
   const doc = new jsPDF({ unit: "pt", format: "a4", compress: true })
   const pageWidth = doc.internal.pageSize.getWidth()
+  const pageHeight = doc.internal.pageSize.getHeight()
   const margin = 48
   const contentWidth = pageWidth - margin * 2
   let y = 56
+
+  function ensureSpace(space: number) {
+    if (y + space > pageHeight - 60) {
+      doc.addPage()
+      y = 56
+    }
+  }
 
   const logoW = 40
   const logoH = logoW * ratio
@@ -166,6 +174,31 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
   doc.text(money(quote.totals.totalPrice, language), boxX + 16, y + 42)
   y += boxH + 28
 
+  const partsList = quote.parts ?? []
+  if (partsList.length > 0) {
+    ensureSpace(24)
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(9)
+    doc.setTextColor(INK)
+    doc.text(t.quoteMeta.breakdownTitle.toUpperCase(), margin, y)
+    y += 16
+
+    for (const part of partsList) {
+      ensureSpace(16)
+      const label = t.parts[part.partId] ?? part.partId
+      const severityLabel = t.severity[part.predominantSeverity]
+      const aluTag = part.isAlu ? ` · ${t.pricing.colAluminum}` : ""
+      doc.setFont("helvetica", "normal")
+      doc.setFontSize(9.5)
+      doc.setTextColor(INK_MUTED)
+      doc.text(`${label} · ${part.totalCount}× ${severityLabel}${aluTag}`, margin, y, { maxWidth: contentWidth - 80 })
+      doc.setTextColor(INK)
+      doc.text(`${part.hours.toFixed(2)} AW`, pageWidth - margin, y, { align: "right" })
+      y += 16
+    }
+    y += 10
+  }
+
   if (quote.notes) {
     doc.setFont("helvetica", "bold")
     doc.setFontSize(9)
@@ -180,7 +213,6 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
     y += noteLines.length * 13 + 10
   }
 
-  const pageHeight = doc.internal.pageSize.getHeight()
   doc.setFont("helvetica", "normal")
   doc.setFontSize(8)
   doc.setTextColor(INK_FAINT)
