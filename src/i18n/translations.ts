@@ -28,6 +28,8 @@ export interface TranslationShape {
   quotePage: {
     title: string
     subtitle: string
+    editTitle: string
+    editSubtitle: string
   }
   views: Record<"top" | "front" | "right" | "rear" | "left", string>
   viewer: {
@@ -168,6 +170,7 @@ export interface TranslationShape {
     selectClient: string
     selectInsurer: string
     saveQuote: string
+    saveChanges: string
     savedToast: string
     print: string
     edit: string
@@ -265,6 +268,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
     quotePage: {
       title: "Novo Orçamento",
       subtitle: "Rode o veículo e clique diretamente na carroçaria para marcar cada amolgadela.",
+      editTitle: "Editar Orçamento",
+      editSubtitle: "Ajuste as amolgadelas marcadas e volte a guardar — o orçamento existente é atualizado.",
     },
     views: { top: "Topo", front: "Frente", right: "Direita", rear: "Traseira", left: "Esquerda" },
     viewer: {
@@ -398,6 +403,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       selectClient: "Selecionar cliente",
       selectInsurer: "Selecionar seguradora",
       saveQuote: "Guardar Orçamento",
+      saveChanges: "Guardar Alterações",
       savedToast: "Orçamento guardado",
       print: "Baixar PDF",
       edit: "Editar Orçamento",
@@ -493,6 +499,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
     quotePage: {
       title: "New Quote",
       subtitle: "Rotate the vehicle and click directly on the body to mark each dent.",
+      editTitle: "Edit Quote",
+      editSubtitle: "Adjust the marked dents and save again — the existing quote is updated.",
     },
     views: { top: "Top", front: "Front", right: "Right", rear: "Rear", left: "Left" },
     viewer: {
@@ -626,6 +634,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       selectClient: "Select client",
       selectInsurer: "Select insurer",
       saveQuote: "Save Quote",
+      saveChanges: "Save Changes",
       savedToast: "Quote saved",
       print: "Download PDF",
       edit: "Edit Quote",
@@ -721,6 +730,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
     quotePage: {
       title: "Neues Angebot",
       subtitle: "Drehen Sie das Fahrzeug und klicken Sie direkt auf die Karosserie, um jede Delle zu markieren.",
+      editTitle: "Angebot bearbeiten",
+      editSubtitle: "Passen Sie die markierten Dellen an und speichern Sie erneut — das bestehende Angebot wird aktualisiert.",
     },
     views: { top: "Oben", front: "Front", right: "Rechts", rear: "Heck", left: "Links" },
     viewer: {
@@ -854,6 +865,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       selectClient: "Kunde auswählen",
       selectInsurer: "Versicherer auswählen",
       saveQuote: "Angebot speichern",
+      saveChanges: "Änderungen speichern",
       savedToast: "Angebot gespeichert",
       print: "PDF herunterladen",
       edit: "Angebot bearbeiten",
@@ -949,6 +961,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
     quotePage: {
       title: "Nouveau Devis",
       subtitle: "Tournez le véhicule et cliquez directement sur la carrosserie pour marquer chaque impact.",
+      editTitle: "Modifier le Devis",
+      editSubtitle: "Ajustez les impacts marqués puis enregistrez — le devis existant est mis à jour.",
     },
     views: { top: "Dessus", front: "Avant", right: "Droite", rear: "Arrière", left: "Gauche" },
     viewer: {
@@ -1082,6 +1096,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       selectClient: "Choisir un client",
       selectInsurer: "Choisir un assureur",
       saveQuote: "Enregistrer le Devis",
+      saveChanges: "Enregistrer les modifications",
       savedToast: "Devis enregistré",
       print: "Télécharger le PDF",
       edit: "Modifier le Devis",
@@ -1177,6 +1192,8 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
     quotePage: {
       title: "Nuevo Presupuesto",
       subtitle: "Gira el vehículo y haz clic directamente en la carrocería para marcar cada abolladura.",
+      editTitle: "Editar Presupuesto",
+      editSubtitle: "Ajusta las abolladuras marcadas y vuelve a guardar — el presupuesto existente se actualiza.",
     },
     views: { top: "Arriba", front: "Frente", right: "Derecha", rear: "Trasera", left: "Izquierda" },
     viewer: {
@@ -1310,6 +1327,7 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       selectClient: "Seleccionar cliente",
       selectInsurer: "Seleccionar aseguradora",
       saveQuote: "Guardar Presupuesto",
+      saveChanges: "Guardar Cambios",
       savedToast: "Presupuesto guardado",
       print: "Descargar PDF",
       edit: "Editar Presupuesto",

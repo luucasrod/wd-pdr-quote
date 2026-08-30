@@ -237,9 +237,11 @@ export function OwnerApp() {
               <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div className="flex flex-col gap-1.5">
                   <h1 className="text-[26px] font-bold tracking-[-0.02em] text-[var(--color-ink-950)] sm:text-[30px]">
-                    {t.quotePage.title}
+                    {editingQuoteId ? t.quotePage.editTitle : t.quotePage.title}
                   </h1>
-                  <p className="text-[14.5px] text-[var(--color-ink-500)]">{t.quotePage.subtitle}</p>
+                  <p className="text-[14.5px] text-[var(--color-ink-500)]">
+                    {editingQuoteId ? t.quotePage.editSubtitle : t.quotePage.subtitle}
+                  </p>
                 </div>
                 <Button variant="outline" size="sm" onClick={() => setVehicleType(null)}>
                   <ArrowLeft className="h-3.5 w-3.5" />
@@ -285,6 +287,7 @@ export function OwnerApp() {
                   onNotesChange={setNotes}
                   onSave={handleSaveQuote}
                   justSaved={justSaved}
+                  isEditing={editingQuoteId !== null}
                 />
               </div>
             </>

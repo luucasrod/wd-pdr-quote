@@ -19,6 +19,7 @@ interface QuoteMetaPanelProps {
   onNotesChange: (v: string) => void
   onSave: () => void
   justSaved: boolean
+  isEditing: boolean
 }
 
 export function QuoteMetaPanel({
@@ -32,6 +33,7 @@ export function QuoteMetaPanel({
   onNotesChange,
   onSave,
   justSaved,
+  isEditing,
 }: QuoteMetaPanelProps) {
   const { t } = useLanguage()
   const { clients, createClient } = useClients()
@@ -81,7 +83,7 @@ export function QuoteMetaPanel({
 
         <Button variant="accent" size="lg" onClick={onSave} className="mt-1">
           {justSaved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
-          {justSaved ? t.quoteMeta.savedToast : t.quoteMeta.saveQuote}
+          {justSaved ? t.quoteMeta.savedToast : isEditing ? t.quoteMeta.saveChanges : t.quoteMeta.saveQuote}
         </Button>
       </CardContent>
 

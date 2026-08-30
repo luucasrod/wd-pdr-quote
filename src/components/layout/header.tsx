@@ -5,7 +5,7 @@ import { LogoLockup } from "@/components/brand/logo-mark"
 import { Button } from "@/components/ui/button"
 import { LanguageSwitcher } from "@/components/layout/language-switcher"
 import { useLanguage } from "@/i18n/language-context"
-import { cn } from "@/lib/utils"
+import { cn, normalizeForSearch } from "@/lib/utils"
 import type { Page } from "@/types/nav"
 import type { Client, SavedQuote } from "@/types/crm"
 
@@ -32,12 +32,14 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
     return () => document.removeEventListener("mousedown", onClickOutside)
   }, [])
 
-  const trimmedQuery = query.trim().toLowerCase()
+  const trimmedQuery = normalizeForSearch(query.trim())
   const searchResults = trimmedQuery
     ? quotes
         .filter((q) => {
           const client = getClientById(q.clientId)
-          const haystack = `${client?.name ?? ""} ${q.plate} ${t.typeSelect.types[q.vehicleType].label}`.toLowerCase()
+          const haystack = normalizeForSearch(
+            `${client?.name ?? ""} ${client?.phone ?? ""} ${client?.email ?? ""} ${q.plate} ${q.id.slice(-8)} ${t.typeSelect.types[q.vehicleType].label}`
+          )
           return haystack.includes(trimmedQuery)
         })
         .slice(0, 6)

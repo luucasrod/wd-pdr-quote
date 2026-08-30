@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 brand_assets/
+
+# Ficheiros com segredos — nunca commitar
+.env
+.env.*
+!.env.example
+GITHUB_TOKEN_REGENERATE.md
