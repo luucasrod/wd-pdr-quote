@@ -217,6 +217,17 @@ export interface TranslationShape {
     newRequest: string
     requiredFieldsNote: string
   }
+  notFound: {
+    code: string
+    title: string
+    subtitle: string
+    backHome: string
+  }
+  errorBoundary: {
+    title: string
+    subtitle: string
+    reload: string
+  }
 }
 
 export const TRANSLATIONS: Record<Language, TranslationShape> = {
@@ -428,6 +439,17 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newRequest: "Novo Pedido",
       requiredFieldsNote: "Campos obrigatórios",
     },
+    notFound: {
+      code: "404",
+      title: "Página não encontrada",
+      subtitle: "O endereço que procura não existe ou foi alterado.",
+      backHome: "Voltar ao início",
+    },
+    errorBoundary: {
+      title: "Algo correu mal",
+      subtitle: "Não foi possível mostrar esta página. Tente recarregar.",
+      reload: "Recarregar",
+    },
   },
   en: {
     common: {
@@ -636,6 +658,17 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       downloadPdf: "Download PDF",
       newRequest: "New Request",
       requiredFieldsNote: "Required fields",
+    },
+    notFound: {
+      code: "404",
+      title: "Page not found",
+      subtitle: "The address you are looking for does not exist or has changed.",
+      backHome: "Back to home",
+    },
+    errorBoundary: {
+      title: "Something went wrong",
+      subtitle: "We could not display this page. Please try reloading it.",
+      reload: "Reload",
     },
   },
   de: {
@@ -846,6 +879,17 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newRequest: "Neue Anfrage",
       requiredFieldsNote: "Pflichtfelder",
     },
+    notFound: {
+      code: "404",
+      title: "Seite nicht gefunden",
+      subtitle: "Die gesuchte Adresse existiert nicht oder wurde geändert.",
+      backHome: "Zur Startseite",
+    },
+    errorBoundary: {
+      title: "Etwas ist schiefgelaufen",
+      subtitle: "Diese Seite konnte nicht angezeigt werden. Bitte laden Sie sie neu.",
+      reload: "Neu laden",
+    },
   },
   fr: {
     common: {
@@ -1055,6 +1099,17 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       newRequest: "Nouvelle Demande",
       requiredFieldsNote: "Champs obligatoires",
     },
+    notFound: {
+      code: "404",
+      title: "Page introuvable",
+      subtitle: "L’adresse que vous recherchez n’existe pas ou a été modifiée.",
+      backHome: "Retour à l’accueil",
+    },
+    errorBoundary: {
+      title: "Un problème est survenu",
+      subtitle: "Impossible d’afficher cette page. Essayez de la recharger.",
+      reload: "Recharger",
+    },
   },
   es: {
     common: {
@@ -1263,6 +1318,17 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
       downloadPdf: "Descargar PDF",
       newRequest: "Nueva Solicitud",
       requiredFieldsNote: "Campos obligatorios",
+    },
+    notFound: {
+      code: "404",
+      title: "Página no encontrada",
+      subtitle: "La dirección que buscas no existe o ha cambiado.",
+      backHome: "Volver al inicio",
+    },
+    errorBoundary: {
+      title: "Algo ha salido mal",
+      subtitle: "No se ha podido mostrar esta página. Intenta recargarla.",
+      reload: "Recargar",
     },
   },
 }
