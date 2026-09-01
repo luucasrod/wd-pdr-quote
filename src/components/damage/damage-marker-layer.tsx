@@ -6,8 +6,8 @@ import { useLanguage } from "@/i18n/language-context"
 
 interface DamageMarkerLayerProps {
   markers: DamageMarkerType[]
-  onAddMarker: (x: number, y: number) => void
-  onCycleMarker: (id: string) => void
+  onAddMarker?: (x: number, y: number) => void
+  onCycleMarker?: (id: string) => void
   label: string
 }
 
@@ -16,7 +16,7 @@ export function DamageMarkerLayer({ markers, onAddMarker, onCycleMarker, label }
   const overlayRef = useRef<HTMLDivElement>(null)
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
-    if (!overlayRef.current) return
+    if (!overlayRef.current || !onAddMarker) return
     const rect = overlayRef.current.getBoundingClientRect()
     const x = (e.clientX - rect.left) / rect.width
     const y = (e.clientY - rect.top) / rect.height
@@ -28,9 +28,9 @@ export function DamageMarkerLayer({ markers, onAddMarker, onCycleMarker, label }
     <div
       ref={overlayRef}
       onClick={handleClick}
-      role="button"
-      aria-label={`${t.viewer.markingAreaLabel} — ${label}. ${t.viewer.markingAreaInstruction}`}
-      className="absolute inset-0 cursor-crosshair"
+      role={onAddMarker ? "button" : "img"}
+      aria-label={onAddMarker ? `${t.viewer.markingAreaLabel} — ${label}. ${t.viewer.markingAreaInstruction}` : label}
+      className={onAddMarker ? "absolute inset-0 cursor-crosshair" : "pointer-events-none absolute inset-0"}
     >
       <AnimatePresence>
         {markers.map((marker, i) => (

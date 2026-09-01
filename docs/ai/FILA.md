@@ -87,7 +87,7 @@ download do PDF continua a funcionar no detalhe do orçamento e no ecrã final d
 ---
 
 ## F4 — Mostrar os danos no detalhe do orçamento
-estado: `pronta` · sem dependências · pode correr em paralelo
+estado: `feita` · sem dependências · pode correr em paralelo
 
 **Problema.** O orçamento já guarda os marcadores (Phase 1), mas o detalhe só mostra números.
 O dono vê "27 amassados, 1.240 €" sem ver **onde**, o que torna o valor indefensável
