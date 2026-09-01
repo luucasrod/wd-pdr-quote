@@ -2,7 +2,7 @@
 
 > Agnóstico do agente. Substituir `<agente>` por `claude` ou `codex` ao colar.
 
-Para correr a fila do princípio ao fim sem supervisão. Colar numa sessão nova do Claude.
+Para correr a fila do princípio ao fim sem supervisão. Colar numa sessão nova do agente.
 
 ---
 
