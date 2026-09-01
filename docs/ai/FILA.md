@@ -56,7 +56,7 @@ visíveis na app** — nenhuma string alterada, nenhum componente tocado.
 ---
 
 ## F2 — Testes ao motor de preço
-estado: `pronta` · sem dependências · pode correr em paralelo
+estado: `feita` · sem dependências · pode correr em paralelo
 
 **Problema.** `src/lib/pricing.ts` calcula dinheiro e nunca foi verificado automaticamente.
 
