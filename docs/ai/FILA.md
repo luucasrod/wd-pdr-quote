@@ -7,16 +7,16 @@ Marcar aqui o estado **antes** de começar, commitar e empurrar de imediato.
 
 Estados: `pronta` · `em-curso — <agente>` · `em-revisao` · `bloqueada` · `requer-humano`
 
-> ## ⚠️ Hoje a fila é toda do CLAUDE
-> Por decisão do Lucas (31/08/2026), **o Codex não está a ser usado**. Todas as tarefas
-> são do Claude, executadas **uma de cada vez, em série**. Sem disputa de claim e sem
-> ensaio de merge contra outra branch — não há outra branch.
+> ## ⚠️ Hoje a fila é toda do CODEX
+> Por decisão do Lucas (31/08/2026), **o Claude não está a ser usado nesta fila** (limite de
+> tokens). Todas as tarefas são do Codex, executadas **uma de cada vez, em série**. Sem
+> disputa de claim e sem ensaio de merge contra outra branch — não há outra branch.
 >
-> As marcações `SOLO` ficam na mesma: valem para quando o Codex voltar, e assinalam as
-> tarefas que mexem no modelo partilhado.
+> As marcações `SOLO` ficam na mesma: valem para quando houver dois agentes outra vez, e
+> assinalam as tarefas que mexem no modelo partilhado.
 >
-> **A revisão continua a existir**: uma sessão do Claude implementa, **outra sessão do
-> Claude** (papel REVIEWER, worktree diferente) revê. Quem escreveu não aprova.
+> **A revisão continua a existir**: uma sessão implementa, **outra sessão** (papel REVIEWER,
+> worktree diferente) revê. Quem escreveu não aprova — mesmo sendo o mesmo modelo.
 
 ---
 

@@ -5,14 +5,14 @@ tocar em qualquer ficheiro.
 
 ---
 
-> ## ⚠️ Modo atual: só o Claude (31/08/2026)
-> O Codex não está a ser usado. **Uma tarefa de cada vez, em série**, pelo Claude.
+> ## ⚠️ Modo atual: só o Codex (31/08/2026)
+> O Claude não está a ser usado nesta fila (limite de tokens). **Uma tarefa de cada vez, em série**, pelo Claude.
 > Isto simplifica três coisas: não há disputa de claim (secção 3.1), não há ensaio de merge
 > contra outra branch (secção 6, ponto 3), e a distinção SOLO deixa de ser crítica — mas
-> mantém-se marcada na fila, para quando o Codex voltar.
+> mantém-se marcada na fila, para quando houver dois agentes outra vez.
 >
 > **O que NÃO muda**: quem implementa não aprova o próprio trabalho. A revisão é feita por
-> **outra sessão** do Claude, em papel REVIEWER e worktree diferente, que só vê o diff.
+> **outra sessão**, em papel REVIEWER e worktree diferente, que só vê o diff.
 
 ## 1. Papéis
 

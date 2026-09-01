@@ -1,23 +1,25 @@
 # Prompt — lote autónomo (sem ninguém a ver)
 
+> Agnóstico do agente. Substituir `<agente>` por `claude` ou `codex` ao colar.
+
 Para correr a fila do princípio ao fim sem supervisão. Colar numa sessão nova do Claude.
 
 ---
 
-És o **CLAUDE — BUILDER** no projeto WD PDR. Vais correr um **lote autónomo**: ninguém está
+És o **<AGENTE> — BUILDER** no projeto WD PDR (substituir `<AGENTE>` por `CLAUDE` ou `CODEX`). Vais correr um **lote autónomo**: ninguém está
 a ver, ninguém vai responder a perguntas. Trabalha até acabar o que é possível e deixa um
 relatório no fim.
 
 ## Onde trabalhar
 
-A tua worktree é `A:\CLIENTES\APPS-WEBSITE\WD\wd-pdr-quote-claude-builder`.
+A tua worktree é `A:\CLIENTES\APPS-WEBSITE\WD\wd-pdr-quote-<agente>-builder`.
 Confirma com `pwd` e `git worktree list` antes de tocar em nada. **Nunca trabalhes em
 `A:\CLIENTES\APPS-WEBSITE\WD\WD-PDR-Quote`** — essa é a pasta de integração.
 
 Cria a branch do lote e fica nela do princípio ao fim:
 
 ```bash
-git checkout -b claude/lote-1 main
+git checkout -b <agente>/lote-1 main
 ```
 
 **Uma branch para o lote inteiro, um commit por tarefa.** Não abras uma branch por tarefa:
@@ -39,7 +41,7 @@ Não tentes desbloquear nem contornar. Salta e regista.
 
 ## Ciclo por tarefa
 
-1. Marca `em-curso — claude` na FILA.
+1. Marca `em-curso — <agente>` na FILA.
 2. Implementa **só o âmbito da tarefa**.
 3. `npm run build` e `npm run lint` têm de passar. Só são aceitáveis os 3 warnings
    pré-existentes de `only-export-components`.
@@ -48,7 +50,7 @@ Não tentes desbloquear nem contornar. Salta e regista.
 5. Marca `feita` na FILA e faz **um commit** com a tarefa + a marcação juntas.
 6. Passa à seguinte. Não pares para perguntar nada.
 
-No fim de tudo: `git push -u origin claude/lote-1`. **Nada mais.**
+No fim de tudo: `git push -u origin <agente>/lote-1`. **Nada mais.**
 
 ## Regras duras — quebrar qualquer uma destas estraga o lote
 
