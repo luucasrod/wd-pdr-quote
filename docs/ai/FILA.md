@@ -104,7 +104,7 @@ um orçamento antigo abre sem rebentar e sem secção vazia · não é possível
 ---
 
 ## F5 — Inferência de peça por tipo de veículo
-estado: `pronta` · sem dependências · pode correr em paralelo · **exige F2 feita antes**
+estado: `feita` · sem dependências · pode correr em paralelo · **exige F2 feita antes**
 
 **Problema.** `src/lib/part-inference.ts` usa as mesmas faixas de coordenada para os
 5 veículos. Uma van e um compacto têm proporções muito diferentes, e a peça inferida
