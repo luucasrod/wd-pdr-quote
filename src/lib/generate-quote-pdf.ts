@@ -1,4 +1,3 @@
-import { jsPDF } from "jspdf"
 import type { SavedQuote, Client, Insurer } from "@/types/crm"
 import type { Language, TranslationShape } from "@/i18n/translations"
 // Small pre-sized asset — the PDF only renders this at ~40pt tall, so the full-resolution header icon would waste file size.
@@ -49,6 +48,7 @@ function money(value: number, language: Language) {
 
 /** Builds and downloads a clean one-page PDF for a quote — replaces the old browser print-to-PDF flow. */
 export async function downloadQuotePdf({ quote, client, insurer, t, language }: GenerateQuotePdfParams) {
+  const { jsPDF } = await import("jspdf")
   const { dataUrl: logo, ratio } = await loadLogoDataUrl()
 
   const doc = new jsPDF({ unit: "pt", format: "a4", compress: true })

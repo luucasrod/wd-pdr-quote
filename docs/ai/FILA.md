@@ -72,7 +72,7 @@ fosse removido (verificar removendo-o à mão e voltando a pôr).
 ---
 
 ## F3 — Carregar o jsPDF só quando é preciso
-estado: `pronta` · sem dependências · pode correr em paralelo
+estado: `feita` · sem dependências · pode correr em paralelo
 
 **Problema.** O bundle principal tem 976 kB. jsPDF + html2canvas (~380 kB) entram nele mas
 só são usados quando alguém carrega em "Baixar PDF". Todo o cliente final paga esse peso
