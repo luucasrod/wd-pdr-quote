@@ -39,7 +39,7 @@ depois de F7, `F8·F9·F10·F11`.
 # BLOCO A — dá para fazer já, sem Supabase
 
 ## F1 — Partir o `translations.ts` em ficheiros por área
-**`SOLO`** · estado: `pronta` · sem dependências
+**`SOLO`** · estado: `feita` · sem dependências
 
 **Problema.** `src/i18n/translations.ts` tem ~1400 linhas e concentra os 5 idiomas num só
 ficheiro. Qualquer tarefa que acrescente texto passa por ele. Na Phase 1 isso gerou 6 dos
