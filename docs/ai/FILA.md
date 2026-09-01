@@ -119,7 +119,7 @@ uma van e de um sedan pode dar peças diferentes, e isso é intencional e está 
 ---
 
 ## F14 — Melhorar a qualidade das 25 fotos dos veículos
-estado: `pronta` · sem dependências · **prioridade alta, é o que o cliente vê primeiro**
+estado: `falhada` (originais `brand_assets/vehicle_backup/` ausentes) · sem dependências · **prioridade alta, é o que o cliente vê primeiro**
 
 **O problema, medido.** As fotos no site são 840×560. Mas os **originais**, guardados em
 `brand_assets/vehicle_backup/`, são **420×280 com ~8 KB cada**. O que está publicado é um
