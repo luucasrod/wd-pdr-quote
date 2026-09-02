@@ -31,5 +31,7 @@ customer: {
     downloadPdf: "Download PDF",
     newRequest: "New Request",
     requiredFieldsNote: "Required fields",
+    pdfDownloadError: "The PDF could not be created. Check your connection and try again.",
+    retryPdf: "Retry PDF",
   },
 } satisfies Pick<TranslationShape, "customer">

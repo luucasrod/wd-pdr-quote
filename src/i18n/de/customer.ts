@@ -31,5 +31,7 @@ customer: {
     downloadPdf: "PDF herunterladen",
     newRequest: "Neue Anfrage",
     requiredFieldsNote: "Pflichtfelder",
+    pdfDownloadError: "Die PDF-Datei konnte nicht erstellt werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    retryPdf: "PDF erneut versuchen",
   },
 } satisfies Pick<TranslationShape, "customer">

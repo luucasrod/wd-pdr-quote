@@ -38,6 +38,8 @@ viewer: {
     zoomIn: "Zoom avant",
     zoomOut: "Zoom arrière",
     resetZoom: "Réinitialiser le zoom",
+    imageLoadError: "Impossible de charger l’image du véhicule.",
+    retryImage: "Réessayer",
   },
 brush: { label: "Taille du marqueur" },
 severity: { minor: "Léger", medium: "Moyen", severe: "Fort" },

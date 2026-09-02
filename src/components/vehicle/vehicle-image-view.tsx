@@ -20,6 +20,8 @@ export function VehicleImageView({ image, markers, onAddMarker, onCycleMarker, l
   const [box, setBox] = useState({ left: 0, top: 0, width: 0, height: 0 })
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })
+  const [imageError, setImageError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
   const pointers = useRef(new Map<number, { x: number; y: number }>())
   const gesture = useRef({ distance: 0, zoom: 1, panX: 0, panY: 0, x: 0, y: 0, moved: false })
   const suppressClick = useRef(false)
@@ -37,6 +39,7 @@ export function VehicleImageView({ image, markers, onAddMarker, onCycleMarker, l
   }
 
   useLayoutEffect(() => {
+    setImageError(false)
     measure()
     const ro = new ResizeObserver(measure)
     if (containerRef.current) ro.observe(containerRef.current)
@@ -45,7 +48,7 @@ export function VehicleImageView({ image, markers, onAddMarker, onCycleMarker, l
       ro.disconnect()
       window.removeEventListener("resize", measure)
     }
-  }, [image.src])
+  }, [image.src, retryCount])
 
   function clampPan(next: { x: number; y: number }, nextZoom = zoom) {
     const maxX = (box.width * (nextZoom - 1)) / 2
@@ -105,10 +108,11 @@ export function VehicleImageView({ image, markers, onAddMarker, onCycleMarker, l
     >
       <img
         ref={imgRef}
-        src={image.src}
+        src={retryCount ? `${image.src}?retry=${retryCount}` : image.src}
         alt=""
         draggable={false}
         onLoad={measure}
+        onError={() => { setImageError(true); setBox({ left: 0, top: 0, width: 0, height: 0 }) }}
         className="select-none"
         style={{
           maxWidth: "100%",
@@ -120,6 +124,14 @@ export function VehicleImageView({ image, markers, onAddMarker, onCycleMarker, l
           transformOrigin: "center",
         }}
       />
+      {imageError && (
+        <div role="alert" className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-[var(--color-ink-50)] p-6 text-center">
+          <p className="text-[13px] text-[var(--color-ink-600)]">{t.viewer.imageLoadError}</p>
+          <button type="button" className="rounded-[var(--radius-md)] bg-[var(--color-ink-950)] px-4 py-2 text-[13px] font-semibold text-white" onClick={() => { setImageError(false); setRetryCount((value) => value + 1) }}>
+            {t.viewer.retryImage}
+          </button>
+        </div>
+      )}
       {box.width > 0 && (
         <div className="absolute" style={{ left: box.left, top: box.top, width: box.width, height: box.height, transform, transformOrigin: "center" }}>
           <DamageMarkerLayer

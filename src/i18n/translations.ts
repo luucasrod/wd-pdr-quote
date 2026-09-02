@@ -46,6 +46,8 @@ export interface TranslationShape {
     zoomIn: string
     zoomOut: string
     resetZoom: string
+    imageLoadError: string
+    retryImage: string
   }
   brush: {
     label: string
@@ -231,6 +233,8 @@ export interface TranslationShape {
     downloadPdf: string
     newRequest: string
     requiredFieldsNote: string
+    pdfDownloadError: string
+    retryPdf: string
   }
   notFound: {
     code: string

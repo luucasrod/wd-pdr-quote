@@ -31,5 +31,7 @@ customer: {
     downloadPdf: "Télécharger le PDF",
     newRequest: "Nouvelle Demande",
     requiredFieldsNote: "Champs obligatoires",
+    pdfDownloadError: "Impossible de créer le PDF. Vérifiez votre connexion et réessayez.",
+    retryPdf: "Réessayer le PDF",
   },
 } satisfies Pick<TranslationShape, "customer">

@@ -38,6 +38,8 @@ viewer: {
     zoomIn: "Acercar",
     zoomOut: "Alejar",
     resetZoom: "Restablecer zoom",
+    imageLoadError: "No se pudo cargar la imagen del vehículo.",
+    retryImage: "Reintentar",
   },
 brush: { label: "Tamaño del marcador" },
 severity: { minor: "Leve", medium: "Media", severe: "Fuerte" },
