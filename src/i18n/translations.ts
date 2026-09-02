@@ -233,6 +233,7 @@ export interface TranslationShape {
     downloadPdf: string
     newRequest: string
     requiredFieldsNote: string
+    phoneInvalid: string
     pdfDownloadError: string
     retryPdf: string
   }

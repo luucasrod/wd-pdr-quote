@@ -31,6 +31,7 @@ customer: {
     downloadPdf: "PDF herunterladen",
     newRequest: "Neue Anfrage",
     requiredFieldsNote: "Pflichtfelder",
+    phoneInvalid: "Geben Sie eine plausible Telefonnummer ein (9 bis 15 Ziffern).",
     pdfDownloadError: "Die PDF-Datei konnte nicht erstellt werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
     retryPdf: "PDF erneut versuchen",
   },

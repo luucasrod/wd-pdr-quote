@@ -113,6 +113,8 @@ export function CustomerQuotePage() {
       vehicleType,
       plate: data.plate,
       notes: data.notes,
+      markersByView,
+      parts: totals.parts,
       totals: {
         subtotalHours: totals.subtotalHours,
         prepHours: totals.prepHours,

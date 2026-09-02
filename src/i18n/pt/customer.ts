@@ -31,6 +31,7 @@ customer: {
     downloadPdf: "Descarregar PDF",
     newRequest: "Novo Pedido",
     requiredFieldsNote: "Campos obrigatórios",
+    phoneInvalid: "Introduza um telefone plausível (9 a 15 algarismos).",
     pdfDownloadError: "Não foi possível criar o PDF. Verifique a ligação e tente novamente.",
     retryPdf: "Repetir PDF",
   },
