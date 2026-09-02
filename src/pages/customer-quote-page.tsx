@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { CustomerHeader } from "@/components/customer/customer-header"
 import { CustomerPriceBar } from "@/components/customer/customer-price-bar"
@@ -19,27 +19,36 @@ import { useClients } from "@/hooks/use-clients"
 import { useQuotes } from "@/hooks/use-quotes"
 import { cn } from "@/lib/utils"
 import { lerJson } from "@/lib/storage"
+import { clearCustomerDraft, loadCustomerDraft, saveCustomerDraft } from "@/lib/customer-draft"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
 type Step = "vehicle" | "damage" | "contact" | "done"
 
 export function CustomerQuotePage() {
+  const initialDraft = useMemo(() => loadCustomerDraft(), [])
   const { t } = useLanguage()
   const pricingConfig = usePricingConfig()
   const { createClient } = useClients()
   const { createQuote } = useQuotes()
 
-  const [step, setStep] = useState<Step>("vehicle")
-  const [vehicleType, setVehicleType] = useState<VehicleType | null>(null)
-  const [view, setView] = useState<VehicleView>("right")
-  const [markersByView, setMarkersByView] = useState<ViewMarkers>({})
+  const [step, setStep] = useState<Step>(initialDraft?.step ?? "vehicle")
+  const [vehicleType, setVehicleType] = useState<VehicleType | null>(initialDraft?.vehicleType ?? null)
+  const [view, setView] = useState<VehicleView>(initialDraft?.view ?? "right")
+  const [markersByView, setMarkersByView] = useState<ViewMarkers>(initialDraft?.markersByView ?? {})
+  const [contactForm, setContactForm] = useState<ContactFormData>(initialDraft?.contact ?? { name: "", phone: "", email: "", plate: "", notes: "" })
+  const [consent, setConsent] = useState(initialDraft?.consent ?? false)
   const [brushSize, setBrushSize] = useState(DEFAULT_MARKER_SIZE)
   const [submitting, setSubmitting] = useState(false)
   const [savedQuote, setSavedQuote] = useState<SavedQuote | null>(null)
   const [savedClient, setSavedClient] = useState<Client | null>(null)
 
   const markerCounter = useRef(0)
+
+  useEffect(() => {
+    if (step === "done") return
+    saveCustomerDraft({ step, vehicleType, view, markersByView, contact: contactForm, consent })
+  }, [step, vehicleType, view, markersByView, contactForm, consent])
 
   const markers = markersByView[view] ?? []
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
@@ -116,6 +125,7 @@ export function CustomerQuotePage() {
     })
     setSavedClient(client)
     setSavedQuote(quote)
+    clearCustomerDraft()
     setSubmitting(false)
     setStep("done")
   }
@@ -126,6 +136,9 @@ export function CustomerQuotePage() {
     setView("right")
     setSavedQuote(null)
     setSavedClient(null)
+    setContactForm({ name: "", phone: "", email: "", plate: "", notes: "" })
+    setConsent(false)
+    clearCustomerDraft()
     setStep("vehicle")
   }
 
@@ -220,7 +233,8 @@ export function CustomerQuotePage() {
         )}
 
         {step === "contact" && (
-          <CustomerContactForm onBack={() => setStep("damage")} onSubmit={handleSubmit} submitting={submitting} />
+          <CustomerContactForm onBack={() => setStep("damage")} onSubmit={handleSubmit} submitting={submitting}
+            form={contactForm} consent={consent} onFormChange={setContactForm} onConsentChange={setConsent} />
         )}
 
         {step === "done" && savedQuote && savedClient && (
