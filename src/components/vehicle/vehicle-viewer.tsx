@@ -55,9 +55,15 @@ export function VehicleViewer({
         <VehicleViewSelector value={view} onChange={handleChange} />
       </div>
 
+      {/*
+        A altura vem da proporcao da imagem em vez de ser fixa. Com alturas fixas
+        (580/640px) e imagens de 560px sobrava uma faixa cinzenta grande por baixo
+        do carro. Assim o contentor cola-se a imagem em qualquer vista e em qualquer
+        largura de ecra. O max-w acompanha o limite de 840px da propria imagem.
+      */}
       <div
-        className="relative flex h-[340px] w-full max-w-[1120px] items-center justify-center overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-ink-100)] bg-gradient-to-b from-white to-[var(--color-ink-50)] px-4 sm:h-[440px] lg:h-[580px] xl:h-[640px]"
-        style={{ perspective: 1600 }}
+        className="relative flex w-full max-w-[840px] items-center justify-center overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-ink-100)] bg-gradient-to-b from-white to-[var(--color-ink-50)] transition-[aspect-ratio] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ perspective: 1600, aspectRatio: image.aspect }}
       >
         <div className="pointer-events-none absolute inset-x-10 bottom-10 h-10 rounded-full bg-[var(--color-ink-950)]/10 blur-2xl" />
 
@@ -98,7 +104,7 @@ export function VehicleViewer({
         </div>
       </div>
 
-      <div className="mt-4 w-full max-w-[1120px]">
+      <div className="mt-4 w-full max-w-[840px]">
         <BrushSizeSlider value={brushSize} onChange={onBrushSizeChange} />
       </div>
     </div>
