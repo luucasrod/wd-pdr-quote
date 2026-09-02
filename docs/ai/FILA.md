@@ -228,6 +228,27 @@ a funcionar ou redireciona · no desenho (b), `grep` ao bundle do cliente não e
 
 [#22](https://github.com/luucasrod/wd-pdr-quote/issues/22) — confirmar o telefone antes de enviar.
 
+## Lote 2 — repartição pelos dois agentes (02/09/2026)
+
+| Agente | Papel | Issues | Branch |
+|---|---|---|---|
+| **Codex** | BUILDER — altera código | `#8 → #11 → #10 → #9` | `codex/lote-2` |
+| **Claude** | AUDITOR — **não altera código** | `#12 → #14 → #19 → #17 → #20 → #16 → #13 → #15 → #21` | `claude/auditoria-1` |
+
+**Porque é seguro em paralelo**: o auditor não escreve código, só relatórios e issues novas.
+Não há colisão de ficheiros de `src/`.
+
+**Duas regras deste lote:**
+
+1. **O auditor trabalha sobre o `main` de hoje e não puxa o trabalho do Codex a meio.**
+   Auditar um alvo em movimento dá resultados que não valem nada. Toda a issue que abrir deve
+   dizer o commit em que foi observada.
+2. **A auditoria #18 (compatibilidade mobile) fica de fora deste lote.** A #9 vai reescrever
+   exatamente essa superfície; auditá-la agora seria trabalho deitado fora. Entra no lote seguinte.
+
+**Claim**: cada agente atribui-se a issue no GitHub antes de começar
+(`gh issue edit <n> --add-assignee @me`), não no ficheiro. Assim não há disputa.
+
 ## Ordem recomendada
 
 `#8 → #9 → #11 → #10`, e depois as auditorias por
