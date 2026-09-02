@@ -43,6 +43,9 @@ export interface TranslationShape {
     hint: string
     markingAreaLabel: string
     markingAreaInstruction: string
+    zoomIn: string
+    zoomOut: string
+    resetZoom: string
   }
   brush: {
     label: string

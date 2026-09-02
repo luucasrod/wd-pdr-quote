@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion"
 import type { DamageMarker as DamageMarkerType } from "@/types/vehicle"
 import { DamageMarker } from "@/components/damage/damage-marker"
 import { useLanguage } from "@/i18n/language-context"
+import { normalizePointer } from "@/lib/coordinates"
 
 interface DamageMarkerLayerProps {
   markers: DamageMarkerType[]
@@ -18,8 +19,7 @@ export function DamageMarkerLayer({ markers, onAddMarker, onCycleMarker, label }
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (!overlayRef.current || !onAddMarker) return
     const rect = overlayRef.current.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width
-    const y = (e.clientY - rect.top) / rect.height
+    const { x, y } = normalizePointer(rect, e.clientX, e.clientY)
     if (x < 0 || x > 1 || y < 0 || y > 1) return
     onAddMarker(x, y)
   }
