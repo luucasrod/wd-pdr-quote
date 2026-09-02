@@ -6,6 +6,8 @@ import { useLanguage } from "@/i18n/language-context"
 import { useClients } from "@/hooks/use-clients"
 import { ClientFormModal } from "@/components/clients/client-form-modal"
 import type { Client } from "@/types/crm"
+import { DeleteDialog, UndoDelete } from "@/components/ui/delete-dialog"
+import { useUndoableDelete } from "@/hooks/use-undoable-delete"
 
 export function ClientsPage() {
   const { t, language } = useLanguage()
@@ -13,8 +15,10 @@ export function ClientsPage() {
   const [query, setQuery] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Client | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<Client | null>(null)
+  const deletion = useUndoableDelete(removeClient)
 
-  const filtered = clients.filter((c) =>
+  const filtered = clients.filter((c) => c.id !== deletion.pending?.id).filter((c) =>
     `${c.name} ${c.phone} ${c.email} ${c.nif}`.toLowerCase().includes(query.toLowerCase())
   )
 
@@ -95,9 +99,7 @@ export function ClientsPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (confirm(t.clients.deleteConfirm)) removeClient(c.id)
-                  }}
+                  onClick={() => setDeleteTarget(c)}
                   className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-400)] hover:bg-[var(--color-severity-severe-soft)] hover:text-[var(--color-severity-severe)]"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -109,6 +111,12 @@ export function ClientsPage() {
       )}
 
       <ClientFormModal open={modalOpen} onOpenChange={setModalOpen} initial={editing} onSave={handleSave} />
+      <DeleteDialog
+        name={deleteTarget?.name ?? null}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={() => { if (deleteTarget) deletion.schedule(deleteTarget); setDeleteTarget(null) }}
+      />
+      <UndoDelete visible={Boolean(deletion.pending)} onUndo={deletion.undo} />
     </div>
   )
 }

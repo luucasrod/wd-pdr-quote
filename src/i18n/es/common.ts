@@ -12,6 +12,12 @@ common: {
     quotes: "Presupuestos",
     changeType: "cambiar tipo",
     storageWarning: "No se han podido guardar los datos en este navegador. Los cambios solo se conservarán mientras esta página permanezca abierta.",
+    deleteTitle: "¿Eliminar {name}?",
+    deleteDescription: "El registro se eliminará después de unos segundos. Puede deshacerlo hasta entonces.",
+    cancel: "Cancelar",
+    deleteAction: "Eliminar",
+    deletedNotice: "Registro eliminado",
+    undo: "Deshacer",
   },
 typeSelect: {
     title: "¿Qué tipo de vehículo?",

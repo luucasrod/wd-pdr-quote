@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowLeft, Clock3, Layers } from "lucide-react"
+import { ArrowLeft, Clock3, Download, Layers } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -7,6 +7,7 @@ import { useLanguage } from "@/i18n/language-context"
 import { EditablePriceTable } from "@/components/settings/editable-price-table"
 import { PartTypeTable } from "@/components/settings/part-type-table"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
+import { downloadExportData } from "@/lib/export-data"
 
 type Tab = "hourly" | "partTypes"
 
@@ -82,6 +83,14 @@ export function SettingsPage({ onBack, pricingConfig }: SettingsPageProps) {
             onReset={resetPartTypes}
           />
         )}
+      </Card>
+
+      <Card className="mt-6 flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6">
+        <p className="max-w-xl text-[13px] text-[var(--color-ink-500)]">{t.settingsPage.exportDescription}</p>
+        <Button variant="outline" onClick={downloadExportData}>
+          <Download className="h-4 w-4" />
+          {t.settingsPage.exportData}
+        </Button>
       </Card>
     </div>
   )

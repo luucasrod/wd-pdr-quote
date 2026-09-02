@@ -12,6 +12,12 @@ common: {
     quotes: "Devis",
     changeType: "changer de type",
     storageWarning: "Les données n’ont pas pu être enregistrées dans ce navigateur. Les modifications ne seront conservées que tant que cette page reste ouverte.",
+    deleteTitle: "Supprimer {name} ?",
+    deleteDescription: "L’enregistrement sera supprimé après quelques secondes. Vous pouvez annuler d’ici là.",
+    cancel: "Annuler",
+    deleteAction: "Supprimer",
+    deletedNotice: "Enregistrement supprimé",
+    undo: "Annuler",
   },
 typeSelect: {
     title: "Quel type de véhicule ?",

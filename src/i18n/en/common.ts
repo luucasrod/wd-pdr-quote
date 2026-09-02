@@ -12,6 +12,12 @@ common: {
     quotes: "Quotes",
     changeType: "change type",
     storageWarning: "Data could not be saved in this browser. Changes will only remain while this page is open.",
+    deleteTitle: "Delete {name}?",
+    deleteDescription: "The record will be deleted after a few seconds. You can undo before then.",
+    cancel: "Cancel",
+    deleteAction: "Delete",
+    deletedNotice: "Record removed",
+    undo: "Undo",
   },
 typeSelect: {
     title: "What type of vehicle?",

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Plus, Trash2, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -5,6 +6,9 @@ import { useLanguage } from "@/i18n/language-context"
 import { useQuotes } from "@/hooks/use-quotes"
 import { useClients } from "@/hooks/use-clients"
 import { StatusBadge } from "@/components/quote/status-badge"
+import { DeleteDialog, UndoDelete } from "@/components/ui/delete-dialog"
+import { useUndoableDelete } from "@/hooks/use-undoable-delete"
+import type { SavedQuote } from "@/types/crm"
 
 interface QuotesListPageProps {
   onNewQuote: () => void
@@ -15,6 +19,9 @@ export function QuotesListPage({ onNewQuote, onOpenQuote }: QuotesListPageProps)
   const { t, language } = useLanguage()
   const { quotes, removeQuote } = useQuotes()
   const { getClientById } = useClients()
+  const [deleteTarget, setDeleteTarget] = useState<SavedQuote | null>(null)
+  const deletion = useUndoableDelete(removeQuote)
+  const visibleQuotes = quotes.filter((quote) => quote.id !== deletion.pending?.id)
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -31,7 +38,7 @@ export function QuotesListPage({ onNewQuote, onOpenQuote }: QuotesListPageProps)
         </Button>
       </div>
 
-      {quotes.length === 0 ? (
+      {visibleQuotes.length === 0 ? (
         <Card className="px-4 py-14 text-center">
           <FileText className="mx-auto mb-3 h-8 w-8 text-[var(--color-ink-200)]" />
           <p className="text-[13.5px] text-[var(--color-ink-400)]">{t.quotesList.empty}</p>
@@ -51,7 +58,7 @@ export function QuotesListPage({ onNewQuote, onOpenQuote }: QuotesListPageProps)
                 </tr>
               </thead>
               <tbody>
-                {quotes.map((q) => {
+                {visibleQuotes.map((q) => {
                   const client = getClientById(q.clientId)
                   return (
                     <tr
@@ -80,7 +87,7 @@ export function QuotesListPage({ onNewQuote, onOpenQuote }: QuotesListPageProps)
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation()
-                            if (confirm(t.quotesList.deleteConfirm)) removeQuote(q.id)
+                            setDeleteTarget(q)
                           }}
                           className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-300)] hover:bg-[var(--color-severity-severe-soft)] hover:text-[var(--color-severity-severe)]"
                         >
@@ -95,6 +102,12 @@ export function QuotesListPage({ onNewQuote, onOpenQuote }: QuotesListPageProps)
           </div>
         </Card>
       )}
+      <DeleteDialog
+        name={deleteTarget ? (getClientById(deleteTarget.clientId)?.name ?? `#${deleteTarget.id.slice(-8).toUpperCase()}`) : null}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={() => { if (deleteTarget) deletion.schedule(deleteTarget); setDeleteTarget(null) }}
+      />
+      <UndoDelete visible={Boolean(deletion.pending)} onUndo={deletion.undo} />
     </div>
   )
 }

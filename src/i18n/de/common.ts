@@ -12,6 +12,12 @@ common: {
     quotes: "Angebote",
     changeType: "Typ ändern",
     storageWarning: "Daten konnten in diesem Browser nicht gespeichert werden. Änderungen bleiben nur erhalten, solange diese Seite geöffnet ist.",
+    deleteTitle: "{name} löschen?",
+    deleteDescription: "Der Eintrag wird nach einigen Sekunden gelöscht. Bis dahin können Sie den Vorgang rückgängig machen.",
+    cancel: "Abbrechen",
+    deleteAction: "Löschen",
+    deletedNotice: "Eintrag entfernt",
+    undo: "Rückgängig",
   },
 typeSelect: {
     title: "Welcher Fahrzeugtyp?",

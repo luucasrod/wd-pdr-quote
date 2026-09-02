@@ -12,6 +12,12 @@ common: {
     quotes: "Orçamentos",
     changeType: "trocar tipo",
     storageWarning: "Não foi possível guardar os dados neste navegador. As alterações mantêm-se apenas enquanto esta página estiver aberta.",
+    deleteTitle: "Apagar {name}?",
+    deleteDescription: "O registo será apagado após alguns segundos. Pode desfazer entretanto.",
+    cancel: "Cancelar",
+    deleteAction: "Apagar",
+    deletedNotice: "Registo removido",
+    undo: "Desfazer",
   },
 typeSelect: {
     title: "Qual o tipo de veículo?",
