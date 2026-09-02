@@ -38,6 +38,8 @@ viewer: {
     zoomIn: "Vergrößern",
     zoomOut: "Verkleinern",
     resetZoom: "Zoom zurücksetzen",
+    imageLoadError: "Das Fahrzeugbild konnte nicht geladen werden.",
+    retryImage: "Erneut versuchen",
   },
 brush: { label: "Markergröße" },
 severity: { minor: "Leicht", medium: "Mittel", severe: "Stark" },

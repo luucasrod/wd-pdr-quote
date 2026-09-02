@@ -20,7 +20,7 @@ export function PrivacyPolicyPage() {
         </Link>
 
         <h1 className="text-[24px] font-bold tracking-[-0.02em] text-[var(--color-ink-950)]">Política de Privacidade</h1>
-        <p className="mt-1 text-[12.5px] text-[var(--color-ink-400)]">Última atualização: 27 de agosto de 2026</p>
+        <p className="mt-1 text-[12.5px] text-[var(--color-ink-400)]">Última atualização: 2 de setembro de 2026</p>
 
         <div className="mt-8 flex flex-col gap-6 text-[14px] leading-relaxed text-[var(--color-ink-700)]">
           <section>
@@ -65,9 +65,9 @@ export function PrivacyPolicyPage() {
           <section>
             <h2 className="mb-1.5 text-[15px] font-semibold text-[var(--color-ink-950)]">4. Onde ficam guardados os seus dados</h2>
             <p>
-              Atualmente, os dados dos pedidos de orçamento são guardados localmente no navegador utilizado pela
-              equipa da WD PDR para gerir os pedidos, e não são enviados para nenhum servidor externo ou base de
-              dados na nuvem.
+              Atualmente, os dados do pedido de orçamento são guardados localmente no navegador do próprio cliente
+              que utiliza este site. Não são enviados automaticamente à equipa da WD PDR, a nenhum servidor externo
+              ou a uma base de dados na nuvem.
             </p>
           </section>
 

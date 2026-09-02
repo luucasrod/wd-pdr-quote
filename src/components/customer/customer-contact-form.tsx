@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft, Send } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
@@ -6,28 +5,25 @@ import { Button } from "@/components/ui/button"
 import { FormField, Input, Textarea } from "@/components/ui/form"
 import { useLanguage } from "@/i18n/language-context"
 
-export interface ContactFormData {
-  name: string
-  phone: string
-  email: string
-  plate: string
-  notes: string
-}
+import type { CustomerDraftContact as ContactFormData } from "@/lib/customer-draft"
+import { isPlausiblePhone } from "@/lib/contact-validation"
+export type { CustomerDraftContact as ContactFormData } from "@/lib/customer-draft"
 
 interface CustomerContactFormProps {
   onBack: () => void
   onSubmit: (data: ContactFormData) => void
   submitting: boolean
+  form: ContactFormData
+  consent: boolean
+  onFormChange: (form: ContactFormData) => void
+  onConsentChange: (consent: boolean) => void
 }
 
-const EMPTY: ContactFormData = { name: "", phone: "", email: "", plate: "", notes: "" }
-
-export function CustomerContactForm({ onBack, onSubmit, submitting }: CustomerContactFormProps) {
+export function CustomerContactForm({ onBack, onSubmit, submitting, form, consent, onFormChange, onConsentChange }: CustomerContactFormProps) {
   const { t } = useLanguage()
-  const [form, setForm] = useState<ContactFormData>(EMPTY)
-  const [consent, setConsent] = useState(false)
 
-  const canSubmit = form.name.trim() && form.phone.trim() && consent && !submitting
+  const phoneValid = !form.phone || isPlausiblePhone(form.phone)
+  const canSubmit = form.name.trim() && phoneValid && consent && !submitting
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -52,9 +48,10 @@ export function CustomerContactForm({ onBack, onSubmit, submitting }: CustomerCo
             <FormField label={`${t.customer.nameLabel} *`}>
               <Input
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) => onFormChange({ ...form, name: e.target.value })}
                 placeholder={t.customer.namePlaceholder}
                 required
+                maxLength={200}
                 autoFocus
               />
             </FormField>
@@ -63,29 +60,35 @@ export function CustomerContactForm({ onBack, onSubmit, submitting }: CustomerCo
                 <Input
                   type="tel"
                   value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  onChange={(e) => onFormChange({ ...form, phone: e.target.value })}
                   placeholder={t.customer.phonePlaceholder}
                   required
+                  maxLength={40}
+                  pattern="\+?[0-9\s().-]{9,40}"
+                  title={t.customer.phoneInvalid}
                 />
+                {!phoneValid && <p role="alert" className="mt-1 text-[12px] text-[var(--color-severity-severe)]">{t.customer.phoneInvalid}</p>}
               </FormField>
               <FormField label={t.customer.emailLabel}>
                 <Input
                   type="email"
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onChange={(e) => onFormChange({ ...form, email: e.target.value })}
                   placeholder={t.customer.emailPlaceholder}
+                  maxLength={200}
                 />
               </FormField>
             </div>
             <FormField label={t.customer.plateLabel}>
-              <Input value={form.plate} onChange={(e) => setForm({ ...form, plate: e.target.value })} />
+              <Input value={form.plate} maxLength={20} onChange={(e) => onFormChange({ ...form, plate: e.target.value })} />
             </FormField>
             <FormField label={t.customer.notesLabel}>
               <Textarea
                 rows={3}
                 value={form.notes}
-                onChange={(e) => setForm({ ...form, notes: e.target.value })}
+                onChange={(e) => onFormChange({ ...form, notes: e.target.value })}
                 placeholder={t.customer.notesPlaceholder}
+                maxLength={2000}
               />
             </FormField>
 
@@ -93,7 +96,7 @@ export function CustomerContactForm({ onBack, onSubmit, submitting }: CustomerCo
               <input
                 type="checkbox"
                 checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
+                onChange={(e) => onConsentChange(e.target.checked)}
                 className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-amber-500)]"
                 required
               />

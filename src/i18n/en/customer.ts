@@ -31,5 +31,12 @@ customer: {
     downloadPdf: "Download PDF",
     newRequest: "New Request",
     requiredFieldsNote: "Required fields",
+    phoneInvalid: "Enter a plausible phone number (9 to 15 digits).",
+    pdfDownloadError: "The PDF could not be created. Check your connection and try again.",
+    retryPdf: "Retry PDF",
+    confirmPhoneTitle: "Confirm your phone number",
+    confirmPhoneQuestion: "Is this number correct?",
+    confirmPhoneSend: "Yes, send request",
+    correctPhone: "Correct number",
   },
 } satisfies Pick<TranslationShape, "customer">

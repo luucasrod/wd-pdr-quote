@@ -22,4 +22,34 @@ describe("storage seguro", () => {
     vi.stubGlobal("localStorage", { getItem: () => { throw new DOMException("SecurityError") } })
     expect(lerJson("key", 45)).toBe(45)
   })
+
+  it.each(["wd-pdr-quotes", "wd-pdr-clients", "wd-pdr-insurers"])(
+    "recupera a coleção %s de JSON inválido ou shape errado",
+    (key) => {
+      const fallback = [{ id: "default" }]
+      let raw = "lixo"
+      vi.stubGlobal("localStorage", { getItem: () => raw })
+      expect(lerJson(key, fallback)).toBe(fallback)
+
+      raw = JSON.stringify("continua a não ser uma coleção")
+      expect(lerJson(key, fallback)).toBe(fallback)
+    },
+  )
+
+  it.each([
+    ["wd-pdr-part-types", []],
+    ["wd-pdr-price-table-hourly", { minor: [], moderate: [], severe: [] }],
+  ])("recupera a configuração estruturada %s", (key, fallback) => {
+    let raw = "lixo"
+    vi.stubGlobal("localStorage", { getItem: () => raw })
+    expect(lerJson(key, fallback)).toBe(fallback)
+
+    raw = JSON.stringify("shape errado")
+    expect(lerJson(key, fallback)).toBe(fallback)
+  })
+
+  it("mantém compatibilidade com o idioma legado em texto simples", () => {
+    vi.stubGlobal("localStorage", { getItem: () => "pt" })
+    expect(lerJson("wd-pdr-language", null)).toBe("pt")
+  })
 })

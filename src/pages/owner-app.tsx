@@ -24,6 +24,7 @@ import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useQuotes } from "@/hooks/use-quotes"
 import { useClients } from "@/hooks/use-clients"
 import { escreverJson, houveErroStorage, lerJson, STORAGE_ERROR_EVENT } from "@/lib/storage"
+import { createIntentLock } from "@/lib/intent-lock"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
@@ -57,6 +58,7 @@ export function OwnerApp() {
   const [justSaved, setJustSaved] = useState(false)
 
   const markerCounter = useRef(0)
+  const saveLock = useRef(createIntentLock())
 
   useEffect(() => {
     escreverJson(HOURLY_RATE_KEY, hourlyRate)
@@ -175,7 +177,7 @@ export function OwnerApp() {
   }
 
   function handleSaveQuote() {
-    if (!vehicleType) return
+    if (!vehicleType || !saveLock.current.tryAcquire()) return
     const payload = {
       clientId,
       insurerId,
@@ -206,6 +208,7 @@ export function OwnerApp() {
       createQuote({ ...payload, status: "draft" })
     }
     setJustSaved(true)
+    queueMicrotask(() => saveLock.current.release())
     setTimeout(() => setJustSaved(false), 2000)
   }
 

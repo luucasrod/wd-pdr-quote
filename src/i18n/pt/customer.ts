@@ -31,5 +31,12 @@ customer: {
     downloadPdf: "Descarregar PDF",
     newRequest: "Novo Pedido",
     requiredFieldsNote: "Campos obrigatórios",
+    phoneInvalid: "Introduza um telefone plausível (9 a 15 algarismos).",
+    pdfDownloadError: "Não foi possível criar o PDF. Verifique a ligação e tente novamente.",
+    retryPdf: "Repetir PDF",
+    confirmPhoneTitle: "Confirme o seu telefone",
+    confirmPhoneQuestion: "Este número está correto?",
+    confirmPhoneSend: "Sim, enviar pedido",
+    correctPhone: "Corrigir número",
   },
 } satisfies Pick<TranslationShape, "customer">

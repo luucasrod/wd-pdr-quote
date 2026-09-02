@@ -38,6 +38,8 @@ viewer: {
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     resetZoom: "Reset zoom",
+    imageLoadError: "The vehicle image could not be loaded.",
+    retryImage: "Try again",
   },
 brush: { label: "Marker size" },
 severity: { minor: "Minor", medium: "Medium", severe: "Severe" },

@@ -30,6 +30,7 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
   const { getClientById } = useClients()
   const { getInsurerById } = useInsurers()
   const [downloading, setDownloading] = useState(false)
+  const [downloadError, setDownloadError] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const deletion = useUndoableDelete<SavedQuote>((id) => {
     removeQuote(id)
@@ -56,8 +57,11 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
 
   async function handleDownload() {
     setDownloading(true)
+    setDownloadError(false)
     try {
       await downloadQuotePdf({ quote: quote!, client, insurer, t, language })
+    } catch {
+      setDownloadError(true)
     } finally {
       setDownloading(false)
     }
@@ -77,7 +81,7 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
           </Button>
           <Button variant="outline" size="sm" onClick={handleDownload} disabled={downloading}>
             {downloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-            {t.quoteMeta.print}
+            {downloadError ? t.customer.retryPdf : t.quoteMeta.print}
           </Button>
           <Button
             variant="outline"
@@ -89,6 +93,7 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
           </Button>
         </div>
       </div>
+      {downloadError && <p role="alert" className="mb-4 text-[13px] text-[var(--color-danger)]">{t.customer.pdfDownloadError}</p>}
 
       <Card>
         <CardHeader className="flex-row items-center justify-between gap-3">

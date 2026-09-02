@@ -17,11 +17,15 @@ interface CustomerDoneScreenProps {
 export function CustomerDoneScreen({ quote, client, totalPrice, onNewRequest }: CustomerDoneScreenProps) {
   const { t, language } = useLanguage()
   const [downloading, setDownloading] = useState(false)
+  const [downloadError, setDownloadError] = useState(false)
 
   async function handleDownload() {
     setDownloading(true)
+    setDownloadError(false)
     try {
       await downloadQuotePdf({ quote, client, t, language })
+    } catch {
+      setDownloadError(true)
     } finally {
       setDownloading(false)
     }
@@ -52,13 +56,14 @@ export function CustomerDoneScreen({ quote, client, totalPrice, onNewRequest }: 
       <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
         <Button variant="accent" size="lg" className="flex-1" onClick={handleDownload} disabled={downloading}>
           {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-          {t.customer.downloadPdf}
+          {downloadError ? t.customer.retryPdf : t.customer.downloadPdf}
         </Button>
         <Button variant="outline" size="lg" className="flex-1" onClick={onNewRequest}>
           <RotateCcw className="h-4 w-4" />
           {t.customer.newRequest}
         </Button>
       </div>
+      {downloadError && <p role="alert" className="mt-3 text-[13px] text-[var(--color-danger)]">{t.customer.pdfDownloadError}</p>}
     </div>
   )
 }
