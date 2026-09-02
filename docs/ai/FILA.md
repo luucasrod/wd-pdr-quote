@@ -227,6 +227,28 @@ faz sentido.
 **Fora do lote:** [#29](https://github.com/luucasrod/wd-pdr-quote/issues/29) (offline/PWA) — a maior
 e a menos urgente. Reavaliar depois do Supabase, quando o offline passa a ter consequências reais.
 
+## Lote 4 — camada Supabase, escrita às cegas
+
+Todas dependem da conta do dono (H1) para serem **verificadas**, mas o código pode e deve ser
+escrito antes. O schema já existe, já foi aplicado e já foi testado com o papel `anon`.
+Quando a conta existir, é ligar e verificar em vez de começar.
+
+| # | Tarefa | Nota |
+|---|---|---|
+| [#31](https://github.com/luucasrod/wd-pdr-quote/issues/31) | Camada base: cliente + mappers | fundação |
+| [#32](https://github.com/luucasrod/wd-pdr-quote/issues/32) | Migrar os hooks, **com fallback local** | SOLO · depois da #24 |
+| [#33](https://github.com/luucasrod/wd-pdr-quote/issues/33) | Submissão real via `submeter_pedido` | nunca `insert ... returning` |
+| [#34](https://github.com/luucasrod/wd-pdr-quote/issues/34) | Autenticação real no `/oficina` | **antes ou com a #32, nunca depois** |
+| [#35](https://github.com/luucasrod/wd-pdr-quote/issues/35) | Aviso de novo pedido + importar dados locais | fecha o ciclo |
+
+**O que torna isto seguro de integrar sem a conta**: a #32 mantém o `localStorage` enquanto não
+houver `VITE_SUPABASE_URL` definida. A app comporta-se exatamente como hoje até as variáveis
+aparecerem, e então troca de fonte sozinha.
+
+**A #34 não pode ficar para depois da #32.** Enquanto não há banco, o passcode fraco quase não
+importa — o painel está vazio para quem entra. No momento em que a #32 liga dados reais, aquela
+porta passa a ter algo atrás dela.
+
 ## Bloqueado por pessoas
 
 | id | O quê | Quem |
@@ -234,6 +256,7 @@ e a menos urgente. Reavaliar depois do Supabase, quando o offline passa a ter co
 | **H1** | Conta Supabase do dono e convite ao Lucas como **Developer** | Wan Diego + Lucas |
 | **H2** | Repositório privado e revogar o token exposto | Lucas |
 | **H3** | NIF · taxa horária real · "preço fixo ou preço/hora" · prazos de conservação de dados | Wan Diego |
+| **H8** | O domínio `wdtiramossas.com.pt` era dele? Ainda o tem? (indexado no Google, **DNS morto** — confirmado 02/09) | Wan Diego |
 | **H7** | Domínio da oficina | Lucas + Wan Diego |
 
 ---
