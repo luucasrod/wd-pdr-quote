@@ -200,61 +200,41 @@ a funcionar ou redireciona · no desenho (b), `grep` ao bundle do cliente não e
 
 `gh issue list` é a fonte de verdade. Este ficheiro guarda o contexto e a ordem.
 
-## Correções comprovadas (fazer primeiro)
+## Lote 3 — a fazer (02/09/2026)
 
-| # | Tarefa | Prioridade |
-|---|---|---|
-| [#8](https://github.com/luucasrod/wd-pdr-quote/issues/8) | App rebenta com localStorage bloqueado | Crítica |
-| [#9](https://github.com/luucasrod/wd-pdr-quote/issues/9) | Marcar amolgadelas impraticável no telemóvel | Crítica |
-| [#10](https://github.com/luucasrod/wd-pdr-quote/issues/10) | Link partilhado não mostra preview | Média |
-| [#11](https://github.com/luucasrod/wd-pdr-quote/issues/11) | Apagar é definitivo, sem desfazer | Alta |
+Todas nasceram das auditorias que o próprio agente fez no lote 2, portanto trazem
+reprodução e evidência já registadas.
 
-## Auditorias — investigar, não implementar (ver WORK_PROTOCOL 4b)
+**Fase 1 — correções, por gravidade:**
 
 | # | Tarefa | Nota |
 |---|---|---|
-| [#12](https://github.com/luucasrod/wd-pdr-quote/issues/12) | Segurança do painel | parte já conhecida, ler antes |
-| [#13](https://github.com/luucasrod/wd-pdr-quote/issues/13) | Isolamento entre orçamentos | **sem backend, quase tudo espera** |
-| [#14](https://github.com/luucasrod/wd-pdr-quote/issues/14) | Persistência e perda de dados | |
-| [#15](https://github.com/luucasrod/wd-pdr-quote/issues/15) | Queda de internet | **o envio ainda não usa rede** |
-| [#16](https://github.com/luucasrod/wd-pdr-quote/issues/16) | Envio duplicado | parcialmente testável |
-| [#17](https://github.com/luucasrod/wd-pdr-quote/issues/17) | Validação e casos extremos | |
-| [#18](https://github.com/luucasrod/wd-pdr-quote/issues/18) | Compatibilidade mobile | |
-| [#19](https://github.com/luucasrod/wd-pdr-quote/issues/19) | Consistência do dashboard | pista concreta na issue |
-| [#20](https://github.com/luucasrod/wd-pdr-quote/issues/20) | Tratamento de erros | |
-| [#21](https://github.com/luucasrod/wd-pdr-quote/issues/21) | Privacidade e RGPD | |
+| [#24](https://github.com/luucasrod/wd-pdr-quote/issues/24) | Perda de dados entre abas | **SOLO — mexe nos hooks de dados. Fazer primeiro** |
+| [#27](https://github.com/luucasrod/wd-pdr-quote/issues/27) | Storage corrompido bloqueia a app | |
+| [#23](https://github.com/luucasrod/wd-pdr-quote/issues/23) | Perda do pedido em preenchimento | decidir prazo do rascunho — são dados pessoais |
+| [#26](https://github.com/luucasrod/wd-pdr-quote/issues/26) | Falhas de PDF e imagens sem mensagem | |
+| [#28](https://github.com/luucasrod/wd-pdr-quote/issues/28) | Submissão duplicada no mesmo gesto | |
+| [#25](https://github.com/luucasrod/wd-pdr-quote/issues/25) | Validação de formato e coerência | só a parte do frontend é testável |
+| [#30](https://github.com/luucasrod/wd-pdr-quote/issues/30) | Política de privacidade | **só a correção factual** — o resto espera H3 |
+| [#22](https://github.com/luucasrod/wd-pdr-quote/issues/22) | Confirmar telefone antes de enviar | |
 
-## Melhoria independente
+**Fase 2 — auditoria:**
 
-[#22](https://github.com/luucasrod/wd-pdr-quote/issues/22) — confirmar o telefone antes de enviar.
+[#18](https://github.com/luucasrod/wd-pdr-quote/issues/18) — compatibilidade mobile completa.
+Esteve fora do lote 2 porque a #9 ia reescrever essa superfície. Agora que a #9 está em `main`,
+faz sentido.
 
-## Lote 2 — tudo no Codex, em série (02/09/2026)
+**Fora do lote:** [#29](https://github.com/luucasrod/wd-pdr-quote/issues/29) (offline/PWA) — a maior
+e a menos urgente. Reavaliar depois do Supabase, quando o offline passa a ter consequências reais.
 
-| Agente | Papel | Issues | Branch |
-|---|---|---|---|
-| **Codex** | BUILDER, depois AUDITOR | `#8 → #11 → #10 → #9`, depois `#12 → #14 → #19 → #17 → #20 → #16 → #13 → #15 → #21` | `codex/lote-2` |
+## Bloqueado por pessoas
 
-**Porque em série e não em paralelo.** A primeira versão deste plano punha as auditorias num
-segundo agente ao mesmo tempo. Tinha uma falha: **quatro das nove auditorias examinam código que
-as correções vão reescrever** — #14 e #20 dependem do `localStorage` que a #8 muda, a #16 toca no
-que a #11 mexe, e a #18 na superfície que a #9 reescreve.
-
-Auditar na véspera de alguém reescrever o que se está a auditar produz um relatório que nasce
-obsoleto. Em série, as auditorias examinam o estado real, já corrigido.
-
-**A #18 (compatibilidade mobile) continua fora deste lote** — só faz sentido depois de a #9 estar
-integrada em `main`, não apenas feita numa branch.
-
-**Regra que se mantém**: quando a fase de auditoria começar, **não se altera código**. Auditoria
-descobre e abre issues; correção é outra tarefa. Ver WORK_PROTOCOL secção 4b.
-
-## Ordem recomendada
-
-`#8 → #9 → #11 → #10`, e depois as auditorias por
-`#12 → #13 → #14 → #15 → #16 → #17 → #18 → #20`. A #22 entra quando calhar.
-
-Três auditorias estão marcadas `bloqueada-por-backend`: dão para fazer em parte, mas a maior
-metade só passa a valer depois do Supabase. **Cada uma diz na própria issue o que é testável hoje.**
+| id | O quê | Quem |
+|---|---|---|
+| **H1** | Conta Supabase do dono e convite ao Lucas como **Developer** | Wan Diego + Lucas |
+| **H2** | Repositório privado e revogar o token exposto | Lucas |
+| **H3** | NIF · taxa horária real · "preço fixo ou preço/hora" · prazos de conservação de dados | Wan Diego |
+| **H7** | Domínio da oficina | Lucas + Wan Diego |
 
 ---
 
