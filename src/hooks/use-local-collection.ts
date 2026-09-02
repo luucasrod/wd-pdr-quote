@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { escreverJson, lerJson } from "@/lib/storage"
 
 let idCounter = 0
 export function newRecordId(prefix: string) {
@@ -6,21 +7,12 @@ export function newRecordId(prefix: string) {
   return `${prefix}-${Date.now()}-${idCounter}`
 }
 
-function load<T>(key: string): T[] {
-  try {
-    const raw = localStorage.getItem(key)
-    return raw ? (JSON.parse(raw) as T[]) : []
-  } catch {
-    return []
-  }
-}
-
 /** Generic CRUD-over-localStorage collection, used for clients, insurers, saved quotes. */
 export function useLocalCollection<T extends { id: string }>(storageKey: string) {
-  const [items, setItems] = useState<T[]>(() => load<T>(storageKey))
+  const [items, setItems] = useState<T[]>(() => lerJson<T[]>(storageKey, []))
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(items))
+    escreverJson(storageKey, items)
   }, [storageKey, items])
 
   function add(item: T) {

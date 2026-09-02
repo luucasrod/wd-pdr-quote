@@ -18,6 +18,7 @@ import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useClients } from "@/hooks/use-clients"
 import { useQuotes } from "@/hooks/use-quotes"
 import { cn } from "@/lib/utils"
+import { lerJson } from "@/lib/storage"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
@@ -44,8 +45,7 @@ export function CustomerQuotePage() {
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
 
   const hourlyRate = useMemo(() => {
-    const saved = localStorage.getItem(HOURLY_RATE_KEY)
-    return saved ? Number(saved) : 45
+    return Number(lerJson(HOURLY_RATE_KEY, 45))
   }, [])
 
   const totals = useMemo(

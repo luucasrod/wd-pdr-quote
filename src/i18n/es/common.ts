@@ -11,6 +11,7 @@ common: {
     settings: "Ajustes",
     quotes: "Presupuestos",
     changeType: "cambiar tipo",
+    storageWarning: "No se han podido guardar los datos en este navegador. Los cambios solo se conservarán mientras esta página permanezca abierta.",
   },
 typeSelect: {
     title: "¿Qué tipo de vehículo?",

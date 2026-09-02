@@ -11,6 +11,7 @@ common: {
     settings: "Paramètres",
     quotes: "Devis",
     changeType: "changer de type",
+    storageWarning: "Les données n’ont pas pu être enregistrées dans ce navigateur. Les modifications ne seront conservées que tant que cette page reste ouverte.",
   },
 typeSelect: {
     title: "Quel type de véhicule ?",

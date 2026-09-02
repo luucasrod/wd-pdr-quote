@@ -19,6 +19,7 @@ export interface TranslationShape {
     settings: string
     quotes: string
     changeType: string
+    storageWarning: string
   }
   typeSelect: {
     title: string
@@ -254,4 +255,3 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
   fr,
   es,
 }
-

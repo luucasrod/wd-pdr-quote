@@ -11,6 +11,7 @@ common: {
     settings: "Einstellungen",
     quotes: "Angebote",
     changeType: "Typ ändern",
+    storageWarning: "Daten konnten in diesem Browser nicht gespeichert werden. Änderungen bleiben nur erhalten, solange diese Seite geöffnet ist.",
   },
 typeSelect: {
     title: "Welcher Fahrzeugtyp?",

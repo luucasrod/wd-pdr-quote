@@ -11,6 +11,7 @@ common: {
     settings: "Settings",
     quotes: "Quotes",
     changeType: "change type",
+    storageWarning: "Data could not be saved in this browser. Changes will only remain while this page is open.",
   },
 typeSelect: {
     title: "What type of vehicle?",
