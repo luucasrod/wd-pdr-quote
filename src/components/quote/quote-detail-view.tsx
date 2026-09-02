@@ -11,8 +11,10 @@ import { StatusBadge } from "@/components/quote/status-badge"
 import { downloadQuotePdf } from "@/lib/generate-quote-pdf"
 import { VEHICLE_IMAGES } from "@/data/vehicle/vehicle-images"
 import { VehicleImageView } from "@/components/vehicle/vehicle-image-view"
-import type { QuoteStatus } from "@/types/crm"
+import type { QuoteStatus, SavedQuote } from "@/types/crm"
 import type { VehicleView } from "@/types/vehicle"
+import { DeleteDialog, UndoDelete } from "@/components/ui/delete-dialog"
+import { useUndoableDelete } from "@/hooks/use-undoable-delete"
 
 interface QuoteDetailViewProps {
   quoteId: string
@@ -28,6 +30,11 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
   const { getClientById } = useClients()
   const { getInsurerById } = useInsurers()
   const [downloading, setDownloading] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const deletion = useUndoableDelete<SavedQuote>((id) => {
+    removeQuote(id)
+    onBack()
+  })
 
   const quote = getQuoteById(quoteId)
   if (!quote) {
@@ -75,12 +82,7 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
           <Button
             variant="outline"
             size="sm"
-            onClick={() => {
-              if (confirm(t.quotesList.deleteConfirm)) {
-                removeQuote(quote.id)
-                onBack()
-              }
-            }}
+            onClick={() => setDeleteOpen(true)}
           >
             <Trash2 className="h-3.5 w-3.5" />
             {t.quotesList.delete}
@@ -194,6 +196,12 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
           </div>
         </CardContent>
       </Card>
+      <DeleteDialog
+        name={deleteOpen ? (client?.name ?? `#${quote.id.slice(-8).toUpperCase()}`) : null}
+        onCancel={() => setDeleteOpen(false)}
+        onConfirm={() => { deletion.schedule(quote); setDeleteOpen(false) }}
+      />
+      <UndoDelete visible={Boolean(deletion.pending)} onUndo={deletion.undo} />
     </div>
   )
 }

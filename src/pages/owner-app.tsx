@@ -23,6 +23,7 @@ import { useLanguage } from "@/i18n/language-context"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useQuotes } from "@/hooks/use-quotes"
 import { useClients } from "@/hooks/use-clients"
+import { escreverJson, houveErroStorage, lerJson, STORAGE_ERROR_EVENT } from "@/lib/storage"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
@@ -45,9 +46,9 @@ export function OwnerApp() {
   const [surcharge1, setSurcharge1] = useState(false)
   const [surcharge2, setSurcharge2] = useState(false)
   const [hourlyRate, setHourlyRate] = useState(() => {
-    const saved = localStorage.getItem(HOURLY_RATE_KEY)
-    return saved ? Number(saved) : 45
+    return Number(lerJson(HOURLY_RATE_KEY, 45))
   })
+  const [storageWarning, setStorageWarning] = useState(false)
 
   const [clientId, setClientId] = useState<string | null>(null)
   const [insurerId, setInsurerId] = useState<string | null>(null)
@@ -58,8 +59,15 @@ export function OwnerApp() {
   const markerCounter = useRef(0)
 
   useEffect(() => {
-    localStorage.setItem(HOURLY_RATE_KEY, String(hourlyRate))
+    escreverJson(HOURLY_RATE_KEY, hourlyRate)
   }, [hourlyRate])
+
+  useEffect(() => {
+    const showWarning = () => setStorageWarning(true)
+    window.addEventListener(STORAGE_ERROR_EVENT, showWarning)
+    if (houveErroStorage()) showWarning()
+    return () => window.removeEventListener(STORAGE_ERROR_EVENT, showWarning)
+  }, [])
 
   const markers = markersByView[view] ?? []
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
@@ -215,6 +223,11 @@ export function OwnerApp() {
         quotes={quotes}
         getClientById={getClientById}
       >
+        {storageWarning && (
+          <div role="alert" className="mb-6 rounded-[var(--radius-md)] border border-[var(--color-amber-500)] bg-[var(--color-amber-50)] px-4 py-3 text-[13px] text-[var(--color-ink-800)]">
+            {t.common.storageWarning}
+          </div>
+        )}
         {page === "settings" && <SettingsPage onBack={() => setPage("dashboard")} pricingConfig={pricingConfig} />}
 
         {page === "dashboard" && (

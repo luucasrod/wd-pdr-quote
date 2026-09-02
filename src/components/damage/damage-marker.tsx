@@ -34,7 +34,7 @@ export function DamageMarker({ marker, onCycle, index }: DamageMarkerProps) {
         e.stopPropagation()
         onCycle?.(marker.id)
       }}
-      className="group absolute z-10 flex items-center justify-center"
+      className="group absolute z-10 flex h-11 w-11 items-center justify-center"
       style={{ left: `${marker.x * 100}%`, top: `${marker.y * 100}%`, translateX: "-50%", translateY: "-50%" }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}

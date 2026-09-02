@@ -18,5 +18,7 @@ settingsPage: {
     partTypeLabel: "Typname",
     partTypePercent: "Zuschlag %",
     addPartType: "Bauteiltyp hinzufügen",
+    exportData: "Alles exportieren (JSON)",
+    exportDescription: "Laden Sie eine Sicherung von Angeboten, Kunden, Versicherern und Einstellungen herunter.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

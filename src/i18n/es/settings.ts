@@ -18,5 +18,7 @@ settingsPage: {
     partTypeLabel: "Nombre del tipo",
     partTypePercent: "Recargo %",
     addPartType: "Añadir tipo de pieza",
+    exportData: "Exportar todo (JSON)",
+    exportDescription: "Descargue una copia de seguridad de presupuestos, clientes, aseguradoras y ajustes.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

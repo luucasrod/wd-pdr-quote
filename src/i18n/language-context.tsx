@@ -2,11 +2,12 @@ import { createContext, useContext, useEffect, useState } from "react"
 import type { ReactNode } from "react"
 import type { Language, TranslationShape } from "@/i18n/translations"
 import { TRANSLATIONS } from "@/i18n/translations"
+import { escreverJson, lerJson } from "@/lib/storage"
 
 const STORAGE_KEY = "wd-pdr-language"
 
 function detectInitialLanguage(): Language {
-  const saved = localStorage.getItem(STORAGE_KEY) as Language | null
+  const saved = lerJson<Language | null>(STORAGE_KEY, null)
   if (saved && saved in TRANSLATIONS) return saved
   const browserLang = navigator.language.slice(0, 2).toLowerCase()
   if (browserLang in TRANSLATIONS) return browserLang as Language
@@ -25,7 +26,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(detectInitialLanguage)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, language)
+    escreverJson(STORAGE_KEY, language)
     document.documentElement.lang = language
   }, [language])
 

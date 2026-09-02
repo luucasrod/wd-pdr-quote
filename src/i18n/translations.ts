@@ -19,6 +19,13 @@ export interface TranslationShape {
     settings: string
     quotes: string
     changeType: string
+    storageWarning: string
+    deleteTitle: string
+    deleteDescription: string
+    cancel: string
+    deleteAction: string
+    deletedNotice: string
+    undo: string
   }
   typeSelect: {
     title: string
@@ -36,6 +43,9 @@ export interface TranslationShape {
     hint: string
     markingAreaLabel: string
     markingAreaInstruction: string
+    zoomIn: string
+    zoomOut: string
+    resetZoom: string
   }
   brush: {
     label: string
@@ -100,6 +110,8 @@ export interface TranslationShape {
     partTypeLabel: string
     partTypePercent: string
     addPartType: string
+    exportData: string
+    exportDescription: string
   }
   nav: {
     dashboard: string
@@ -254,4 +266,3 @@ export const TRANSLATIONS: Record<Language, TranslationShape> = {
   fr,
   es,
 }
-

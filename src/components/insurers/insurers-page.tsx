@@ -6,6 +6,8 @@ import { useLanguage } from "@/i18n/language-context"
 import { useInsurers } from "@/hooks/use-insurers"
 import { InsurerFormModal } from "@/components/insurers/insurer-form-modal"
 import type { Insurer } from "@/types/crm"
+import { DeleteDialog, UndoDelete } from "@/components/ui/delete-dialog"
+import { useUndoableDelete } from "@/hooks/use-undoable-delete"
 
 export function InsurersPage() {
   const { t } = useLanguage()
@@ -13,8 +15,12 @@ export function InsurersPage() {
   const [query, setQuery] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Insurer | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<Insurer | null>(null)
+  const deletion = useUndoableDelete(removeInsurer)
 
-  const filtered = insurers.filter((i) => `${i.name} ${i.phone} ${i.email}`.toLowerCase().includes(query.toLowerCase()))
+  const filtered = insurers
+    .filter((i) => i.id !== deletion.pending?.id)
+    .filter((i) => `${i.name} ${i.phone} ${i.email}`.toLowerCase().includes(query.toLowerCase()))
 
   function handleSave(data: Omit<Insurer, "id" | "createdAt">) {
     if (editing) updateInsurer(editing.id, data)
@@ -91,9 +97,7 @@ export function InsurersPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (confirm(t.insurers.deleteConfirm)) removeInsurer(i.id)
-                  }}
+                  onClick={() => setDeleteTarget(i)}
                   className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-400)] hover:bg-[var(--color-severity-severe-soft)] hover:text-[var(--color-severity-severe)]"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -105,6 +109,12 @@ export function InsurersPage() {
       )}
 
       <InsurerFormModal open={modalOpen} onOpenChange={setModalOpen} initial={editing} onSave={handleSave} />
+      <DeleteDialog
+        name={deleteTarget?.name ?? null}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={() => { if (deleteTarget) deletion.schedule(deleteTarget); setDeleteTarget(null) }}
+      />
+      <UndoDelete visible={Boolean(deletion.pending)} onUndo={deletion.undo} />
     </div>
   )
 }

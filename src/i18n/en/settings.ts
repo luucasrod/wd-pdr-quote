@@ -18,5 +18,7 @@ settingsPage: {
     partTypeLabel: "Type name",
     partTypePercent: "Surcharge %",
     addPartType: "Add part type",
+    exportData: "Export all (JSON)",
+    exportDescription: "Download a backup of quotes, clients, insurers and settings.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">
