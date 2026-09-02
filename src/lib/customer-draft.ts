@@ -13,7 +13,7 @@ export interface CustomerDraftContact {
 
 export interface CustomerDraft {
   expiresAt: number
-  step: "vehicle" | "damage" | "contact"
+  step: "vehicle" | "damage" | "contact" | "confirm"
   vehicleType: VehicleType | null
   view: VehicleView
   markersByView: ViewMarkers
@@ -27,7 +27,7 @@ export function loadCustomerDraft(now = Date.now()): CustomerDraft | null {
     if (!raw) return null
     const value = JSON.parse(raw) as Partial<CustomerDraft>
     if (typeof value.expiresAt !== "number" || value.expiresAt <= now ||
-      !["vehicle", "damage", "contact"].includes(value.step ?? "") ||
+      !["vehicle", "damage", "contact", "confirm"].includes(value.step ?? "") ||
       ![null, "sedan", "suv", "wagon", "compact", "van"].includes(value.vehicleType ?? null) ||
       !["top", "front", "rear", "left", "right"].includes(value.view ?? "") ||
       typeof value.markersByView !== "object" || value.markersByView === null ||

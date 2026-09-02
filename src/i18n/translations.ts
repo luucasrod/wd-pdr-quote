@@ -236,6 +236,10 @@ export interface TranslationShape {
     phoneInvalid: string
     pdfDownloadError: string
     retryPdf: string
+    confirmPhoneTitle: string
+    confirmPhoneQuestion: string
+    confirmPhoneSend: string
+    correctPhone: string
   }
   notFound: {
     code: string

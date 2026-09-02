@@ -5,6 +5,7 @@ import { CustomerPriceBar } from "@/components/customer/customer-price-bar"
 import { CustomerContactForm } from "@/components/customer/customer-contact-form"
 import type { ContactFormData } from "@/components/customer/customer-contact-form"
 import { CustomerDoneScreen } from "@/components/customer/customer-done-screen"
+import { PhoneConfirmation } from "@/components/customer/phone-confirmation"
 import { VehicleTypeSelect } from "@/components/vehicle/vehicle-type-select"
 import { VehicleViewer } from "@/components/vehicle/vehicle-viewer"
 import { Button } from "@/components/ui/button"
@@ -24,7 +25,7 @@ import { createIntentLock } from "@/lib/intent-lock"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
-type Step = "vehicle" | "damage" | "contact" | "done"
+type Step = "vehicle" | "damage" | "contact" | "confirm" | "done"
 
 export function CustomerQuotePage() {
   const initialDraft = useMemo(() => loadCustomerDraft(), [])
@@ -152,7 +153,7 @@ export function CustomerQuotePage() {
     { id: "damage", label: t.customer.stepDamage },
     { id: "contact", label: t.customer.stepContact },
   ]
-  const stepIndex = steps.findIndex((s) => s.id === step)
+  const stepIndex = step === "confirm" ? 2 : steps.findIndex((s) => s.id === step)
 
   return (
     <div className="min-h-svh bg-[var(--color-canvas)]">
@@ -238,8 +239,12 @@ export function CustomerQuotePage() {
         )}
 
         {step === "contact" && (
-          <CustomerContactForm onBack={() => setStep("damage")} onSubmit={handleSubmit} submitting={submitting}
+          <CustomerContactForm onBack={() => setStep("damage")} onSubmit={() => setStep("confirm")} submitting={submitting}
             form={contactForm} consent={consent} onFormChange={setContactForm} onConsentChange={setConsent} />
+        )}
+
+        {step === "confirm" && (
+          <PhoneConfirmation phone={contactForm.phone} onCorrect={() => setStep("contact")} onConfirm={() => handleSubmit(contactForm)} />
         )}
 
         {step === "done" && savedQuote && savedClient && (

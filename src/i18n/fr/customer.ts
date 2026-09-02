@@ -34,5 +34,9 @@ customer: {
     phoneInvalid: "Saisissez un numéro plausible (9 à 15 chiffres).",
     pdfDownloadError: "Impossible de créer le PDF. Vérifiez votre connexion et réessayez.",
     retryPdf: "Réessayer le PDF",
+    confirmPhoneTitle: "Confirmez votre numéro",
+    confirmPhoneQuestion: "Ce numéro est-il correct ?",
+    confirmPhoneSend: "Oui, envoyer la demande",
+    correctPhone: "Corriger le numéro",
   },
 } satisfies Pick<TranslationShape, "customer">
