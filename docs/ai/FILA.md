@@ -119,51 +119,42 @@ uma van e de um sedan pode dar peças diferentes, e isso é intencional e está 
 ---
 
 ## F14 — Melhorar a qualidade das 25 fotos dos veículos
-estado: `falhada` (originais `brand_assets/vehicle_backup/` ausentes) · sem dependências · **prioridade alta, é o que o cliente vê primeiro**
+estado: `em-curso — claude (sessão principal, 02/09/2026)`
 
-**O problema, medido.** As fotos no site são 840×560. Mas os **originais**, guardados em
-`brand_assets/vehicle_backup/`, são **420×280 com ~8 KB cada**. O que está publicado é um
-upscale 2× (Lanczos + nitidez) desses originais, feito por `brand_assets/upscale_vehicles.py`.
+**O bloqueio do lote 1 foi resolvido.** `brand_assets/` estava inteiro no `.gitignore`, portanto
+os originais não existiam em worktree nenhuma. Agora `brand_assets/vehicle_backup/` (as 25 fontes
+420×280) e os scripts estão versionados. Qualquer agente lhes chega.
 
-**Portanto: voltar a exportar com mais qualidade de JPEG não resolve nada.** A pixelização
-está gravada num ficheiro de 8 KB. Mais peso sem mais detalhe é só desperdício de dados
-móveis do cliente final. O Lanczos amplia, não inventa detalhe.
+**O problema, medido.** As fotos publicadas são 840×560, obtidas por upscale 2× (Lanczos + nitidez)
+de originais de **420×280 com ~8 KB**. Reexportar com mais qualidade de JPEG não resolve — a
+pixelização está gravada na origem, e o Lanczos amplia sem inventar detalhe.
 
-**Restrições, que não se negoceiam** (pedido explícito do Lucas): o **mesmo carro**, a
-**mesma cor**, o **mesmo enquadramento**, o **mesmo ângulo** em cada uma das 25 imagens
-(5 veículos × 5 vistas: topo, frente, traseira, esquerda, direita). Não é para gerar carros
-novos nem trocar de modelo. Só a mesma imagem, mais nítida.
+**Decisão tomada (Lucas, 02/09/2026): super-resolução com `realesrgan-ncnn-vulkan`.**
+Binário autónomo das releases oficiais do Real-ESRGAN (v0.2.5.0, ~43 MB), sem Python nem PyTorch.
+Modelo **`realesrgan-x4plus`** — o de fotografia. **Não usar o `-anime`**, que é o predefinido do
+executável e destrói fotografia real.
 
-**Caminho 1 — o melhor, e é de graça: pedir os originais.**
-As 25 imagens foram fornecidas pelo dono da oficina. É muito provável que existam em
-resolução decente e que estes 420×280 sejam uma exportação encolhida. **Antes de gastar
-tempo em upscale, perguntar ao Wan Diego se tem os ficheiros originais.** Isto está na
-fila como **H6**. Se ele tiver, esta tarefa passa a ser só reprocessar e o resultado é perfeito.
+```
+realesrgan-ncnn-vulkan.exe -i <entrada> -o <saida> -n realesrgan-x4plus -m models -s 4 -f png
+```
 
-**Caminho 2 — se não houver originais: super-resolução por IA.**
-Ao contrário do Lanczos, um modelo de super-resolução (Real-ESRGAN e equivalentes)
-reconstrói detalhe plausível. Em fotos de carro com fundo liso costuma dar muito bom
-resultado. Partir dos **originais 420×280** de `brand_assets/vehicle_backup/`, não das
-imagens já upscaladas — processar por cima de um upscale só amplifica os artefactos.
-
-Alvo: 4× → 1680×1120, guardadas com qualidade alta. O componente
-`vehicle-image-view.tsx` dimensiona só por `max-width`/`max-height`, portanto **imagens
-maiores não desalinham nada** — isso já foi verificado antes.
-
-**Ferramentas nesta máquina** (já confirmadas): Python com PIL e o `convert` do ImageMagick.
-Não há `magick` v7 nem `ffmpeg`. Um modelo de super-resolução tem de ser instalado.
+**Restrições, que não se negoceiam**: mesmo carro, mesma cor, mesmo enquadramento, mesmo ângulo.
+Partir sempre dos originais 420×280, **nunca** das imagens já ampliadas em `src/assets/vehicles/`.
 
 **Cuidados.**
-- Trabalhar numa pasta de saída separada e **só substituir no fim**, depois de comparar.
-- Gerar uma folha de comparação antes/depois por veículo (já existe
-  `brand_assets/make_compare.py` para isso) e **anexar ao PR**.
-- Duas imagens não são 840×560 (uma é 840×472, outra 840×448). Manter a proporção **de cada
-  uma**, não uniformizar.
-- Commit de checkpoint antes de substituir — as fotos já foram área sensível uma vez.
+- Commit de checkpoint antes de substituir.
+- Escala 4× dá 1680×1120 — adequado para ecrãs de alta densidade, já que a área de exibição ronda
+  os 530 px de largura. O componente dimensiona por `max-width`/`max-height`, portanto imagens
+  maiores não desalinham nada.
+- Guardar como **JPEG com o mesmo nome de ficheiro**, para não ser preciso mexer em
+  `src/data/vehicle/vehicle-images.ts`.
+- Duas das 25 não são 3:2. Como o upscale é uma escala pura, a proporção mantém-se sozinha —
+  **confirmar mesmo assim**.
+- Folha de comparação antes/depois no PR (`brand_assets/make_compare.py`).
 
-**Aceite.** As 25 imagens visivelmente mais nítidas · mesmo carro, cor, ângulo e
-enquadramento · proporção de cada imagem preservada · folha de comparação no PR ·
-a marcação de danos continua a cair no sítio certo (clicar na porta continua a inferir a porta).
+**Aceite.** As 25 visivelmente mais nítidas · mesmo carro, cor, ângulo e enquadramento ·
+proporção de cada uma preservada · peso total documentado · a marcação de danos continua a cair
+no sítio certo (clicar na porta continua a inferir a porta).
 
 ---
 
