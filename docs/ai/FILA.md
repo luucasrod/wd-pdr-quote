@@ -196,35 +196,45 @@ a funcionar ou redireciona · no desenho (b), `grep` ao bundle do cliente não e
 
 ---
 
-# BLOCO A2 — defeitos encontrados na auditoria de 02/09/2026
+# A FILA VIVE NO GITHUB
 
-Todos verificados a correr a app, não deduzidos do código. Issues no GitHub.
+`gh issue list` é a fonte de verdade. Este ficheiro guarda o contexto e a ordem.
 
-## F15 — App rebenta com o localStorage bloqueado · [#8](https://github.com/luucasrod/wd-pdr-quote/issues/8)
-estado: `pronta` · **prioridade máxima**
+## Correções comprovadas (fazer primeiro)
 
-Com `setItem` a atirar erro (Safari privado no iPhone, armazenamento cheio), a app entra em
-**ciclo infinito de renderização** e mostra o ecrã de erro. Reproduzido e medido.
-6 chamadas a `localStorage.setItem`, só 1 protegida.
+| # | Tarefa | Prioridade |
+|---|---|---|
+| [#8](https://github.com/luucasrod/wd-pdr-quote/issues/8) | App rebenta com localStorage bloqueado | Crítica |
+| [#9](https://github.com/luucasrod/wd-pdr-quote/issues/9) | Marcar amolgadelas impraticável no telemóvel | Crítica |
+| [#10](https://github.com/luucasrod/wd-pdr-quote/issues/10) | Link partilhado não mostra preview | Média |
+| [#11](https://github.com/luucasrod/wd-pdr-quote/issues/11) | Apagar é definitivo, sem desfazer | Alta |
 
-## F16 — Marcar amolgadelas é impraticável no telemóvel · [#9](https://github.com/luucasrod/wd-pdr-quote/issues/9)
-estado: `pronta` · **prioridade máxima**
+## Auditorias — investigar, não implementar (ver WORK_PROTOCOL 4b)
 
-Num ecrã de 424 px a imagem renderiza a **324×173** e não há zoom. Um dedo (44 px) tapa **14% da
-largura do carro** — na prática, uma porta. É a interação central da app, no dispositivo principal
-do cliente. Peça errada inferida = **preço errado**.
+| # | Tarefa | Nota |
+|---|---|---|
+| [#12](https://github.com/luucasrod/wd-pdr-quote/issues/12) | Segurança do painel | parte já conhecida, ler antes |
+| [#13](https://github.com/luucasrod/wd-pdr-quote/issues/13) | Isolamento entre orçamentos | **sem backend, quase tudo espera** |
+| [#14](https://github.com/luucasrod/wd-pdr-quote/issues/14) | Persistência e perda de dados | |
+| [#15](https://github.com/luucasrod/wd-pdr-quote/issues/15) | Queda de internet | **o envio ainda não usa rede** |
+| [#16](https://github.com/luucasrod/wd-pdr-quote/issues/16) | Envio duplicado | parcialmente testável |
+| [#17](https://github.com/luucasrod/wd-pdr-quote/issues/17) | Validação e casos extremos | |
+| [#18](https://github.com/luucasrod/wd-pdr-quote/issues/18) | Compatibilidade mobile | |
+| [#19](https://github.com/luucasrod/wd-pdr-quote/issues/19) | Consistência do dashboard | pista concreta na issue |
+| [#20](https://github.com/luucasrod/wd-pdr-quote/issues/20) | Tratamento de erros | |
+| [#21](https://github.com/luucasrod/wd-pdr-quote/issues/21) | Privacidade e RGPD | |
 
-## F17 — Link partilhado no WhatsApp não mostra nada · [#10](https://github.com/luucasrod/wd-pdr-quote/issues/10)
-estado: `pronta`
+## Melhoria independente
 
-Zero meta tags no `index.html`. A oficina vai divulgar por WhatsApp e Instagram, e hoje aparece só
-o URL cru. Falta descrição, Open Graph e imagem de partilha 1200×630.
+[#22](https://github.com/luucasrod/wd-pdr-quote/issues/22) — confirmar o telefone antes de enviar.
 
-## F18 — Apagar é definitivo, sem desfazer · [#11](https://github.com/luucasrod/wd-pdr-quote/issues/11)
-estado: `pronta`
+## Ordem recomendada
 
-`confirm()` nativo em 4 sítios, sem desfazer e sem exportação. Como os dados só vivem no
-localStorage, um toque errado perde o registo para sempre.
+`#8 → #9 → #11 → #10`, e depois as auditorias por
+`#12 → #13 → #14 → #15 → #16 → #17 → #18 → #20`. A #22 entra quando calhar.
+
+Três auditorias estão marcadas `bloqueada-por-backend`: dão para fazer em parte, mas a maior
+metade só passa a valer depois do Supabase. **Cada uma diz na própria issue o que é testável hoje.**
 
 ---
 

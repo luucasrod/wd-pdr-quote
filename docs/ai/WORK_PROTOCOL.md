@@ -119,6 +119,28 @@ Toda a gente precisa deles. Quem lá mexe segue estas regras:
 
 ---
 
+## 4b. Issues de AUDITORIA — investigar não é implementar
+
+Uma issue com a etiqueta `auditoria` **não é para alterar código**. É para descobrir se um problema
+existe. Confundir as duas coisas é a forma mais rápida de estragar uma noite de trabalho.
+
+Fluxo:
+
+1. **Testar** — a correr a app, não a ler o código.
+2. **Reproduzir uma falha real.** Uma suspeita não chega.
+3. **Documentar como reproduzir**, com os comandos e os números exatos.
+4. **Classificar a gravidade.**
+5. Se houver defeito, **abrir uma issue nova de correção** (`gh issue create`), a referenciar a auditoria.
+6. **Não corrigir na mesma tarefa**, a não ser que a correção seja trivial e o PR o diga claramente.
+
+Duas regras que valem ouro num relatório de auditoria:
+
+- **"Não aplicável" ≠ "sem problemas encontrados".** Se um cenário testa algo que ainda não existe
+  no projeto (endpoints, chamadas de rede no envio), dizer isso. Dar por seguro o que nunca foi
+  testado é pior do que não testar.
+- **Ler a secção "Estado atual" da issue antes de começar.** Muitas já trazem o que se sabe, para
+  não se gastar a sessão a redescobrir o que já está documentado.
+
 ## 5. Protocolo de pausa — o agente nunca fica parado à espera
 
 Se precisares de um ficheiro que não é do teu âmbito, ou dependeres de trabalho que outro
