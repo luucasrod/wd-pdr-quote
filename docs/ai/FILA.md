@@ -228,26 +228,25 @@ a funcionar ou redireciona · no desenho (b), `grep` ao bundle do cliente não e
 
 [#22](https://github.com/luucasrod/wd-pdr-quote/issues/22) — confirmar o telefone antes de enviar.
 
-## Lote 2 — repartição pelos dois agentes (02/09/2026)
+## Lote 2 — tudo no Codex, em série (02/09/2026)
 
 | Agente | Papel | Issues | Branch |
 |---|---|---|---|
-| **Codex** | BUILDER — altera código | `#8 → #11 → #10 → #9` | `codex/lote-2` |
-| **Claude** | AUDITOR — **não altera código** | `#12 → #14 → #19 → #17 → #20 → #16 → #13 → #15 → #21` | `claude/auditoria-1` |
+| **Codex** | BUILDER, depois AUDITOR | `#8 → #11 → #10 → #9`, depois `#12 → #14 → #19 → #17 → #20 → #16 → #13 → #15 → #21` | `codex/lote-2` |
 
-**Porque é seguro em paralelo**: o auditor não escreve código, só relatórios e issues novas.
-Não há colisão de ficheiros de `src/`.
+**Porque em série e não em paralelo.** A primeira versão deste plano punha as auditorias num
+segundo agente ao mesmo tempo. Tinha uma falha: **quatro das nove auditorias examinam código que
+as correções vão reescrever** — #14 e #20 dependem do `localStorage` que a #8 muda, a #16 toca no
+que a #11 mexe, e a #18 na superfície que a #9 reescreve.
 
-**Duas regras deste lote:**
+Auditar na véspera de alguém reescrever o que se está a auditar produz um relatório que nasce
+obsoleto. Em série, as auditorias examinam o estado real, já corrigido.
 
-1. **O auditor trabalha sobre o `main` de hoje e não puxa o trabalho do Codex a meio.**
-   Auditar um alvo em movimento dá resultados que não valem nada. Toda a issue que abrir deve
-   dizer o commit em que foi observada.
-2. **A auditoria #18 (compatibilidade mobile) fica de fora deste lote.** A #9 vai reescrever
-   exatamente essa superfície; auditá-la agora seria trabalho deitado fora. Entra no lote seguinte.
+**A #18 (compatibilidade mobile) continua fora deste lote** — só faz sentido depois de a #9 estar
+integrada em `main`, não apenas feita numa branch.
 
-**Claim**: cada agente atribui-se a issue no GitHub antes de começar
-(`gh issue edit <n> --add-assignee @me`), não no ficheiro. Assim não há disputa.
+**Regra que se mantém**: quando a fase de auditoria começar, **não se altera código**. Auditoria
+descobre e abre issues; correção é outra tarefa. Ver WORK_PROTOCOL secção 4b.
 
 ## Ordem recomendada
 
