@@ -119,7 +119,7 @@ uma van e de um sedan pode dar peças diferentes, e isso é intencional e está 
 ---
 
 ## F14 — Melhorar a qualidade das 25 fotos dos veículos
-estado: `em-curso — claude (sessão principal, 02/09/2026)`
+estado: **`feita`** — 02/09/2026, sessão principal do Claude
 
 **O bloqueio do lote 1 foi resolvido.** `brand_assets/` estava inteiro no `.gitignore`, portanto
 os originais não existiam em worktree nenhuma. Agora `brand_assets/vehicle_backup/` (as 25 fontes

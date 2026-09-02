@@ -65,7 +65,11 @@ export function VehicleImageView({ image, markers, onAddMarker, onCycleMarker, l
         }}
         className="select-none"
         style={{
-          maxWidth: "100%",
+          // As fontes passaram a ser 4x (1680px) para ecras de alta densidade, mas o
+          // tamanho APARENTE tem de continuar igual ao de antes: as imagens tinham
+          // 840px naturais e era esse o tamanho renderizado. Sem este limite, a
+          // imagem maior enche o contentor e o carro aparece ~33% maior.
+          maxWidth: "min(100%, 840px)",
           maxHeight: "100%",
           width: "auto",
           height: "auto",
