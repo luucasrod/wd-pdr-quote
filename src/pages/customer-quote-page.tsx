@@ -20,6 +20,7 @@ import { useQuotes } from "@/hooks/use-quotes"
 import { cn } from "@/lib/utils"
 import { lerJson } from "@/lib/storage"
 import { clearCustomerDraft, loadCustomerDraft, saveCustomerDraft } from "@/lib/customer-draft"
+import { createIntentLock } from "@/lib/intent-lock"
 
 const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
@@ -44,6 +45,7 @@ export function CustomerQuotePage() {
   const [savedClient, setSavedClient] = useState<Client | null>(null)
 
   const markerCounter = useRef(0)
+  const submitLock = useRef(createIntentLock())
 
   useEffect(() => {
     if (step === "done") return
@@ -101,7 +103,7 @@ export function CustomerQuotePage() {
   }
 
   function handleSubmit(data: ContactFormData) {
-    if (!vehicleType) return
+    if (!vehicleType || !submitLock.current.tryAcquire()) return
     setSubmitting(true)
     const client = createClient({ name: data.name, phone: data.phone, email: data.email, nif: "", address: "" })
     const quote = createQuote({
@@ -131,6 +133,7 @@ export function CustomerQuotePage() {
   }
 
   function handleNewRequest() {
+    submitLock.current.release()
     setVehicleType(null)
     setMarkersByView({})
     setView("right")
