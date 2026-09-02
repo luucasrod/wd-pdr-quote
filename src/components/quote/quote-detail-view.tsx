@@ -9,7 +9,10 @@ import { useClients } from "@/hooks/use-clients"
 import { useInsurers } from "@/hooks/use-insurers"
 import { StatusBadge } from "@/components/quote/status-badge"
 import { downloadQuotePdf } from "@/lib/generate-quote-pdf"
+import { VEHICLE_IMAGES } from "@/data/vehicle/vehicle-images"
+import { VehicleImageView } from "@/components/vehicle/vehicle-image-view"
 import type { QuoteStatus } from "@/types/crm"
+import type { VehicleView } from "@/types/vehicle"
 
 interface QuoteDetailViewProps {
   quoteId: string
@@ -41,6 +44,8 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
 
   const client = getClientById(quote.clientId)
   const insurer = getInsurerById(quote.insurerId)
+  const markedViews = (Object.entries(quote.markersByView ?? {}) as Array<[VehicleView, NonNullable<typeof quote.markersByView>[VehicleView]]>)
+    .filter((entry): entry is [VehicleView, NonNullable<(typeof entry)[1]>] => Boolean(entry[1]?.length))
 
   async function handleDownload() {
     setDownloading(true)
@@ -141,6 +146,21 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">{t.quoteMeta.notesLabel}</p>
               <p className="mt-1 whitespace-pre-wrap text-[13px] text-[var(--color-ink-700)]">{quote.notes}</p>
+            </div>
+          )}
+
+          {markedViews.length > 0 && (
+            <div className="grid gap-3 border-t border-[var(--color-ink-100)] pt-4 sm:grid-cols-2">
+              {markedViews.map(([view, markers]) => (
+                <div key={view}>
+                  <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">
+                    {t.views[view]}
+                  </p>
+                  <div className="h-48 overflow-hidden rounded-[var(--radius-md)] bg-[var(--color-ink-50)] p-2">
+                    <VehicleImageView image={VEHICLE_IMAGES[quote.vehicleType][view]} markers={markers} label={t.views[view]} />
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 

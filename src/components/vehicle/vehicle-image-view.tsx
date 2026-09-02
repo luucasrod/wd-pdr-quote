@@ -6,8 +6,8 @@ import { DamageMarkerLayer } from "@/components/damage/damage-marker-layer"
 interface VehicleImageViewProps {
   image: ViewImage
   markers: DamageMarker[]
-  onAddMarker: (x: number, y: number) => void
-  onCycleMarker: (id: string) => void
+  onAddMarker?: (x: number, y: number) => void
+  onCycleMarker?: (id: string) => void
   label: string
 }
 

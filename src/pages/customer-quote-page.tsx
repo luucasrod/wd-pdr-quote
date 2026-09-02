@@ -64,9 +64,10 @@ export function CustomerQuotePage() {
   )
 
   function addMarker(x: number, y: number) {
+    if (!vehicleType) return
     markerCounter.current += 1
     const id = `m-${markerCounter.current}-${x.toFixed(4)}-${y.toFixed(4)}`
-    const partId = inferPartId(view, x, y)
+    const partId = inferPartId(vehicleType, view, x, y)
     setMarkersByView((prev) => ({
       ...prev,
       [view]: [...(prev[view] ?? []), { id, x, y, severity: "minor", size: brushSize, partId }],

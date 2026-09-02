@@ -39,7 +39,7 @@ depois de F7, `F8·F9·F10·F11`.
 # BLOCO A — dá para fazer já, sem Supabase
 
 ## F1 — Partir o `translations.ts` em ficheiros por área
-**`SOLO`** · estado: `pronta` · sem dependências
+**`SOLO`** · estado: `feita` · sem dependências
 
 **Problema.** `src/i18n/translations.ts` tem ~1400 linhas e concentra os 5 idiomas num só
 ficheiro. Qualquer tarefa que acrescente texto passa por ele. Na Phase 1 isso gerou 6 dos
@@ -56,7 +56,7 @@ visíveis na app** — nenhuma string alterada, nenhum componente tocado.
 ---
 
 ## F2 — Testes ao motor de preço
-estado: `pronta` · sem dependências · pode correr em paralelo
+estado: `feita` · sem dependências · pode correr em paralelo
 
 **Problema.** `src/lib/pricing.ts` calcula dinheiro e nunca foi verificado automaticamente.
 
@@ -72,7 +72,7 @@ fosse removido (verificar removendo-o à mão e voltando a pôr).
 ---
 
 ## F3 — Carregar o jsPDF só quando é preciso
-estado: `pronta` · sem dependências · pode correr em paralelo
+estado: `feita` · sem dependências · pode correr em paralelo
 
 **Problema.** O bundle principal tem 976 kB. jsPDF + html2canvas (~380 kB) entram nele mas
 só são usados quando alguém carrega em "Baixar PDF". Todo o cliente final paga esse peso
@@ -87,7 +87,7 @@ download do PDF continua a funcionar no detalhe do orçamento e no ecrã final d
 ---
 
 ## F4 — Mostrar os danos no detalhe do orçamento
-estado: `pronta` · sem dependências · pode correr em paralelo
+estado: `feita` · sem dependências · pode correr em paralelo
 
 **Problema.** O orçamento já guarda os marcadores (Phase 1), mas o detalhe só mostra números.
 O dono vê "27 amassados, 1.240 €" sem ver **onde**, o que torna o valor indefensável
@@ -104,7 +104,7 @@ um orçamento antigo abre sem rebentar e sem secção vazia · não é possível
 ---
 
 ## F5 — Inferência de peça por tipo de veículo
-estado: `pronta` · sem dependências · pode correr em paralelo · **exige F2 feita antes**
+estado: `feita` · sem dependências · pode correr em paralelo · **exige F2 feita antes**
 
 **Problema.** `src/lib/part-inference.ts` usa as mesmas faixas de coordenada para os
 5 veículos. Uma van e um compacto têm proporções muito diferentes, e a peça inferida
@@ -119,7 +119,7 @@ uma van e de um sedan pode dar peças diferentes, e isso é intencional e está 
 ---
 
 ## F14 — Melhorar a qualidade das 25 fotos dos veículos
-estado: `pronta` · sem dependências · **prioridade alta, é o que o cliente vê primeiro**
+estado: `falhada` (originais `brand_assets/vehicle_backup/` ausentes) · sem dependências · **prioridade alta, é o que o cliente vê primeiro**
 
 **O problema, medido.** As fotos no site são 840×560. Mas os **originais**, guardados em
 `brand_assets/vehicle_backup/`, são **420×280 com ~8 KB cada**. O que está publicado é um

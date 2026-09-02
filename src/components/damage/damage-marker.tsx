@@ -5,7 +5,7 @@ import { useLanguage } from "@/i18n/language-context"
 
 interface DamageMarkerProps {
   marker: DamageMarkerType
-  onCycle: (id: string) => void
+  onCycle?: (id: string) => void
   index: number
 }
 
@@ -28,10 +28,11 @@ export function DamageMarker({ marker, onCycle, index }: DamageMarkerProps) {
   return (
     <motion.button
       type="button"
+      disabled={!onCycle}
       aria-label={`${index + 1}: ${severityLabel}`}
       onClick={(e) => {
         e.stopPropagation()
-        onCycle(marker.id)
+        onCycle?.(marker.id)
       }}
       className="group absolute z-10 flex items-center justify-center"
       style={{ left: `${marker.x * 100}%`, top: `${marker.y * 100}%`, translateX: "-50%", translateY: "-50%" }}
@@ -39,7 +40,7 @@ export function DamageMarker({ marker, onCycle, index }: DamageMarkerProps) {
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0, opacity: 0 }}
       transition={{ type: "spring", stiffness: 480, damping: 22 }}
-      whileTap={{ scale: 0.85 }}
+      whileTap={onCycle ? { scale: 0.85 } : undefined}
     >
       {marker.severity === "severe" && (
         <motion.svg
