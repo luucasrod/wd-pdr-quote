@@ -25,8 +25,12 @@ Estados: `pronta` · `em-curso — <agente>` · `em-revisao` · `bloqueada` · `
 Com um agente só, tudo corre em série, por esta ordem:
 
 ```
-F1 (SOLO) → F14 → F2 → F3 → F4 → F5 → F13 → [espera H1] → F6 (SOLO) → F7 (SOLO) → F8 → F9 → F10 → F11
+FEITAS: F1 · F2 · F3 · F4 · F5 · F14
+A FAZER: F15 → F16 → F17 → F18 → F13 → [espera H1] → F6 (SOLO) → F7 (SOLO) → F8 → F9 → F10 → F11
 ```
+
+**As issues estão agora no GitHub** (`gh issue list`), que passa a ser a fila real.
+Este ficheiro mantém o contexto e a ordem; o estado de cada tarefa vive na issue.
 
 Se o Codex voltar, os grupos que podem correr em paralelo são `F2·F3·F4·F5·F14` e,
 depois de F7, `F8·F9·F10·F11`.
@@ -189,6 +193,38 @@ quem souber o endereço. **F13 não substitui F9.**
 **Aceite.** `wdpdr.pt` abre o fluxo do cliente e não dá acesso ao painel · `oficina.wdpdr.pt`
 abre o painel · os dois com HTTPS e certificado válido · o link antigo `.vercel.app` continua
 a funcionar ou redireciona · no desenho (b), `grep` ao bundle do cliente não encontra código do painel.
+
+---
+
+# BLOCO A2 — defeitos encontrados na auditoria de 02/09/2026
+
+Todos verificados a correr a app, não deduzidos do código. Issues no GitHub.
+
+## F15 — App rebenta com o localStorage bloqueado · [#8](https://github.com/luucasrod/wd-pdr-quote/issues/8)
+estado: `pronta` · **prioridade máxima**
+
+Com `setItem` a atirar erro (Safari privado no iPhone, armazenamento cheio), a app entra em
+**ciclo infinito de renderização** e mostra o ecrã de erro. Reproduzido e medido.
+6 chamadas a `localStorage.setItem`, só 1 protegida.
+
+## F16 — Marcar amolgadelas é impraticável no telemóvel · [#9](https://github.com/luucasrod/wd-pdr-quote/issues/9)
+estado: `pronta` · **prioridade máxima**
+
+Num ecrã de 424 px a imagem renderiza a **324×173** e não há zoom. Um dedo (44 px) tapa **14% da
+largura do carro** — na prática, uma porta. É a interação central da app, no dispositivo principal
+do cliente. Peça errada inferida = **preço errado**.
+
+## F17 — Link partilhado no WhatsApp não mostra nada · [#10](https://github.com/luucasrod/wd-pdr-quote/issues/10)
+estado: `pronta`
+
+Zero meta tags no `index.html`. A oficina vai divulgar por WhatsApp e Instagram, e hoje aparece só
+o URL cru. Falta descrição, Open Graph e imagem de partilha 1200×630.
+
+## F18 — Apagar é definitivo, sem desfazer · [#11](https://github.com/luucasrod/wd-pdr-quote/issues/11)
+estado: `pronta`
+
+`confirm()` nativo em 4 sítios, sem desfazer e sem exportação. Como os dados só vivem no
+localStorage, um toque errado perde o registo para sempre.
 
 ---
 
