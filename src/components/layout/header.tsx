@@ -25,6 +25,7 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
   const [query, setQuery] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const { user, signOut } = useAuth()
   const searchRef = useRef<HTMLDivElement>(null)
 
@@ -53,6 +54,7 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
     onOpenQuote(id)
     setQuery("")
     setSearchOpen(false)
+    setMobileSearchOpen(false)
   }
 
   const navItems: { id: Page; label: string }[] = [
@@ -142,6 +144,7 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
         </div>
 
         <div className="ml-auto flex items-center gap-2 md:ml-3">
+          <Button variant="ghost" size="icon" className="lg:hidden" aria-label={t.common.search} onClick={() => setMobileSearchOpen((open) => !open)}><Search className="h-4.5 w-4.5" /></Button>
           <LanguageSwitcher />
           <Button variant="accent" size="md" className="hidden sm:inline-flex" onClick={onNewQuote}>
             <Plus className="h-4 w-4" />
@@ -162,6 +165,21 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
           </div>}
         </div>
       </div>
+      {mobileSearchOpen && <div className="absolute inset-x-0 top-[72px] z-50 border-b border-[var(--color-ink-100)] bg-white p-3 shadow-[var(--shadow-soft-lg)] lg:hidden">
+        <div className="relative mx-auto max-w-xl">
+          <Search className="pointer-events-none absolute left-3.5 top-3 h-4 w-4 text-[var(--color-ink-400)]" />
+          <input type="search" autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t.common.searchPlaceholder} className="h-10 w-full rounded-[var(--radius-md)] border border-[var(--color-ink-100)] bg-[var(--color-ink-50)] pl-10 pr-3 text-[16px] text-[var(--color-ink-900)] outline-none focus:border-[var(--color-amber-400)]" />
+          {trimmedQuery && <div className="mt-2 max-h-[min(45svh,320px)] overflow-y-auto overscroll-contain rounded-[var(--radius-md)] border border-[var(--color-ink-100)] bg-white py-1">
+            {searchResults.length === 0 ? <p className="px-3 py-3 text-[13px] text-[var(--color-ink-400)]">{t.common.noResults}</p> : searchResults.map((q) => {
+              const client = getClientById(q.clientId)
+              return <button key={q.id} type="button" onClick={() => handleSelectResult(q.id)} className="flex min-h-12 w-full flex-col justify-center gap-0.5 px-3 py-2 text-left active:bg-[var(--color-ink-50)]">
+                <span className="truncate text-[13px] font-medium text-[var(--color-ink-900)]">{client?.name ?? t.quotesList.noClient}</span>
+                <span className="truncate text-[11.5px] text-[var(--color-ink-400)]">{t.typeSelect.types[q.vehicleType].label}{q.plate && ` · ${q.plate}`} · {q.totals.totalPrice.toLocaleString(language, { style: "currency", currency: "EUR" })}</span>
+              </button>
+            })}
+          </div>}
+        </div>
+      </div>}
     </header>
   )
 }
