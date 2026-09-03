@@ -52,6 +52,29 @@ e mais nada. Verificado com `set role anon`: lê 0 orçamentos, 0 clientes, 0 se
 uma função `security definer` que valida, grava cliente + orçamento na mesma transação e
 devolve só o id. **O papel `anon` não tem escrita direta em tabela nenhuma.**
 
+## A tabela WKO — até onde é oficial
+
+Fonte: **WKO, Unverbindliche Leitlinien Nr. 10 — Hagel-Dellen Reparatur (04/2023)**.
+Fotos em `docs/referencia/`. São **três** tamanhos, não mais:
+
+| | |
+|---|---|
+| `minor` | **leicht** — 0-20 mm |
+| `medium` | **mittel** — 20-30 mm |
+| `severe` | **stark** — 30-45 mm |
+
+Os valores de `DEFAULT_HOURLY_TABLE` foram comparados linha a linha com a tabela oficial: **batem
+exatamente** em todas as faixas que ela cobre.
+
+⚠️ **A oficial para nas 351-400 para leicht/mittel e nas 181-200 para stark.** Tudo o que a app tem
+acima disso (16 linhas) foi extrapolado e não é oficial — ver issue #40. Não acrescentar mais linhas
+inventadas.
+
+**Validação independente**: a app antiga do dono (`pdr.app.br`) usa a mesma tabela × 50 €/h.
+Verificado em quatro casos das gravações de ecrã (14 pequenas → 44,00 = 0,88 × 50; 45 médias →
+168,00 = 3,36 × 50; 24 grandes → 144,00 = 2,88 × 50; 200 pequenas → 216,00 = 4,32 × 50).
+**O nosso motor é matematicamente idêntico ao que ele já usa.**
+
 ## Motor de preço — `src/lib/pricing.ts`
 
 1. Agrupa os marcadores por peça (`partId`, inferido da posição do clique).
