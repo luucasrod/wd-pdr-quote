@@ -240,6 +240,7 @@ export interface TranslationShape {
     confirmPhoneQuestion: string
     confirmPhoneSend: string
     correctPhone: string
+    submissionError: string
   }
   notFound: {
     code: string

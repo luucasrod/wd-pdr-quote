@@ -17,9 +17,10 @@ interface CustomerContactFormProps {
   consent: boolean
   onFormChange: (form: ContactFormData) => void
   onConsentChange: (consent: boolean) => void
+  submissionError?: boolean
 }
 
-export function CustomerContactForm({ onBack, onSubmit, submitting, form, consent, onFormChange, onConsentChange }: CustomerContactFormProps) {
+export function CustomerContactForm({ onBack, onSubmit, submitting, form, consent, onFormChange, onConsentChange, submissionError }: CustomerContactFormProps) {
   const { t } = useLanguage()
 
   const phoneValid = !form.phone || isPlausiblePhone(form.phone)
@@ -113,6 +114,7 @@ export function CustomerContactForm({ onBack, onSubmit, submitting, form, consen
             </Link>
 
             <p className="text-[11px] text-[var(--color-ink-400)]">* {t.customer.requiredFieldsNote}</p>
+            {submissionError && <p role="alert" className="text-[12.5px] text-[var(--color-severity-severe)]">{t.customer.submissionError}</p>}
 
             <Button type="submit" variant="accent" size="lg" disabled={!canSubmit} className="mt-1">
               <Send className="h-4 w-4" />
