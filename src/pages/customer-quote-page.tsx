@@ -19,11 +19,9 @@ import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useClients } from "@/hooks/use-clients"
 import { useQuotes } from "@/hooks/use-quotes"
 import { cn } from "@/lib/utils"
-import { lerJson } from "@/lib/storage"
 import { clearCustomerDraft, loadCustomerDraft, saveCustomerDraft } from "@/lib/customer-draft"
 import { createIntentLock } from "@/lib/intent-lock"
-
-const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
+import { supabase } from "@/lib/supabase"
 
 type Step = "vehicle" | "damage" | "contact" | "confirm" | "done"
 
@@ -44,6 +42,7 @@ export function CustomerQuotePage() {
   const [submitting, setSubmitting] = useState(false)
   const [savedQuote, setSavedQuote] = useState<SavedQuote | null>(null)
   const [savedClient, setSavedClient] = useState<Client | null>(null)
+  const [submissionError, setSubmissionError] = useState(false)
 
   const markerCounter = useRef(0)
   const submitLock = useRef(createIntentLock())
@@ -56,9 +55,7 @@ export function CustomerQuotePage() {
   const markers = markersByView[view] ?? []
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
 
-  const hourlyRate = useMemo(() => {
-    return Number(lerJson(HOURLY_RATE_KEY, 45))
-  }, [])
+  const hourlyRate = pricingConfig.hourlyRate
 
   const totals = useMemo(
     () =>
@@ -103,13 +100,13 @@ export function CustomerQuotePage() {
     })
   }
 
-  function handleSubmit(data: ContactFormData) {
+  async function handleSubmit(data: ContactFormData) {
     if (!vehicleType || !submitLock.current.tryAcquire()) return
     setSubmitting(true)
-    const client = createClient({ name: data.name, phone: data.phone, email: data.email, nif: "", address: "" })
-    const quote = createQuote({
+    setSubmissionError(false)
+    const quoteData = {
       status: "sent",
-      clientId: client.id,
+      clientId: null,
       insurerId: null,
       vehicleType,
       plate: data.plate,
@@ -127,7 +124,26 @@ export function CustomerQuotePage() {
       },
       partCount: totals.parts.length,
       markerCount: allMarkers.length,
-    })
+    } as const
+    let client: Client
+    let quote: SavedQuote
+    if (supabase) {
+      const { data: quoteId, error } = await supabase.rpc("submeter_pedido", {
+        p_nome: data.name, p_telefone: data.phone, p_email: data.email,
+        p_matricula: data.plate, p_notas: data.notes, p_tipo_veiculo: vehicleType,
+        p_markers: markersByView, p_breakdown: totals.parts, p_totals: quoteData.totals,
+        p_part_count: totals.parts.length, p_marker_count: allMarkers.length,
+      })
+      if (error || !quoteId) {
+        setSubmitting(false); setSubmissionError(true); setStep("contact"); submitLock.current.release(); return
+      }
+      const now = Date.now()
+      client = { id: "", name: data.name, phone: data.phone, email: data.email, nif: "", address: "", createdAt: now }
+      quote = { ...quoteData, id: quoteId, createdAt: now, updatedAt: now }
+    } else {
+      client = createClient({ name: data.name, phone: data.phone, email: data.email, nif: "", address: "" })
+      quote = createQuote({ ...quoteData, clientId: client.id })
+    }
     setSavedClient(client)
     setSavedQuote(quote)
     clearCustomerDraft()
@@ -154,6 +170,9 @@ export function CustomerQuotePage() {
     { id: "contact", label: t.customer.stepContact },
   ]
   const stepIndex = step === "confirm" ? 2 : steps.findIndex((s) => s.id === step)
+
+  if (pricingConfig.loading) return <div className="min-h-svh animate-pulse bg-[var(--color-canvas)]" />
+  if (pricingConfig.error) return <div className="flex min-h-svh items-center justify-center bg-[var(--color-canvas)] p-8"><p role="alert" className="text-[var(--color-severity-severe)]">{t.errorBoundary.subtitle}</p></div>
 
   return (
     <div className="min-h-svh bg-[var(--color-canvas)]">
@@ -239,7 +258,7 @@ export function CustomerQuotePage() {
         )}
 
         {step === "contact" && (
-          <CustomerContactForm onBack={() => setStep("damage")} onSubmit={() => setStep("confirm")} submitting={submitting}
+          <CustomerContactForm onBack={() => setStep("damage")} onSubmit={() => setStep("confirm")} submitting={submitting} submissionError={submissionError}
             form={contactForm} consent={consent} onFormChange={setContactForm} onConsentChange={setConsent} />
         )}
 

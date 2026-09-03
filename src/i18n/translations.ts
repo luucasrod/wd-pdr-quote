@@ -114,6 +114,11 @@ export interface TranslationShape {
     addPartType: string
     exportData: string
     exportDescription: string
+    importData: string
+    importingData: string
+    importDescription: string
+    importResult: string
+    importError: string
   }
   nav: {
     dashboard: string
@@ -171,6 +176,7 @@ export interface TranslationShape {
     delete: string
     deleteConfirm: string
     view: string
+    newRequest: string
   }
   quoteMeta: {
     title: string
@@ -240,6 +246,7 @@ export interface TranslationShape {
     confirmPhoneQuestion: string
     confirmPhoneSend: string
     correctPhone: string
+    submissionError: string
   }
   notFound: {
     code: string
@@ -255,10 +262,14 @@ export interface TranslationShape {
   auth: {
     title: string
     subtitle: string
-    passcodeLabel: string
-    passcodePlaceholder: string
     submitButton: string
     errorMessage: string
+    emailLabel: string
+    passwordLabel: string
+    passcodeLabel: string
+    passcodePlaceholder: string
+    signingIn: string
+    signOut: string
   }
 }
 

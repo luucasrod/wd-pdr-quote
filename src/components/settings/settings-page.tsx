@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowLeft, Clock3, Download, Layers } from "lucide-react"
+import { ArrowLeft, Clock3, Download, Layers, Upload } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -8,6 +8,8 @@ import { EditablePriceTable } from "@/components/settings/editable-price-table"
 import { PartTypeTable } from "@/components/settings/part-type-table"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { downloadExportData } from "@/lib/export-data"
+import { importLocalData, type ImportCounts } from "@/lib/import-local-data"
+import { isSupabaseConfigured } from "@/lib/supabase"
 
 type Tab = "hourly" | "partTypes"
 
@@ -19,6 +21,9 @@ interface SettingsPageProps {
 export function SettingsPage({ onBack, pricingConfig }: SettingsPageProps) {
   const { t } = useLanguage()
   const [tab, setTab] = useState<Tab>("hourly")
+  const [importing, setImporting] = useState(false)
+  const [imported, setImported] = useState<ImportCounts | null>(null)
+  const [importError, setImportError] = useState(false)
   const { hourlyTable, partTypes, hourlyOps, addPartType, updatePartType, removePartType, resetHourly, resetPartTypes } =
     pricingConfig
 
@@ -92,6 +97,12 @@ export function SettingsPage({ onBack, pricingConfig }: SettingsPageProps) {
           {t.settingsPage.exportData}
         </Button>
       </Card>
+      {isSupabaseConfigured && <Card className="mt-6 p-5 sm:p-6">
+        <p className="mb-4 text-[13px] text-[var(--color-ink-500)]">{t.settingsPage.importDescription}</p>
+        <Button variant="outline" disabled={importing} onClick={async () => { setImporting(true); setImportError(false); try { setImported(await importLocalData()) } catch { setImportError(true) } finally { setImporting(false) } }}><Upload className="h-4 w-4" />{importing ? t.settingsPage.importingData : t.settingsPage.importData}</Button>
+        {imported && <p className="mt-3 text-[12.5px] text-[var(--color-ink-600)]">{t.settingsPage.importResult.replace("{clients}", String(imported.clients)).replace("{insurers}", String(imported.insurers)).replace("{quotes}", String(imported.quotes))}</p>}
+        {importError && <p role="alert" className="mt-3 text-[12.5px] text-[var(--color-severity-severe)]">{t.settingsPage.importError}</p>}
+      </Card>}
     </div>
   )
 }

@@ -20,5 +20,10 @@ settingsPage: {
     addPartType: "Ajouter un type de pièce",
     exportData: "Tout exporter (JSON)",
     exportDescription: "Téléchargez une sauvegarde des devis, clients, assureurs et paramètres.",
+    importData: "Importer les données de ce navigateur",
+    importingData: "Importation…",
+    importDescription: "Importez les données enregistrées dans ce navigateur. Répéter l'importation ne crée pas de doublons.",
+    importResult: "Importés : {clients} clients, {insurers} assureurs et {quotes} devis.",
+    importError: "Impossible d'importer les données. Veuillez réessayer.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

@@ -1,5 +1,9 @@
 # React + TypeScript + Vite
 
+## Acesso à oficina
+
+Com Supabase configurado, `/oficina` usa autenticação por email e password. Não existe registo público; o utilizador é criado e a password é reposta manualmente no dashboard do Supabase. Sem as variáveis Supabase, a aplicação mantém o modo local de desenvolvimento.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

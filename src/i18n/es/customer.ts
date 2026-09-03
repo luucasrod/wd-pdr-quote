@@ -38,5 +38,6 @@ customer: {
     confirmPhoneQuestion: "¿Es correcto este número?",
     confirmPhoneSend: "Sí, enviar solicitud",
     correctPhone: "Corregir número",
+    submissionError: "No se pudo enviar la solicitud. Compruebe la conexión e inténtelo de nuevo; sus daños siguen guardados.",
   },
 } satisfies Pick<TranslationShape, "customer">

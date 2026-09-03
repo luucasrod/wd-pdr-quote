@@ -5,13 +5,14 @@ import './index.css'
 import App from './App.tsx'
 import { LanguageProvider } from './i18n/language-context.tsx'
 import { ErrorBoundary } from './components/error-boundary.tsx'
+import { AuthProvider } from './auth/auth-context.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
         <LanguageProvider>
-          <App />
+          <AuthProvider><App /></AuthProvider>
         </LanguageProvider>
       </BrowserRouter>
     </ErrorBoundary>

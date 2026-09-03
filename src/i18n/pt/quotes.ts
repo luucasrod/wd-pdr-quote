@@ -44,6 +44,7 @@ quotesList: {
     delete: "Eliminar",
     deleteConfirm: "Eliminar este orçamento?",
     view: "Ver",
+    newRequest: "Novo pedido",
   },
 quoteMeta: {
     title: "Detalhes do Orçamento",
