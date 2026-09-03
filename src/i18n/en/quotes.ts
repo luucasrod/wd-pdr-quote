@@ -44,6 +44,7 @@ quotesList: {
     delete: "Delete",
     deleteConfirm: "Delete this quote?",
     view: "View",
+    newRequest: "New request",
   },
 quoteMeta: {
     title: "Quote Details",

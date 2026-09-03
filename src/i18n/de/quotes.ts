@@ -44,6 +44,7 @@ quotesList: {
     delete: "Löschen",
     deleteConfirm: "Dieses Angebot löschen?",
     view: "Ansehen",
+    newRequest: "Neue Anfrage",
   },
 quoteMeta: {
     title: "Angebotsdetails",

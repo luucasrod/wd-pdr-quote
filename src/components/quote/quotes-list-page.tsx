@@ -68,6 +68,7 @@ export function QuotesListPage({ onNewQuote, onOpenQuote }: QuotesListPageProps)
                     >
                       <td className="px-4 py-3 font-medium text-[var(--color-ink-800)]">
                         {client?.name ?? t.quotesList.noClient}
+                        {q.source === "customer" && !q.seenAt && <span className="ml-2 rounded-full bg-[var(--color-amber-50)] px-2 py-1 text-[10px] text-[var(--color-amber-700)]">{t.quotesList.newRequest}</span>}
                       </td>
                       <td className="px-4 py-3 text-[var(--color-ink-600)]">
                         {t.typeSelect.types[q.vehicleType].label}

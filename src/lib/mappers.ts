@@ -32,17 +32,18 @@ export const quoteFromRow = (row: QuoteRow): SavedQuote => ({
   parts: row.part_breakdown, finishHours: row.finish_hours, surcharge1: row.surcharge1,
   surcharge2: row.surcharge2, totals: row.totals, partCount: row.part_count,
   markerCount: row.marker_count,
+  source: row.source, seenAt: row.seen_at ? toMillis(row.seen_at) : null,
 })
 
 export const quoteToRow = (quote: SavedQuote): QuoteRow => ({
   id: quote.id, created_at: toIso(quote.createdAt), updated_at: toIso(quote.updatedAt),
-  status: quote.status, source: "owner", client_id: quote.clientId, insurer_id: quote.insurerId,
+  status: quote.status, source: quote.source ?? "owner", client_id: quote.clientId, insurer_id: quote.insurerId,
   vehicle_type: quote.vehicleType, plate: quote.plate, notes: quote.notes,
   markers_by_view: quote.markersByView ?? {}, part_type_by_part: quote.partTypeByPart ?? {},
   part_breakdown: quote.parts ?? [], finish_hours: quote.finishHours ?? 0,
   surcharge1: quote.surcharge1 ?? false, surcharge2: quote.surcharge2 ?? false,
   totals: quote.totals, part_count: quote.partCount, marker_count: quote.markerCount,
-  seen_at: null, legacy_id: null,
+  seen_at: quote.seenAt ? toIso(quote.seenAt) : null, legacy_id: null,
 })
 
 export const pricingFromRow = (row: ShopSettingsRow) => ({

@@ -20,5 +20,10 @@ settingsPage: {
     addPartType: "Add part type",
     exportData: "Export all (JSON)",
     exportDescription: "Download a backup of quotes, clients, insurers and settings.",
+    importData: "Import data from this browser",
+    importingData: "Importing…",
+    importDescription: "Import this browser's saved data into the workshop. Repeating the import will not create duplicates.",
+    importResult: "Imported: {clients} clients, {insurers} insurers and {quotes} quotes.",
+    importError: "The data could not be imported. Please try again.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

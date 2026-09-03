@@ -6,9 +6,10 @@ import type { Page } from "@/types/nav"
 interface BottomNavProps {
   page: Page
   onNavigate: (page: Page) => void
+  newQuoteCount?: number
 }
 
-export function BottomNav({ page, onNavigate }: BottomNavProps) {
+export function BottomNav({ page, onNavigate, newQuoteCount = 0 }: BottomNavProps) {
   const { t } = useLanguage()
 
   const items: { id: Page; label: string; icon: typeof LayoutGrid }[] = [
@@ -32,7 +33,7 @@ export function BottomNav({ page, onNavigate }: BottomNavProps) {
               active ? "text-[var(--color-amber-600)]" : "text-[var(--color-ink-400)]"
             )}
           >
-            <item.icon className="h-5 w-5" strokeWidth={active ? 2.4 : 2} />
+            <span className="relative"><item.icon className="h-5 w-5" strokeWidth={active ? 2.4 : 2} />{item.id === "quotesList" && newQuoteCount > 0 && <span className="absolute -right-3 -top-2 min-w-4 rounded-full bg-[var(--color-amber-500)] px-1 text-[9px] text-[var(--color-ink-950)]">{newQuoteCount}</span>}</span>
             {item.label}
           </button>
         )

@@ -114,6 +114,11 @@ export interface TranslationShape {
     addPartType: string
     exportData: string
     exportDescription: string
+    importData: string
+    importingData: string
+    importDescription: string
+    importResult: string
+    importError: string
   }
   nav: {
     dashboard: string
@@ -171,6 +176,7 @@ export interface TranslationShape {
     delete: string
     deleteConfirm: string
     view: string
+    newRequest: string
   }
   quoteMeta: {
     title: string

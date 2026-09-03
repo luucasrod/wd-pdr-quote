@@ -56,4 +56,6 @@ export interface SavedQuote {
   totals: SavedQuoteTotalsSnapshot
   partCount: number
   markerCount: number
+  source?: "owner" | "customer"
+  seenAt?: number | null
 }

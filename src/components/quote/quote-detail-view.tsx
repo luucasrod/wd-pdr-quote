@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ArrowLeft, Download, Loader2, Pencil, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -38,6 +38,9 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
   })
 
   const quote = getQuoteById(quoteId)
+  useEffect(() => {
+    if (quote?.source === "customer" && !quote.seenAt) updateQuote(quote.id, { seenAt: Date.now() })
+  }, [quote?.id, quote?.seenAt, quote?.source, updateQuote])
   if (!quote) {
     return (
       <div className="mx-auto max-w-2xl text-center">

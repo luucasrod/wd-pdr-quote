@@ -17,9 +17,10 @@ interface HeaderProps {
   onOpenQuote: (id: string) => void
   quotes: SavedQuote[]
   getClientById: (id: string | null) => Client | undefined
+  newQuoteCount?: number
 }
 
-export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getClientById }: HeaderProps) {
+export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getClientById, newQuoteCount = 0 }: HeaderProps) {
   const { t, language } = useLanguage()
   const [query, setQuery] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
@@ -83,7 +84,7 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
                   : "text-[var(--color-ink-500)] hover:text-[var(--color-ink-900)]"
               )}
             >
-              {item.label}
+              {item.label}{item.id === "quotesList" && newQuoteCount > 0 && <span className="ml-1 rounded-full bg-[var(--color-amber-500)] px-1.5 text-[10px] text-[var(--color-ink-950)]">{newQuoteCount}</span>}
             </button>
           ))}
         </nav>

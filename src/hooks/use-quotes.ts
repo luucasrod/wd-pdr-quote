@@ -18,6 +18,12 @@ export function useQuotes() {
     setLoading(false)
   }, [])
   useEffect(() => { if (!supabase) return; void refresh(); window.addEventListener(QUOTES_REMOTE_CHANGE_EVENT, refresh); return () => window.removeEventListener(QUOTES_REMOTE_CHANGE_EVENT, refresh) }, [refresh])
+  useEffect(() => {
+    const client = supabase
+    if (!client) return
+    const channel = client.channel("new-customer-quotes").on("postgres_changes", { event: "INSERT", schema: "public", table: "quotes", filter: "source=eq.customer" }, () => { void refresh() }).subscribe()
+    return () => { void client.removeChannel(channel) }
+  }, [refresh])
   const changed = () => window.dispatchEvent(new Event(QUOTES_REMOTE_CHANGE_EVENT))
   function createQuote(data: Omit<SavedQuote, "id" | "createdAt" | "updatedAt">) {
     const now = Date.now()

@@ -44,6 +44,7 @@ quotesList: {
     delete: "Supprimer",
     deleteConfirm: "Supprimer ce devis ?",
     view: "Voir",
+    newRequest: "Nouvelle demande",
   },
 quoteMeta: {
     title: "Détails du Devis",

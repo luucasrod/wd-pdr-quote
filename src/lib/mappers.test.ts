@@ -21,7 +21,7 @@ describe("Supabase mappers", () => {
       vehicleType: "sedan", plate: "AA-00-AA", notes: "", markersByView: {}, partTypeByPart: {},
       parts: [], finishHours: 0, surcharge1: false, surcharge2: false,
       totals: { subtotalHours: 1, prepHours: .2, finishHours: 0, surchargeHours: 0, totalHours: 1.2, hourlyRate: 45, totalPrice: 54 },
-      partCount: 1, markerCount: 2,
+      partCount: 1, markerCount: 2, source: "owner", seenAt: null,
     }
     expect(quoteFromRow(quoteToRow(value))).toEqual(value)
   })

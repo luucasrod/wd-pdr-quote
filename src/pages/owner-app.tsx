@@ -225,6 +225,7 @@ export function OwnerApp() {
         onOpenQuote={handleOpenQuote}
         quotes={quotes}
         getClientById={getClientById}
+        newQuoteCount={quotes.filter((quote) => quote.source === "customer" && !quote.seenAt).length}
       >
         {storageWarning && (
           <div role="alert" className="mb-6 rounded-[var(--radius-md)] border border-[var(--color-amber-500)] bg-[var(--color-amber-50)] px-4 py-3 text-[13px] text-[var(--color-ink-800)]">
