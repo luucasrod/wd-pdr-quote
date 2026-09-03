@@ -12,7 +12,9 @@ LÊ PRIMEIRO: AGENTS.md, docs/ai/CONTEXT.md, docs/ai/WORK_PROTOCOL.md.
 
 ═══ O QUE ESTE LOTE É, E PORQUE É DIFERENTE ═══
 
-Vais escrever a camada que liga a app ao Supabase. Issues: #31 → #34 → #32 → #33 → #35
+Vais escrever a camada que liga a app ao Supabase. Issues: #31 → #34 → #32 → #33 → #35 → #36
+
+A #36 (pesquisa do painel escondida no telemovel) nao tem nada a ver com Supabase e nao depende de nada. Fica no fim como tarefa independente: se as outras correrem mal, esta ainda entrega valor.
 
 NÃO HÁ PROJETO SUPABASE LIGADO. A conta do dono da oficina ainda não existe (bloqueio H1). Estás a escrever código que não podes executar contra uma base de dados real, e isso é intencional: quando a conta existir, o trabalho passa a ser ligar e verificar em vez de começar do zero.
 
@@ -33,6 +35,8 @@ Isto muda três coisas:
 #32 é SOLO pelo WORK_PROTOCOL: mexe nos hooks de dados. Nota que a #24 do lote 3 acabou de mexer nesses mesmos ficheiros para sincronizar entre abas — lê o que ela fez e reconcilia, não desfaças.
 
 #33 e #35 dependem da #32.
+
+#36 e independente de tudo. Toca so em src/components/layout/header.tsx e no BottomNav. Saiu da auditoria mobile do lote 3: a busca esta com "hidden lg:flex" e o dono usa o telemovel na oficina.
 
 ═══ ARMADILHAS JÁ CONHECIDAS ═══
 
