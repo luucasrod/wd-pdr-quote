@@ -266,6 +266,8 @@ export interface TranslationShape {
     errorMessage: string
     emailLabel: string
     passwordLabel: string
+    passcodeLabel: string
+    passcodePlaceholder: string
     signingIn: string
     signOut: string
   }

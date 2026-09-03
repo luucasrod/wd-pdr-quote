@@ -8,6 +8,8 @@ auth: {
     errorMessage: "E-Mail oder Passwort ist falsch. Bitte versuchen Sie es erneut.",
     emailLabel: "E-Mail",
     passwordLabel: "Passwort",
+    passcodeLabel: "Zugangscode",
+    passcodePlaceholder: "••••",
     signingIn: "Anmeldung…",
     signOut: "Abmelden",
   },
