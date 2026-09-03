@@ -3,7 +3,7 @@ import { CustomerQuotePage } from "@/pages/customer-quote-page"
 import { OwnerApp } from "@/pages/owner-app"
 import { PrivacyPolicyPage } from "@/pages/privacy-policy-page"
 import { NotFoundPage } from "@/pages/not-found-page"
-import { OficinaPasscodeGate } from "@/components/auth/oficina-passcode-gate"
+import { RequireAuth } from "@/auth/require-auth"
 
 function App() {
   return (
@@ -13,9 +13,9 @@ function App() {
       <Route
         path="/oficina/*"
         element={
-          <OficinaPasscodeGate>
+          <RequireAuth>
             <OwnerApp />
-          </OficinaPasscodeGate>
+          </RequireAuth>
         }
       />
       <Route path="*" element={<NotFoundPage />} />

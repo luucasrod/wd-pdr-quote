@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
-import { Search, Settings, Plus } from "lucide-react"
+import { Search, Settings, Plus, LogOut } from "lucide-react"
+import { useAuth } from "@/auth/auth-context"
 import { motion, AnimatePresence } from "framer-motion"
 import { LogoLockup } from "@/components/brand/logo-mark"
 import { Button } from "@/components/ui/button"
@@ -22,6 +23,8 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
   const { t, language } = useLanguage()
   const [query, setQuery] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
+  const { user, signOut } = useAuth()
   const searchRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -149,9 +152,13 @@ export function Header({ page, onNavigate, onNewQuote, onOpenQuote, quotes, getC
           <Button variant="ghost" size="icon" aria-label={t.common.settings} onClick={() => onNavigate("settings")}>
             <Settings className="h-4.5 w-4.5" />
           </Button>
-          <button className="ml-1 hidden h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink-950)] text-[12px] font-semibold text-white shadow-[var(--shadow-soft-xs)] transition-transform hover:scale-[1.04] active:scale-95 sm:flex">
-            WD
-          </button>
+          {user && <div className="relative ml-1 hidden sm:block">
+            <button type="button" aria-expanded={accountOpen} onClick={() => setAccountOpen((open) => !open)} className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink-950)] text-[12px] font-semibold text-white shadow-[var(--shadow-soft-xs)] transition-transform hover:scale-[1.04] active:scale-95">WD</button>
+            {accountOpen && <div className="absolute right-0 top-11 z-50 w-64 rounded-[var(--radius-md)] border border-[var(--color-ink-100)] bg-white p-2 shadow-[var(--shadow-soft-lg)]">
+              <p className="truncate px-2 py-2 text-[12px] text-[var(--color-ink-500)]">{user.email}</p>
+              <button type="button" onClick={() => void signOut()} className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-2 text-left text-[13px] text-[var(--color-ink-900)] hover:bg-[var(--color-ink-50)]"><LogOut className="h-4 w-4" />{t.auth.signOut}</button>
+            </div>}
+          </div>}
         </div>
       </div>
     </header>

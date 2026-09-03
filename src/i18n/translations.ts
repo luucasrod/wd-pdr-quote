@@ -255,10 +255,12 @@ export interface TranslationShape {
   auth: {
     title: string
     subtitle: string
-    passcodeLabel: string
-    passcodePlaceholder: string
     submitButton: string
     errorMessage: string
+    emailLabel: string
+    passwordLabel: string
+    signingIn: string
+    signOut: string
   }
 }
 

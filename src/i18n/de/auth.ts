@@ -3,10 +3,12 @@ import type { TranslationShape } from "../translations"
 export const auth = {
 auth: {
     title: "Werkstattbereich",
-    subtitle: "Geben Sie den Zugangscode ein, um fortzufahren",
-    passcodeLabel: "Zugangscode",
-    passcodePlaceholder: "••••",
+    subtitle: "Melden Sie sich an, um fortzufahren",
     submitButton: "Anmelden",
-    errorMessage: "Falscher Code. Bitte versuchen Sie es erneut.",
+    errorMessage: "E-Mail oder Passwort ist falsch. Bitte versuchen Sie es erneut.",
+    emailLabel: "E-Mail",
+    passwordLabel: "Passwort",
+    signingIn: "Anmeldung…",
+    signOut: "Abmelden",
   },
 } satisfies Pick<TranslationShape, "auth">
