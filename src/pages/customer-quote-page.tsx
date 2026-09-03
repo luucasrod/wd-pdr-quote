@@ -19,11 +19,8 @@ import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useClients } from "@/hooks/use-clients"
 import { useQuotes } from "@/hooks/use-quotes"
 import { cn } from "@/lib/utils"
-import { lerJson } from "@/lib/storage"
 import { clearCustomerDraft, loadCustomerDraft, saveCustomerDraft } from "@/lib/customer-draft"
 import { createIntentLock } from "@/lib/intent-lock"
-
-const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
 type Step = "vehicle" | "damage" | "contact" | "confirm" | "done"
 
@@ -56,9 +53,7 @@ export function CustomerQuotePage() {
   const markers = markersByView[view] ?? []
   const allMarkers = useMemo(() => Object.values(markersByView).flatMap((m) => m ?? []), [markersByView])
 
-  const hourlyRate = useMemo(() => {
-    return Number(lerJson(HOURLY_RATE_KEY, 45))
-  }, [])
+  const hourlyRate = pricingConfig.hourlyRate
 
   const totals = useMemo(
     () =>
@@ -154,6 +149,9 @@ export function CustomerQuotePage() {
     { id: "contact", label: t.customer.stepContact },
   ]
   const stepIndex = step === "confirm" ? 2 : steps.findIndex((s) => s.id === step)
+
+  if (pricingConfig.loading) return <div className="min-h-svh animate-pulse bg-[var(--color-canvas)]" />
+  if (pricingConfig.error) return <div className="flex min-h-svh items-center justify-center bg-[var(--color-canvas)] p-8"><p role="alert" className="text-[var(--color-severity-severe)]">{t.errorBoundary.subtitle}</p></div>
 
   return (
     <div className="min-h-svh bg-[var(--color-canvas)]">

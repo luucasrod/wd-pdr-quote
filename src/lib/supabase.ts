@@ -1,11 +1,10 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js"
-import type { Database } from "@/lib/database.types"
+import { createClient } from "@supabase/supabase-js"
 
 const url = import.meta.env.VITE_SUPABASE_URL
 const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 
-export const supabase: SupabaseClient<Database> | null = url && publishableKey
-  ? createClient<Database>(url, publishableKey, {
+export const supabase = url && publishableKey
+  ? createClient(url, publishableKey, {
       auth: { persistSession: true, autoRefreshToken: true },
     })
   : null

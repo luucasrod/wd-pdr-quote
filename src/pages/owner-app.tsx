@@ -23,16 +23,14 @@ import { useLanguage } from "@/i18n/language-context"
 import { usePricingConfig } from "@/hooks/use-pricing-config"
 import { useQuotes } from "@/hooks/use-quotes"
 import { useClients } from "@/hooks/use-clients"
-import { escreverJson, houveErroStorage, lerJson, STORAGE_ERROR_EVENT } from "@/lib/storage"
+import { houveErroStorage, STORAGE_ERROR_EVENT } from "@/lib/storage"
 import { createIntentLock } from "@/lib/intent-lock"
-
-const HOURLY_RATE_KEY = "wd-pdr-hourly-rate"
 
 export function OwnerApp() {
   const { t } = useLanguage()
   const pricingConfig = usePricingConfig()
-  const { quotes, createQuote, updateQuote, getQuoteById } = useQuotes()
-  const { getClientById } = useClients()
+  const { quotes, createQuote, updateQuote, getQuoteById, loading: quotesLoading, error: quotesError } = useQuotes()
+  const { getClientById, loading: clientsLoading, error: clientsError } = useClients()
 
   const [page, setPage] = useState<Page>("dashboard")
   const [openQuoteId, setOpenQuoteId] = useState<string | null>(null)
@@ -46,9 +44,8 @@ export function OwnerApp() {
   const [finishHours, setFinishHours] = useState(0)
   const [surcharge1, setSurcharge1] = useState(false)
   const [surcharge2, setSurcharge2] = useState(false)
-  const [hourlyRate, setHourlyRate] = useState(() => {
-    return Number(lerJson(HOURLY_RATE_KEY, 45))
-  })
+  const hourlyRate = pricingConfig.hourlyRate
+  const setHourlyRate = pricingConfig.setHourlyRate
   const [storageWarning, setStorageWarning] = useState(false)
 
   const [clientId, setClientId] = useState<string | null>(null)
@@ -59,10 +56,6 @@ export function OwnerApp() {
 
   const markerCounter = useRef(0)
   const saveLock = useRef(createIntentLock())
-
-  useEffect(() => {
-    escreverJson(HOURLY_RATE_KEY, hourlyRate)
-  }, [hourlyRate])
 
   useEffect(() => {
     const showWarning = () => setStorageWarning(true)
@@ -214,6 +207,13 @@ export function OwnerApp() {
 
   function navigate(next: Page) {
     setPage(next)
+  }
+
+  if (quotesLoading || clientsLoading || pricingConfig.loading) {
+    return <div className="min-h-svh animate-pulse bg-[var(--color-canvas)] p-8"><div className="mx-auto h-24 max-w-5xl rounded-[var(--radius-lg)] bg-[var(--color-ink-100)]" /></div>
+  }
+  if (quotesError || clientsError || pricingConfig.error) {
+    return <div className="flex min-h-svh items-center justify-center bg-[var(--color-canvas)] p-8"><p role="alert" className="rounded-[var(--radius-md)] border border-[var(--color-severity-severe)] bg-white p-5 text-[var(--color-severity-severe)]">{t.errorBoundary.subtitle}</p></div>
   }
 
   return (
