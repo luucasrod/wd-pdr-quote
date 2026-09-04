@@ -200,54 +200,33 @@ a funcionar ou redireciona · no desenho (b), `grep` ao bundle do cliente não e
 
 `gh issue list` é a fonte de verdade. Este ficheiro guarda o contexto e a ordem.
 
-## Lote 3 — a fazer (02/09/2026)
+## Lote 5 — preço em horas, imposto e identificação do carro (03/09/2026)
 
-Todas nasceram das auditorias que o próprio agente fez no lote 2, portanto trazem
-reprodução e evidência já registadas.
-
-**Fase 1 — correções, por gravidade:**
+Nasce das tabelas e gravações que o dono enviou (`docs/referencia/`) e da 2ª conversa com ele.
 
 | # | Tarefa | Nota |
 |---|---|---|
-| [#24](https://github.com/luucasrod/wd-pdr-quote/issues/24) | Perda de dados entre abas | **SOLO — mexe nos hooks de dados. Fazer primeiro** |
-| [#27](https://github.com/luucasrod/wd-pdr-quote/issues/27) | Storage corrompido bloqueia a app | |
-| [#23](https://github.com/luucasrod/wd-pdr-quote/issues/23) | Perda do pedido em preenchimento | decidir prazo do rascunho — são dados pessoais |
-| [#26](https://github.com/luucasrod/wd-pdr-quote/issues/26) | Falhas de PDF e imagens sem mensagem | |
-| [#28](https://github.com/luucasrod/wd-pdr-quote/issues/28) | Submissão duplicada no mesmo gesto | |
-| [#25](https://github.com/luucasrod/wd-pdr-quote/issues/25) | Validação de formato e coerência | só a parte do frontend é testável |
-| [#30](https://github.com/luucasrod/wd-pdr-quote/issues/30) | Política de privacidade | **só a correção factual** — o resto espera H3 |
-| [#22](https://github.com/luucasrod/wd-pdr-quote/issues/22) | Confirmar telefone antes de enviar | |
+| [#44](https://github.com/luucasrod/wd-pdr-quote/issues/44) | **Orçamento em HORAS; taxa por orçamento** | **só o painel — a página pública está proibida** |
+| [#42](https://github.com/luucasrod/wd-pdr-quote/issues/42) | IVA e desconto | depende da #44 |
+| [#40](https://github.com/luucasrod/wd-pdr-quote/issues/40) | Marcar as 16 linhas extrapoladas | não apagar |
+| [#43](https://github.com/luucasrod/wd-pdr-quote/issues/43) | Marca, modelo, cor, país + formato do PDF | |
+| [#45](https://github.com/luucasrod/wd-pdr-quote/issues/45) | Seletor de marca com pesquisa | lista estática, sem API |
 
-**Fase 2 — auditoria:**
+**A metade proibida da #44.** A página pública promete "receba o valor na hora". Sem taxa horária
+definida o cliente não pode ver preço. Ou há taxa por omissão por país para dar valor indicativo,
+ou a página deixa de prometer preço. **São dois produtos diferentes e a decisão é do dono.**
+Nenhum agente toca em `customer-quote-page.tsx` por causa disto.
 
-[#18](https://github.com/luucasrod/wd-pdr-quote/issues/18) — compatibilidade mobile completa.
-Esteve fora do lote 2 porque a #9 ia reescrever essa superfície. Agora que a #9 está em `main`,
-faz sentido.
+## Fora deste lote, à espera de respostas dele
 
-**Fora do lote:** [#29](https://github.com/luucasrod/wd-pdr-quote/issues/29) (offline/PWA) — a maior
-e a menos urgente. Reavaliar depois do Supabase, quando o offline passa a ter consequências reais.
+| # | O que falta saber |
+|---|---|
+| [#41](https://github.com/luucasrod/wd-pdr-quote/issues/41) | cobra `Kleinmaterial 5%` sempre? o `Finish` separado é duplicação? |
+| [#37](https://github.com/luucasrod/wd-pdr-quote/issues/37) | prazo fiscal dos orçamentos aprovados (contabilista dele) |
+| [#39](https://github.com/luucasrod/wd-pdr-quote/issues/39) · [#29](https://github.com/luucasrod/wd-pdr-quote/issues/29) · [#18](https://github.com/luucasrod/wd-pdr-quote/issues/18) | valor fechado · offline · teste mobile com telemóvel real |
 
-## Lote 4 — camada Supabase, escrita às cegas
-
-Todas dependem da conta do dono (H1) para serem **verificadas**, mas o código pode e deve ser
-escrito antes. O schema já existe, já foi aplicado e já foi testado com o papel `anon`.
-Quando a conta existir, é ligar e verificar em vez de começar.
-
-| # | Tarefa | Nota |
-|---|---|---|
-| [#31](https://github.com/luucasrod/wd-pdr-quote/issues/31) | Camada base: cliente + mappers | fundação |
-| [#32](https://github.com/luucasrod/wd-pdr-quote/issues/32) | Migrar os hooks, **com fallback local** | SOLO · depois da #24 |
-| [#33](https://github.com/luucasrod/wd-pdr-quote/issues/33) | Submissão real via `submeter_pedido` | nunca `insert ... returning` |
-| [#34](https://github.com/luucasrod/wd-pdr-quote/issues/34) | Autenticação real no `/oficina` | **antes ou com a #32, nunca depois** |
-| [#35](https://github.com/luucasrod/wd-pdr-quote/issues/35) | Aviso de novo pedido + importar dados locais | fecha o ciclo |
-
-**O que torna isto seguro de integrar sem a conta**: a #32 mantém o `localStorage` enquanto não
-houver `VITE_SUPABASE_URL` definida. A app comporta-se exatamente como hoje até as variáveis
-aparecerem, e então troca de fonte sozinha.
-
-**A #34 não pode ficar para depois da #32.** Enquanto não há banco, o passcode fraco quase não
-importa — o painel está vazio para quem entra. No momento em que a #32 liga dados reais, aquela
-porta passa a ter algo atrás dela.
+Falta também a **lista definitiva de peças**: a dele tem "Coluna Esquerda/Direita" (pilares), que a
+app não tem.
 
 ## Bloqueado por pessoas
 
