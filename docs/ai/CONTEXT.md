@@ -85,6 +85,14 @@ Verificado em quatro casos das gravações de ecrã (14 pequenas → 44,00 = 0,8
 5. Soma preparação (0,2 AW por peça, teto de 1 AW), acabamento manual e 2 agravamentos de 25%.
 6. Multiplica pela taxa horária.
 
+A taxa horária é estado do próprio orçamento. A configuração global serve apenas de valor
+inicial para um orçamento novo; ao editar, é restaurada a taxa guardada no snapshot. O fecho
+financeiro calcula subtotal monetário, acréscimos, desconto absoluto, IVA configurável sobre o
+valor já descontado e total. Com desconto zero e IVA desligado, o total mantém a fórmula anterior.
+
+A página pública continua inalterada: ainda falta o dono decidir entre preço indicativo por país
+ou pedido de contacto sem promessa de preço imediato.
+
 A unidade é **AW** (*Arbeitsaufwand*, unidade de trabalho da tabela austríaca), não horas
 literais. Não traduzir para "horas" na UI.
 
