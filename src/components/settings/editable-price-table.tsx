@@ -2,7 +2,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Plus, X, RotateCcw } from "lucide-react"
 import type { DamageSeverity } from "@/types/vehicle"
-import type { PriceTable } from "@/data/pricing/pricing-config"
+import { isExtrapolatedPriceRow, type PriceTable } from "@/data/pricing/pricing-config"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/i18n/language-context"
@@ -64,6 +64,9 @@ export function EditablePriceTable({
       </div>
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-ink-100)]">
+        <p className="border-b border-[var(--color-amber-200)] bg-[var(--color-amber-50)] px-4 py-3 text-[12px] text-[var(--color-amber-800)]">
+          {t.settingsPage.extrapolatedSettingsWarning}
+        </p>
         <div className="grid grid-cols-2 bg-[var(--color-ink-950)] text-[13px] font-semibold text-white">
           <div className="px-4 py-2.5">{t.settingsPage.colQuantity}</div>
           <div className="px-4 py-2.5">{valueLabel}</div>
@@ -79,7 +82,10 @@ export function EditablePriceTable({
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="group relative flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-ink-200)] bg-white px-2 py-2"
+                  className={cn(
+                    "group relative flex items-center gap-1 rounded-[var(--radius-md)] border bg-white px-2 py-2",
+                    isExtrapolatedPriceRow(active, row) ? "border-[var(--color-amber-500)]" : "border-[var(--color-ink-200)]"
+                  )}
                   style={{ order: rows.indexOf(row) * 2 }}
                 >
                   <input
@@ -88,6 +94,11 @@ export function EditablePriceTable({
                     onChange={(e) => onUpdateRow(active, row.id, { min: Number(e.target.value) })}
                     className="w-full min-w-0 flex-1 rounded-[var(--radius-sm)] px-1 py-1 text-center text-[13px] outline-none focus:bg-[var(--color-amber-50)]"
                   />
+                  {isExtrapolatedPriceRow(active, row) && (
+                    <span className="absolute -left-1.5 -top-2 rounded-full bg-[var(--color-amber-500)] px-1.5 py-0.5 text-[8px] font-bold uppercase text-[var(--color-ink-950)]">
+                      {t.settingsPage.extrapolatedBadge}
+                    </span>
+                  )}
                   <span className="text-[var(--color-ink-300)]">–</span>
                   <input
                     type="number"
@@ -114,7 +125,10 @@ export function EditablePriceTable({
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-ink-200)] bg-white px-2 py-2"
+                className={cn(
+                  "flex items-center gap-1 rounded-[var(--radius-md)] border bg-white px-2 py-2",
+                  isExtrapolatedPriceRow(active, row) ? "border-[var(--color-amber-500)]" : "border-[var(--color-ink-200)]"
+                )}
                 style={{ order: rows.indexOf(row) * 2 + 1 }}
               >
                 <input

@@ -61,6 +61,7 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
   const discount = quote.totals.discount ?? 0
   const vatRate = quote.totals.vatRate ?? 0
   const vatAmount = quote.totals.vatAmount ?? 0
+  const usesExtrapolatedRange = quote.parts?.some((part) => part.usesExtrapolatedRange) ?? false
   let y = 56
 
   function ensureSpace(space: number) {
@@ -182,6 +183,17 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
   doc.setFontSize(18)
   doc.text(`${quote.totals.totalHours.toFixed(2)} AW`, boxX + 16, y + 42)
   y += boxH + 28
+
+  if (usesExtrapolatedRange) {
+    ensureSpace(34)
+    doc.setFillColor(255, 247, 237)
+    doc.roundedRect(margin, y, contentWidth, 28, 5, 5, "F")
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(8.5)
+    doc.setTextColor(INK_MUTED)
+    doc.text(t.pricing.extrapolatedQuoteWarning, margin + 10, y + 17, { maxWidth: contentWidth - 20 })
+    y += 40
+  }
 
   const partsList = quote.parts ?? []
   if (partsList.length > 0) {

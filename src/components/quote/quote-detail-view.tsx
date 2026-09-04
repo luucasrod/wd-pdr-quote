@@ -60,6 +60,7 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
   const discount = quote.totals.discount ?? 0
   const vatRate = quote.totals.vatRate ?? 0
   const vatAmount = quote.totals.vatAmount ?? 0
+  const usesExtrapolatedRange = quote.parts?.some((part) => part.usesExtrapolatedRange) ?? false
   const markedViews = (Object.entries(quote.markersByView ?? {}) as Array<[VehicleView, NonNullable<typeof quote.markersByView>[VehicleView]]>)
     .filter((entry): entry is [VehicleView, NonNullable<(typeof entry)[1]>] => Boolean(entry[1]?.length))
 
@@ -199,6 +200,12 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
                 />
               ))}
             </div>
+          )}
+
+          {usesExtrapolatedRange && (
+            <p role="alert" className="rounded-[var(--radius-md)] border border-[var(--color-amber-300)] bg-[var(--color-amber-50)] px-3 py-2.5 text-[12px] text-[var(--color-amber-800)]">
+              {t.pricing.extrapolatedQuoteWarning}
+            </p>
           )}
 
           <div className="flex items-center justify-between rounded-[var(--radius-md)] bg-[var(--color-ink-950)] px-4 py-3.5 text-white">

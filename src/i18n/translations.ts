@@ -100,6 +100,7 @@ export interface TranslationShape {
     applyVat: string
     vatRate: string
     vatAmount: string
+    extrapolatedQuoteWarning: string
   }
   settingsPage: {
     title: string
@@ -125,6 +126,8 @@ export interface TranslationShape {
     importDescription: string
     importResult: string
     importError: string
+    extrapolatedBadge: string
+    extrapolatedSettingsWarning: string
   }
   nav: {
     dashboard: string

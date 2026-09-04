@@ -16,14 +16,24 @@ export interface PartTypeDef {
   percent: number
 }
 
+export const WKO_OFFICIAL_MAX_COUNT: Record<DamageSeverity, number> = {
+  minor: 400,
+  medium: 400,
+  severe: 200,
+}
+
+export function isExtrapolatedPriceRow(severity: DamageSeverity, row: Pick<PriceRow, "min" | "max">) {
+  return row.max > WKO_OFFICIAL_MAX_COUNT[severity]
+}
+
 function rows(pairs: Array<[number, number, number]>): PriceRow[] {
   return pairs.map(([min, max, value], i) => ({ id: `r${i}`, min, max, value }))
 }
 
 /**
  * Seeded from the official WKO hail-dent table (Lack- u. Karosseriebeirat), split
- * per severity, and extended past 400 dents following the same growth curve so the
- * table reaches ~700 like the shop's previous app. Fully editable afterwards.
+ * per severity. The rows above 400 minor/medium dents and 200 severe dents are
+ * local extrapolations retained for continuity and must remain visibly identified.
  */
 export const DEFAULT_HOURLY_TABLE: PriceTable = {
   minor: rows([

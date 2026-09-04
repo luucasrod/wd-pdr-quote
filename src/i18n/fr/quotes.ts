@@ -31,6 +31,7 @@ pricing: {
     applyVat: "Appliquer la TVA ?",
     vatRate: "Taux de TVA",
     vatAmount: "TVA ({rate} %)",
+    extrapolatedQuoteWarning: "Attention : ce calcul utilise une plage extrapolée non publiée dans le barème WKO officiel.",
   },
 quotesList: {
     title: "Devis",

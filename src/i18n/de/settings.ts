@@ -25,5 +25,7 @@ settingsPage: {
     importDescription: "Importieren Sie die in diesem Browser gespeicherten Daten. Wiederholungen erzeugen keine Duplikate.",
     importResult: "Importiert: {clients} Kunden, {insurers} Versicherer und {quotes} Angebote.",
     importError: "Die Daten konnten nicht importiert werden. Bitte versuchen Sie es erneut.",
+    extrapolatedBadge: "Schätzung",
+    extrapolatedSettingsWarning: "Bereiche über 400 leichte/mittlere Dellen und 200 starke Dellen sind Werkstatt-Extrapolationen und stehen nicht in der offiziellen WKO-Tabelle.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

@@ -25,5 +25,7 @@ settingsPage: {
     importDescription: "Importez les données enregistrées dans ce navigateur. Répéter l'importation ne crée pas de doublons.",
     importResult: "Importés : {clients} clients, {insurers} assureurs et {quotes} devis.",
     importError: "Impossible d'importer les données. Veuillez réessayer.",
+    extrapolatedBadge: "Estimation",
+    extrapolatedSettingsWarning: "Les plages au-delà de 400 impacts légers/moyens et 200 forts sont des extrapolations de l'atelier, absentes du barème WKO officiel.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

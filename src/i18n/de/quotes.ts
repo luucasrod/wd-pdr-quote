@@ -31,6 +31,7 @@ pricing: {
     applyVat: "MwSt. anwenden?",
     vatRate: "MwSt.-Satz",
     vatAmount: "MwSt. ({rate}%)",
+    extrapolatedQuoteWarning: "Hinweis: Diese Berechnung verwendet einen extrapolierten Bereich, der nicht in der offiziellen WKO-Tabelle veröffentlicht ist.",
   },
 quotesList: {
     title: "Angebote",

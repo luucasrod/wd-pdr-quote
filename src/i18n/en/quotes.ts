@@ -31,6 +31,7 @@ pricing: {
     applyVat: "Apply VAT?",
     vatRate: "VAT rate",
     vatAmount: "VAT ({rate}%)",
+    extrapolatedQuoteWarning: "Warning: this calculation uses an extrapolated range not published in the official WKO table.",
   },
 quotesList: {
     title: "Quotes",

@@ -25,5 +25,7 @@ settingsPage: {
     importDescription: "Import this browser's saved data into the workshop. Repeating the import will not create duplicates.",
     importResult: "Imported: {clients} clients, {insurers} insurers and {quotes} quotes.",
     importError: "The data could not be imported. Please try again.",
+    extrapolatedBadge: "Estimate",
+    extrapolatedSettingsWarning: "Ranges above 400 minor/medium dents and 200 severe dents are shop extrapolations; they are not in the official WKO table.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

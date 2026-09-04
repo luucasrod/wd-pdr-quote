@@ -1,7 +1,7 @@
 import type { DamageMarker, DamageSeverity } from "@/types/vehicle"
 import type { PartId } from "@/data/pricing/parts"
 import type { PartTypeDef, PriceTable } from "@/data/pricing/pricing-config"
-import { lookupPriceTable } from "@/data/pricing/pricing-config"
+import { lookupPriceTable, WKO_OFFICIAL_MAX_COUNT } from "@/data/pricing/pricing-config"
 
 /** Prep time: 0.2 AW per damaged part, capped at 1 AW per vehicle. */
 export const PREP_HOURS_PER_PART = 0.2
@@ -19,6 +19,7 @@ export interface PartBreakdown {
   partTypePercent: number
   baseHours: number
   hours: number // baseHours with the selected part-type surcharge applied
+  usesExtrapolatedRange?: boolean
 }
 
 export interface QuoteTotals {
@@ -86,6 +87,7 @@ export function computePartBreakdown(
       partTypePercent,
       baseHours,
       hours,
+      usesExtrapolatedRange: totalCount > WKO_OFFICIAL_MAX_COUNT[severity],
     })
   }
 

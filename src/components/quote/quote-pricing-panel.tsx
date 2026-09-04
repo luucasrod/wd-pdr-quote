@@ -58,6 +58,7 @@ export function QuotePricingPanel({
 }: QuotePricingPanelProps) {
   const { t, language } = useLanguage()
   const hasParts = totals.parts.length > 0
+  const usesExtrapolatedRange = totals.parts.some((part) => part.usesExtrapolatedRange)
 
   return (
     <Card>
@@ -100,6 +101,12 @@ export function QuotePricingPanel({
               </tbody>
             </table>
           </div>
+        )}
+
+        {usesExtrapolatedRange && (
+          <p role="alert" className="mt-4 rounded-[var(--radius-md)] border border-[var(--color-amber-300)] bg-[var(--color-amber-50)] px-3 py-2.5 text-[12px] text-[var(--color-amber-800)]">
+            {t.pricing.extrapolatedQuoteWarning}
+          </p>
         )}
 
         <div className="mt-5 space-y-2 border-t border-[var(--color-ink-100)] pt-4">

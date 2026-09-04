@@ -25,5 +25,7 @@ settingsPage: {
     importDescription: "Importe para a oficina os dados guardados neste navegador. Pode repetir sem criar duplicados.",
     importResult: "Importados: {clients} clientes, {insurers} seguradoras e {quotes} orçamentos.",
     importError: "Não foi possível importar os dados. Tente novamente.",
+    extrapolatedBadge: "Estimativa",
+    extrapolatedSettingsWarning: "As faixas acima de 400 amolgadelas ligeiras/médias e 200 severas são extrapolações da oficina; não constam da tabela WKO oficial.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

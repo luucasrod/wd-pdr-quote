@@ -25,5 +25,7 @@ settingsPage: {
     importDescription: "Importe los datos guardados en este navegador. Repetir la importación no crea duplicados.",
     importResult: "Importados: {clients} clientes, {insurers} aseguradoras y {quotes} presupuestos.",
     importError: "No se pudieron importar los datos. Inténtelo de nuevo.",
+    extrapolatedBadge: "Estimación",
+    extrapolatedSettingsWarning: "Los tramos superiores a 400 abolladuras leves/medias y 200 fuertes son extrapolaciones del taller; no figuran en la tabla WKO oficial.",
   },
 } satisfies Pick<TranslationShape, "settingsPage">

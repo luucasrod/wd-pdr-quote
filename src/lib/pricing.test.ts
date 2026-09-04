@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { DEFAULT_HOURLY_TABLE, DEFAULT_PART_TYPES, lookupPriceTable } from "@/data/pricing/pricing-config"
+import { DEFAULT_HOURLY_TABLE, DEFAULT_PART_TYPES, isExtrapolatedPriceRow, lookupPriceTable } from "@/data/pricing/pricing-config"
 import { computePartBreakdown, computeQuoteTotals } from "@/lib/pricing"
 import type { PartId } from "@/data/pricing/parts"
 import type { DamageMarker, DamageSeverity } from "@/types/vehicle"
@@ -39,6 +39,12 @@ describe("lookupPriceTable", () => {
     expect(lookupPriceTable(table, 3)).toBe(0.32)
     expect(lookupPriceTable(table, 700)).toBe(6.15)
     expect(lookupPriceTable(table, 701)).toBe(6.15)
+  })
+
+  it("identifica exatamente as 16 linhas fora da cobertura oficial WKO", () => {
+    const extrapolated = (Object.keys(DEFAULT_HOURLY_TABLE) as DamageSeverity[])
+      .flatMap((severity) => DEFAULT_HOURLY_TABLE[severity].filter((row) => isExtrapolatedPriceRow(severity, row)))
+    expect(extrapolated).toHaveLength(16)
   })
 })
 
@@ -104,5 +110,10 @@ describe("computeQuoteTotals", () => {
     expect(result.subtotalPrice).toBeCloseTo(1522)
     expect(result.vatAmount).toBeCloseTo(350.06)
     expect(result.totalPrice).toBeCloseTo(1872.06)
+  })
+
+  it("assinala um calculo que ultrapassa a cobertura oficial da severidade", () => {
+    const result = totals({ markers: markers("hood", Array.from({ length: 201 }, () => "severe")) })
+    expect(result.parts[0].usesExtrapolatedRange).toBe(true)
   })
 })

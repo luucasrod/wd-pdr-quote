@@ -31,6 +31,7 @@ pricing: {
     applyVat: "¿Aplicar IVA?",
     vatRate: "Tipo de IVA",
     vatAmount: "IVA ({rate}%)",
+    extrapolatedQuoteWarning: "Aviso: este cálculo utiliza un tramo extrapolado no publicado en la tabla WKO oficial.",
   },
 quotesList: {
     title: "Presupuestos",

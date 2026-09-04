@@ -31,6 +31,7 @@ pricing: {
     applyVat: "Aplicar IVA?",
     vatRate: "Taxa de IVA",
     vatAmount: "IVA ({rate}%)",
+    extrapolatedQuoteWarning: "Aviso: este cálculo usa uma faixa extrapolada, não publicada na tabela oficial WKO.",
   },
 quotesList: {
     title: "Orçamentos",
