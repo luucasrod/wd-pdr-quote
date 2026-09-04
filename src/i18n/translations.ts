@@ -214,6 +214,8 @@ export interface TranslationShape {
     vehicleBrandLabel: string
     vehicleModelLabel: string
     vehicleColorLabel: string
+    vehicleBrandPlaceholder: string
+    vehicleBrandNoResults: string
   }
   dashboard: {
     title: string

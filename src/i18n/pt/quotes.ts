@@ -77,5 +77,7 @@ quoteMeta: {
     vehicleBrandLabel: "Marca",
     vehicleModelLabel: "Modelo",
     vehicleColorLabel: "Cor",
+    vehicleBrandPlaceholder: "Pesquisar marca…",
+    vehicleBrandNoResults: "Nenhuma marca encontrada",
   },
 } satisfies Pick<TranslationShape, "quotePage" | "pricing" | "quotesList" | "quoteMeta">

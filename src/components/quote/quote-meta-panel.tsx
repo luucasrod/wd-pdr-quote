@@ -7,6 +7,7 @@ import { useLanguage } from "@/i18n/language-context"
 import { useClients } from "@/hooks/use-clients"
 import { useInsurers } from "@/hooks/use-insurers"
 import { ClientFormModal } from "@/components/clients/client-form-modal"
+import { BrandCombobox } from "@/components/vehicle/brand-combobox"
 
 interface QuoteMetaPanelProps {
   clientId: string | null
@@ -91,7 +92,12 @@ export function QuoteMetaPanel({
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField label={t.quoteMeta.vehicleBrandLabel}>
-            <Input value={vehicleBrand} onChange={(e) => onVehicleBrandChange(e.target.value)} />
+            <BrandCombobox
+              value={vehicleBrand}
+              onChange={onVehicleBrandChange}
+              placeholder={t.quoteMeta.vehicleBrandPlaceholder}
+              noResults={t.quoteMeta.vehicleBrandNoResults}
+            />
           </FormField>
           <FormField label={t.quoteMeta.vehicleModelLabel}>
             <Input value={vehicleModel} onChange={(e) => onVehicleModelChange(e.target.value)} />
@@ -106,7 +112,7 @@ export function QuoteMetaPanel({
           <Textarea rows={3} value={notes} onChange={(e) => onNotesChange(e.target.value)} placeholder={t.quoteMeta.notesPlaceholder} />
         </FormField>
 
-        <Button variant="accent" size="lg" onClick={onSave} className="mt-1">
+        <Button variant="accent" size="lg" onClick={onSave} className="mt-1" disabled={!vehicleBrand.trim()}>
           {justSaved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           {justSaved ? t.quoteMeta.savedToast : isEditing ? t.quoteMeta.saveChanges : t.quoteMeta.saveQuote}
         </Button>

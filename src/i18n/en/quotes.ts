@@ -77,5 +77,7 @@ quoteMeta: {
     vehicleBrandLabel: "Make",
     vehicleModelLabel: "Model",
     vehicleColorLabel: "Colour",
+    vehicleBrandPlaceholder: "Search make…",
+    vehicleBrandNoResults: "No make found",
   },
 } satisfies Pick<TranslationShape, "quotePage" | "pricing" | "quotesList" | "quoteMeta">
