@@ -25,6 +25,12 @@ pricing: {
     totalAW: "Total Arbeitsaufwand",
     hourlyRate: "Hourly rate (AW)",
     totalQuote: "Quote Total",
+    priceSubtotal: "Subtotal before surcharges",
+    surchargeValue: "Surcharges",
+    discount: "Discount",
+    applyVat: "Apply VAT?",
+    vatRate: "VAT rate",
+    vatAmount: "VAT ({rate}%)",
   },
 quotesList: {
     title: "Quotes",

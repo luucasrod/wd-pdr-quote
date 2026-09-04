@@ -30,6 +30,12 @@ export interface SavedQuoteTotalsSnapshot {
   surchargeHours: number
   totalHours: number
   hourlyRate: number
+  subtotalPrice?: number
+  surchargePrice?: number
+  discount?: number
+  vatEnabled?: boolean
+  vatRate?: number
+  vatAmount?: number
   totalPrice: number
 }
 
@@ -51,6 +57,9 @@ export interface SavedQuote {
   finishHours?: number
   surcharge1?: boolean
   surcharge2?: boolean
+  discount?: number
+  vatEnabled?: boolean
+  vatRate?: number
   /** Per-part hour breakdown snapshot, for the PDF and quote detail view. Absent on quotes saved before this field existed. */
   parts?: PartBreakdown[]
   totals: SavedQuoteTotalsSnapshot

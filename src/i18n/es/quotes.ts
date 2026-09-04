@@ -25,6 +25,12 @@ pricing: {
     totalAW: "Total Arbeitsaufwand",
     hourlyRate: "Valor de la hora (AW)",
     totalQuote: "Total del Presupuesto",
+    priceSubtotal: "Subtotal sin recargos",
+    surchargeValue: "Recargos",
+    discount: "Descuento",
+    applyVat: "¿Aplicar IVA?",
+    vatRate: "Tipo de IVA",
+    vatAmount: "IVA ({rate}%)",
   },
 quotesList: {
     title: "Presupuestos",

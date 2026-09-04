@@ -25,6 +25,12 @@ pricing: {
     totalAW: "Total Arbeitsaufwand",
     hourlyRate: "Valor da hora (AW)",
     totalQuote: "Total do Orçamento",
+    priceSubtotal: "Subtotal sem acréscimos",
+    surchargeValue: "Acréscimos",
+    discount: "Desconto",
+    applyVat: "Aplicar IVA?",
+    vatRate: "Taxa de IVA",
+    vatAmount: "IVA ({rate}%)",
   },
 quotesList: {
     title: "Orçamentos",

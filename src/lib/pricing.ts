@@ -31,6 +31,12 @@ export interface QuoteTotals {
   surchargeHours: number
   totalHours: number
   hourlyRate: number
+  subtotalPrice: number
+  surchargePrice: number
+  discount: number
+  vatEnabled: boolean
+  vatRate: number
+  vatAmount: number
   totalPrice: number
 }
 
@@ -95,8 +101,14 @@ export function computeQuoteTotals(options: {
   surcharge1: boolean
   surcharge2: boolean
   hourlyRate: number
+  discount?: number
+  vatEnabled?: boolean
+  vatRate?: number
 }): QuoteTotals {
   const { markers, partTypeByPart, hourlyTable, partTypes, finishHours, surcharge1, surcharge2, hourlyRate } = options
+  const discount = Math.max(0, options.discount ?? 0)
+  const vatEnabled = options.vatEnabled ?? false
+  const vatRate = Math.max(0, options.vatRate ?? 0)
   const parts = computePartBreakdown(markers, partTypeByPart, hourlyTable, partTypes)
 
   const subtotalHours = parts.reduce((sum, p) => sum + p.hours, 0)
@@ -104,7 +116,11 @@ export function computeQuoteTotals(options: {
   const prepHours = Math.min(PREP_HOURS_PER_PART * damagedPartCount, PREP_HOURS_MAX_PER_VEHICLE)
   const surchargeHours = (surcharge1 ? subtotalHours * 0.25 : 0) + (surcharge2 ? subtotalHours * 0.25 : 0)
   const totalHours = subtotalHours + prepHours + finishHours + surchargeHours
-  const totalPrice = totalHours * hourlyRate
+  const subtotalPrice = (subtotalHours + prepHours + finishHours) * hourlyRate
+  const surchargePrice = surchargeHours * hourlyRate
+  const priceBeforeTax = Math.max(0, subtotalPrice + surchargePrice - discount)
+  const vatAmount = vatEnabled ? priceBeforeTax * vatRate / 100 : 0
+  const totalPrice = priceBeforeTax + vatAmount
 
   return {
     parts,
@@ -116,6 +132,12 @@ export function computeQuoteTotals(options: {
     surchargeHours,
     totalHours,
     hourlyRate,
+    subtotalPrice,
+    surchargePrice,
+    discount,
+    vatEnabled,
+    vatRate,
+    vatAmount,
     totalPrice,
   }
 }

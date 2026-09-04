@@ -29,6 +29,12 @@ interface QuotePricingPanelProps {
   onSurcharge2Change: (value: boolean) => void
   hourlyRate: number
   onHourlyRateChange: (value: number) => void
+  discount: number
+  onDiscountChange: (value: number) => void
+  vatEnabled: boolean
+  onVatEnabledChange: (value: boolean) => void
+  vatRate: number
+  onVatRateChange: (value: number) => void
 }
 
 export function QuotePricingPanel({
@@ -43,6 +49,12 @@ export function QuotePricingPanel({
   onSurcharge2Change,
   hourlyRate,
   onHourlyRateChange,
+  discount,
+  onDiscountChange,
+  vatEnabled,
+  onVatEnabledChange,
+  vatRate,
+  onVatRateChange,
 }: QuotePricingPanelProps) {
   const { t, language } = useLanguage()
   const hasParts = totals.parts.length > 0
@@ -143,6 +155,47 @@ export function QuotePricingPanel({
             </div>
           </div>
 
+          <div className="flex items-center justify-between gap-3 py-1">
+            <label className="text-[13px] text-[var(--color-ink-600)]">{t.pricing.discount}</label>
+            <div className="flex items-center gap-1">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                value={discount}
+                onChange={(e) => onDiscountChange(Math.max(0, Number(e.target.value) || 0))}
+                className="w-24 rounded-[var(--radius-sm)] border border-[var(--color-ink-200)] px-2.5 py-1.5 text-right text-[13px] outline-none focus:border-[var(--color-amber-400)]"
+              />
+              <span className="text-[12px] text-[var(--color-ink-400)]">€</span>
+            </div>
+          </div>
+
+          <label className="flex items-center justify-between gap-3 py-1">
+            <span className="text-[13px] text-[var(--color-ink-600)]">{t.pricing.applyVat}</span>
+            <input
+              type="checkbox"
+              checked={vatEnabled}
+              onChange={(e) => onVatEnabledChange(e.target.checked)}
+              className="h-4 w-4 accent-[var(--color-amber-500)]"
+            />
+          </label>
+          {vatEnabled && (
+            <div className="flex items-center justify-between gap-3 py-1">
+              <label className="text-[13px] text-[var(--color-ink-600)]">{t.pricing.vatRate}</label>
+              <div className="flex items-center gap-1">
+                <input
+                  type="number"
+                  min={0}
+                  step={0.1}
+                  value={vatRate}
+                  onChange={(e) => onVatRateChange(Math.max(0, Number(e.target.value) || 0))}
+                  className="w-24 rounded-[var(--radius-sm)] border border-[var(--color-ink-200)] px-2.5 py-1.5 text-right text-[13px] outline-none focus:border-[var(--color-amber-400)]"
+                />
+                <span className="text-[12px] text-[var(--color-ink-400)]">%</span>
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center justify-between rounded-[var(--radius-md)] bg-[var(--color-ink-950)] px-4 py-3.5 text-white">
             <span className="text-[13px] font-medium text-white/70">{t.pricing.totalAW}</span>
             <motion.span
@@ -153,6 +206,12 @@ export function QuotePricingPanel({
             >
               {totals.totalHours.toFixed(2)} AW
             </motion.span>
+          </div>
+          <div className="space-y-1 px-1 pt-1">
+            <TotalRow label={t.pricing.priceSubtotal} value={totals.subtotalPrice.toLocaleString(CURRENCY_LOCALE[language], { style: "currency", currency: "EUR" })} />
+            <TotalRow label={t.pricing.surchargeValue} value={totals.surchargePrice.toLocaleString(CURRENCY_LOCALE[language], { style: "currency", currency: "EUR" })} />
+            <TotalRow label={t.pricing.discount} value={`−${totals.discount.toLocaleString(CURRENCY_LOCALE[language], { style: "currency", currency: "EUR" })}`} />
+            <TotalRow label={t.pricing.vatAmount.replace("{rate}", String(totals.vatRate))} value={totals.vatAmount.toLocaleString(CURRENCY_LOCALE[language], { style: "currency", currency: "EUR" })} />
           </div>
           <div className="flex items-center justify-between px-1 pt-1 text-[14px] font-semibold text-[var(--color-ink-950)]">
             <span>{t.pricing.totalQuote}</span>

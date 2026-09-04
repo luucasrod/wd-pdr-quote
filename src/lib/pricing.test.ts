@@ -87,4 +87,22 @@ describe("computeQuoteTotals", () => {
     expect(both.surchargeHours).toBeCloseTo(none.subtotalHours * 0.5)
     expect(both.totalHours - none.totalHours).toBeCloseTo(none.subtotalHours * 0.5)
   })
+
+  it("aplica o desconto antes do IVA e mantem o IVA desligado neutro", () => {
+    const base = totals({ hourlyRate: 50 })
+    const withoutVat = totals({ hourlyRate: 50, discount: 10, vatEnabled: false, vatRate: 23 })
+    const withVat = totals({ hourlyRate: 50, discount: 10, vatEnabled: true, vatRate: 23 })
+
+    expect(base.totalPrice).toBeCloseTo(base.totalHours * 50)
+    expect(withoutVat.totalPrice).toBeCloseTo(base.totalPrice - 10)
+    expect(withVat.vatAmount).toBeCloseTo((base.totalPrice - 10) * 0.23)
+    expect(withVat.totalPrice).toBeCloseTo((base.totalPrice - 10) * 1.23)
+  })
+
+  it("calcula 1522 com IVA a 23% como 1872,06", () => {
+    const result = totals({ markers: [], finishHours: 30.44, hourlyRate: 50, vatEnabled: true, vatRate: 23 })
+    expect(result.subtotalPrice).toBeCloseTo(1522)
+    expect(result.vatAmount).toBeCloseTo(350.06)
+    expect(result.totalPrice).toBeCloseTo(1872.06)
+  })
 })

@@ -94,6 +94,12 @@ export interface TranslationShape {
     totalAW: string
     hourlyRate: string
     totalQuote: string
+    priceSubtotal: string
+    surchargeValue: string
+    discount: string
+    applyVat: string
+    vatRate: string
+    vatAmount: string
   }
   settingsPage: {
     title: string

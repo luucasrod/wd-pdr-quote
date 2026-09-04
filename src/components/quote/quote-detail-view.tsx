@@ -55,6 +55,11 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
 
   const client = getClientById(quote.clientId)
   const insurer = getInsurerById(quote.insurerId)
+  const surchargePrice = quote.totals.surchargePrice ?? quote.totals.surchargeHours * quote.totals.hourlyRate
+  const subtotalPrice = quote.totals.subtotalPrice ?? quote.totals.totalPrice - surchargePrice
+  const discount = quote.totals.discount ?? 0
+  const vatRate = quote.totals.vatRate ?? 0
+  const vatAmount = quote.totals.vatAmount ?? 0
   const markedViews = (Object.entries(quote.markersByView ?? {}) as Array<[VehicleView, NonNullable<typeof quote.markersByView>[VehicleView]]>)
     .filter((entry): entry is [VehicleView, NonNullable<(typeof entry)[1]>] => Boolean(entry[1]?.length))
 
@@ -201,6 +206,12 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
             <span className="text-[20px] font-bold tabular-nums">
               {quote.totals.totalHours.toFixed(2)} AW
             </span>
+          </div>
+          <div className="space-y-1.5 text-[13px]">
+            <Row label={t.pricing.priceSubtotal} value={subtotalPrice.toLocaleString(language, { style: "currency", currency: "EUR" })} />
+            <Row label={t.pricing.surchargeValue} value={surchargePrice.toLocaleString(language, { style: "currency", currency: "EUR" })} />
+            <Row label={t.pricing.discount} value={`−${discount.toLocaleString(language, { style: "currency", currency: "EUR" })}`} />
+            <Row label={t.pricing.vatAmount.replace("{rate}", String(vatRate))} value={vatAmount.toLocaleString(language, { style: "currency", currency: "EUR" })} />
           </div>
           <Row
             label={t.pricing.totalQuote}

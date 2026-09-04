@@ -45,6 +45,9 @@ export function OwnerApp() {
   const [surcharge1, setSurcharge1] = useState(false)
   const [surcharge2, setSurcharge2] = useState(false)
   const [hourlyRate, setHourlyRate] = useState(pricingConfig.hourlyRate)
+  const [discount, setDiscount] = useState(0)
+  const [vatEnabled, setVatEnabled] = useState(false)
+  const [vatRate, setVatRate] = useState(0)
   const [storageWarning, setStorageWarning] = useState(false)
 
   const [clientId, setClientId] = useState<string | null>(null)
@@ -77,8 +80,11 @@ export function OwnerApp() {
         surcharge1,
         surcharge2,
         hourlyRate,
+        discount,
+        vatEnabled,
+        vatRate,
       }),
-    [allMarkers, partTypeByPart, pricingConfig.hourlyTable, pricingConfig.partTypes, finishHours, surcharge1, surcharge2, hourlyRate]
+    [allMarkers, partTypeByPart, pricingConfig.hourlyTable, pricingConfig.partTypes, finishHours, surcharge1, surcharge2, hourlyRate, discount, vatEnabled, vatRate]
   )
 
   function addMarker(x: number, y: number) {
@@ -124,6 +130,9 @@ export function OwnerApp() {
     setSurcharge1(false)
     setSurcharge2(false)
     setHourlyRate(pricingConfig.hourlyRate)
+    setDiscount(0)
+    setVatEnabled(false)
+    setVatRate(0)
     setClientId(null)
     setInsurerId(null)
     setPlate("")
@@ -161,6 +170,9 @@ export function OwnerApp() {
     setSurcharge1(quote.surcharge1 ?? false)
     setSurcharge2(quote.surcharge2 ?? false)
     setHourlyRate(quote.totals.hourlyRate)
+    setDiscount(quote.discount ?? quote.totals.discount ?? 0)
+    setVatEnabled(quote.vatEnabled ?? quote.totals.vatEnabled ?? false)
+    setVatRate(quote.vatRate ?? quote.totals.vatRate ?? 0)
     setClientId(quote.clientId)
     setInsurerId(quote.insurerId)
     setPlate(quote.plate)
@@ -183,6 +195,9 @@ export function OwnerApp() {
       finishHours,
       surcharge1,
       surcharge2,
+      discount,
+      vatEnabled,
+      vatRate,
       parts: totals.parts,
       totals: {
         subtotalHours: totals.subtotalHours,
@@ -191,6 +206,12 @@ export function OwnerApp() {
         surchargeHours: totals.surchargeHours,
         totalHours: totals.totalHours,
         hourlyRate: totals.hourlyRate,
+        subtotalPrice: totals.subtotalPrice,
+        surchargePrice: totals.surchargePrice,
+        discount: totals.discount,
+        vatEnabled: totals.vatEnabled,
+        vatRate: totals.vatRate,
+        vatAmount: totals.vatAmount,
         totalPrice: totals.totalPrice,
       },
       partCount: totals.parts.length,
@@ -294,6 +315,12 @@ export function OwnerApp() {
                   onSurcharge2Change={setSurcharge2}
                   hourlyRate={hourlyRate}
                   onHourlyRateChange={setHourlyRate}
+                  discount={discount}
+                  onDiscountChange={setDiscount}
+                  vatEnabled={vatEnabled}
+                  onVatEnabledChange={setVatEnabled}
+                  vatRate={vatRate}
+                  onVatRateChange={setVatRate}
                 />
                 <QuoteMetaPanel
                   clientId={clientId}

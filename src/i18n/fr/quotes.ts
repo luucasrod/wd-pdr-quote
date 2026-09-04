@@ -25,6 +25,12 @@ pricing: {
     totalAW: "Total Arbeitsaufwand",
     hourlyRate: "Taux horaire (AW)",
     totalQuote: "Total du Devis",
+    priceSubtotal: "Sous-total hors majorations",
+    surchargeValue: "Majorations",
+    discount: "Remise",
+    applyVat: "Appliquer la TVA ?",
+    vatRate: "Taux de TVA",
+    vatAmount: "TVA ({rate} %)",
   },
 quotesList: {
     title: "Devis",

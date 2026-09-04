@@ -25,6 +25,12 @@ pricing: {
     totalAW: "Total-Arbeitsaufwand",
     hourlyRate: "Stundensatz (AW)",
     totalQuote: "Angebotssumme",
+    priceSubtotal: "Zwischensumme ohne Zuschläge",
+    surchargeValue: "Zuschläge",
+    discount: "Rabatt",
+    applyVat: "MwSt. anwenden?",
+    vatRate: "MwSt.-Satz",
+    vatAmount: "MwSt. ({rate}%)",
   },
 quotesList: {
     title: "Angebote",

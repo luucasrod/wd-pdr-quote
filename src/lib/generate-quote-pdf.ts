@@ -56,6 +56,11 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
   const pageHeight = doc.internal.pageSize.getHeight()
   const margin = 48
   const contentWidth = pageWidth - margin * 2
+  const surchargePrice = quote.totals.surchargePrice ?? quote.totals.surchargeHours * quote.totals.hourlyRate
+  const subtotalPrice = quote.totals.subtotalPrice ?? quote.totals.totalPrice - surchargePrice
+  const discount = quote.totals.discount ?? 0
+  const vatRate = quote.totals.vatRate ?? 0
+  const vatAmount = quote.totals.vatAmount ?? 0
   let y = 56
 
   function ensureSpace(space: number) {
@@ -142,6 +147,10 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
     [t.pricing.prep, `${quote.totals.prepHours.toFixed(2)} AW`],
     [t.pricing.finish, `${quote.totals.finishHours.toFixed(2)} AW`],
     [t.pricing.hourlyRate, money(quote.totals.hourlyRate, language)],
+    [t.pricing.priceSubtotal, money(subtotalPrice, language)],
+    [t.pricing.surchargeValue, money(surchargePrice, language)],
+    [t.pricing.discount, `-${money(discount, language)}`],
+    [t.pricing.vatAmount.replace("{rate}", String(vatRate)), money(vatAmount, language)],
     [t.pricing.totalQuote, money(quote.totals.totalPrice, language)],
   ]
 
