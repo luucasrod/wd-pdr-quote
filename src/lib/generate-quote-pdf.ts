@@ -124,6 +124,9 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
     client?.phone || null,
     client?.email || null,
     client?.nif ? `${t.clients.nif}: ${client.nif}` : null,
+    client?.address || null,
+    [client?.postalCode, client?.city].filter(Boolean).join(" ") || null,
+    client?.country ? `${t.clients.country}: ${client.country}` : null,
   ].filter((l): l is string => !!l)
   for (const line of clientLines) {
     doc.text(line, leftX, leftY, { maxWidth: colWidth })
@@ -133,6 +136,7 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
   let rightY = y
   const vehicleLines = [
     t.typeSelect.types[quote.vehicleType].label,
+    [quote.vehicleBrand, quote.vehicleModel, quote.vehicleColor].filter(Boolean).join(" / ") || null,
     quote.plate ? `${t.quoteMeta.plateLabel}: ${quote.plate}` : null,
     insurer ? `${t.quoteMeta.insurerLabel}: ${insurer.name}` : null,
   ].filter((l): l is string => !!l)
@@ -197,25 +201,39 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
 
   const partsList = quote.parts ?? []
   if (partsList.length > 0) {
-    ensureSpace(24)
+    ensureSpace(42)
     doc.setFont("helvetica", "bold")
     doc.setFontSize(9)
     doc.setTextColor(INK)
     doc.text(t.quoteMeta.breakdownTitle.toUpperCase(), margin, y)
-    y += 16
+    y += 18
+
+    const columns = [
+      { label: t.pricing.colPart, x: margin, align: "left" as const },
+      { label: t.pricing.colMinor, x: margin + 230, align: "right" as const },
+      { label: t.pricing.colMedium, x: margin + 290, align: "right" as const },
+      { label: t.pricing.colSevere, x: margin + 350, align: "right" as const },
+      { label: t.pricing.colValue, x: pageWidth - margin, align: "right" as const },
+    ]
+    doc.setFillColor(245, 245, 246)
+    doc.rect(margin, y - 11, contentWidth, 18, "F")
+    doc.setFontSize(8)
+    for (const column of columns) doc.text(column.label, column.x, y, { align: column.align })
+    y += 18
 
     for (const part of partsList) {
-      ensureSpace(16)
+      ensureSpace(18)
       const label = t.parts[part.partId] ?? part.partId
-      const severityLabel = t.severity[part.predominantSeverity]
-      const aluTag = part.partTypePercent ? ` · ${part.partTypeLabel}` : ""
       doc.setFont("helvetica", "normal")
-      doc.setFontSize(9.5)
+      doc.setFontSize(8.5)
       doc.setTextColor(INK_MUTED)
-      doc.text(`${label} · ${part.totalCount}× ${severityLabel}${aluTag}`, margin, y, { maxWidth: contentWidth - 80 })
+      doc.text(label, margin, y, { maxWidth: 210 })
+      doc.text(String(part.countMinor), margin + 230, y, { align: "right" })
+      doc.text(String(part.countMedium), margin + 290, y, { align: "right" })
+      doc.text(String(part.countSevere), margin + 350, y, { align: "right" })
       doc.setTextColor(INK)
-      doc.text(`${part.hours.toFixed(2)} AW`, pageWidth - margin, y, { align: "right" })
-      y += 16
+      doc.text(money(part.hours * quote.totals.hourlyRate, language), pageWidth - margin, y, { align: "right" })
+      y += 18
     }
     y += 10
   }

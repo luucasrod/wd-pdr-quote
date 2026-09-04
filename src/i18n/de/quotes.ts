@@ -17,6 +17,7 @@ pricing: {
     colSevere: "Stark",
     colAluminum: "Typ",
     colAW: "AW",
+    colValue: "Wert",
     subtotal: "Zwischensumme (Bauteile)",
     prep: "Vorbereitung (0,2 AW/Bauteil, max. 1 AW)",
     finish: "Finish (manuell)",
@@ -73,5 +74,8 @@ quoteMeta: {
     newClient: "+ Neuen Kunden anlegen",
     statusLabel: "Status",
     breakdownTitle: "Aufschlüsselung nach Teil",
+    vehicleBrandLabel: "Marke",
+    vehicleModelLabel: "Modell",
+    vehicleColorLabel: "Farbe",
   },
 } satisfies Pick<TranslationShape, "quotePage" | "pricing" | "quotesList" | "quoteMeta">

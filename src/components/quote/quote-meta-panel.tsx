@@ -15,6 +15,12 @@ interface QuoteMetaPanelProps {
   onInsurerIdChange: (id: string | null) => void
   plate: string
   onPlateChange: (v: string) => void
+  vehicleBrand: string
+  onVehicleBrandChange: (v: string) => void
+  vehicleModel: string
+  onVehicleModelChange: (v: string) => void
+  vehicleColor: string
+  onVehicleColorChange: (v: string) => void
   notes: string
   onNotesChange: (v: string) => void
   onSave: () => void
@@ -29,6 +35,12 @@ export function QuoteMetaPanel({
   onInsurerIdChange,
   plate,
   onPlateChange,
+  vehicleBrand,
+  onVehicleBrandChange,
+  vehicleModel,
+  onVehicleModelChange,
+  vehicleColor,
+  onVehicleColorChange,
   notes,
   onNotesChange,
   onSave,
@@ -75,6 +87,19 @@ export function QuoteMetaPanel({
 
         <FormField label={t.quoteMeta.plateLabel}>
           <Input value={plate} onChange={(e) => onPlateChange(e.target.value)} placeholder={t.quoteMeta.plateePlaceholder} />
+        </FormField>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <FormField label={t.quoteMeta.vehicleBrandLabel}>
+            <Input value={vehicleBrand} onChange={(e) => onVehicleBrandChange(e.target.value)} />
+          </FormField>
+          <FormField label={t.quoteMeta.vehicleModelLabel}>
+            <Input value={vehicleModel} onChange={(e) => onVehicleModelChange(e.target.value)} />
+          </FormField>
+        </div>
+
+        <FormField label={t.quoteMeta.vehicleColorLabel}>
+          <Input value={vehicleColor} onChange={(e) => onVehicleColorChange(e.target.value)} />
         </FormField>
 
         <FormField label={t.quoteMeta.notesLabel}>

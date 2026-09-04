@@ -136,6 +136,24 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
                 <p className="mt-1 text-[var(--color-ink-800)]">{quote.plate}</p>
               </div>
             )}
+            {quote.vehicleBrand && (
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">{t.quoteMeta.vehicleBrandLabel}</p>
+                <p className="mt-1 text-[var(--color-ink-800)]">{quote.vehicleBrand}</p>
+              </div>
+            )}
+            {quote.vehicleModel && (
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">{t.quoteMeta.vehicleModelLabel}</p>
+                <p className="mt-1 text-[var(--color-ink-800)]">{quote.vehicleModel}</p>
+              </div>
+            )}
+            {quote.vehicleColor && (
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">{t.quoteMeta.vehicleColorLabel}</p>
+                <p className="mt-1 text-[var(--color-ink-800)]">{quote.vehicleColor}</p>
+              </div>
+            )}
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-ink-400)]">
                 {t.quoteMeta.statusLabel}

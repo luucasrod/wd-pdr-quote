@@ -17,7 +17,11 @@ export async function importLocalData(): Promise<ImportCounts> {
   const clientIds = new Map(existingClients.data.map((row) => [row.legacy_id, row.id]))
   for (const client of clients) {
     if (clientIds.has(client.id)) continue
-    const result = await supabase.from("clients").insert({ name: client.name, phone: client.phone, email: client.email, nif: client.nif, address: client.address, legacy_id: client.id, created_at: new Date(client.createdAt).toISOString() }).select("id").single()
+    const result = await supabase.from("clients").insert({
+      name: client.name, phone: client.phone, email: client.email, nif: client.nif, address: client.address,
+      city: client.city ?? "", postal_code: client.postalCode ?? "", country: client.country ?? "",
+      legacy_id: client.id, created_at: new Date(client.createdAt).toISOString(),
+    }).select("id").single()
     if (result.error) throw result.error
     clientIds.set(client.id, result.data.id); counts.clients++
   }

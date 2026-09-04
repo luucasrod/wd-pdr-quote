@@ -7,11 +7,15 @@ const toIso = (value: number) => new Date(value).toISOString()
 export const clientFromRow = (row: ClientRow): Client => ({
   id: row.id, name: row.name, phone: row.phone ?? "", email: row.email ?? "",
   nif: row.nif ?? "", address: row.address ?? "", createdAt: toMillis(row.created_at),
+  ...(row.city ? { city: row.city } : {}),
+  ...(row.postal_code ? { postalCode: row.postal_code } : {}),
+  ...(row.country ? { country: row.country } : {}),
 })
 
 export const clientToRow = (client: Client): ClientRow => ({
   id: client.id, name: client.name, phone: client.phone, email: client.email,
-  nif: client.nif, address: client.address, legacy_id: null, created_at: toIso(client.createdAt),
+  nif: client.nif, address: client.address, city: client.city ?? "", postal_code: client.postalCode ?? "",
+  country: client.country ?? "", legacy_id: null, created_at: toIso(client.createdAt),
 })
 
 export const insurerFromRow = (row: InsurerRow): Insurer => ({
@@ -28,6 +32,9 @@ export const quoteFromRow = (row: QuoteRow): SavedQuote => ({
   id: row.id, createdAt: toMillis(row.created_at), updatedAt: toMillis(row.updated_at),
   status: row.status, clientId: row.client_id, insurerId: row.insurer_id,
   vehicleType: row.vehicle_type, plate: row.plate ?? "", notes: row.notes ?? "",
+  ...(row.vehicle_brand ? { vehicleBrand: row.vehicle_brand } : {}),
+  ...(row.vehicle_model ? { vehicleModel: row.vehicle_model } : {}),
+  ...(row.vehicle_color ? { vehicleColor: row.vehicle_color } : {}),
   markersByView: row.markers_by_view, partTypeByPart: row.part_type_by_part,
   parts: row.part_breakdown, finishHours: row.finish_hours, surcharge1: row.surcharge1,
   surcharge2: row.surcharge2, totals: row.totals, partCount: row.part_count,
@@ -38,7 +45,8 @@ export const quoteFromRow = (row: QuoteRow): SavedQuote => ({
 export const quoteToRow = (quote: SavedQuote): QuoteRow => ({
   id: quote.id, created_at: toIso(quote.createdAt), updated_at: toIso(quote.updatedAt),
   status: quote.status, source: quote.source ?? "owner", client_id: quote.clientId, insurer_id: quote.insurerId,
-  vehicle_type: quote.vehicleType, plate: quote.plate, notes: quote.notes,
+  vehicle_type: quote.vehicleType, plate: quote.plate, vehicle_brand: quote.vehicleBrand ?? "",
+  vehicle_model: quote.vehicleModel ?? "", vehicle_color: quote.vehicleColor ?? "", notes: quote.notes,
   markers_by_view: quote.markersByView ?? {}, part_type_by_part: quote.partTypeByPart ?? {},
   part_breakdown: quote.parts ?? [], finish_hours: quote.finishHours ?? 0,
   surcharge1: quote.surcharge1 ?? false, surcharge2: quote.surcharge2 ?? false,

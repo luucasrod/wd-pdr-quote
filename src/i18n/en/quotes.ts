@@ -17,6 +17,7 @@ pricing: {
     colSevere: "Severe",
     colAluminum: "Type",
     colAW: "AW",
+    colValue: "Value",
     subtotal: "Subtotal (parts)",
     prep: "Prep (0.2 AW/part, max 1 AW)",
     finish: "Finish (manual)",
@@ -73,5 +74,8 @@ quoteMeta: {
     newClient: "+ Create new client",
     statusLabel: "Status",
     breakdownTitle: "Part Breakdown",
+    vehicleBrandLabel: "Make",
+    vehicleModelLabel: "Model",
+    vehicleColorLabel: "Colour",
   },
 } satisfies Pick<TranslationShape, "quotePage" | "pricing" | "quotesList" | "quoteMeta">

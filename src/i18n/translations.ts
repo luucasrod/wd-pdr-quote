@@ -86,6 +86,7 @@ export interface TranslationShape {
     colSevere: string
     colAluminum: string
     colAW: string
+    colValue: string
     subtotal: string
     prep: string
     finish: string
@@ -145,6 +146,9 @@ export interface TranslationShape {
     email: string
     nif: string
     address: string
+    city: string
+    postalCode: string
+    country: string
     save: string
     delete: string
     deleteConfirm: string
@@ -207,6 +211,9 @@ export interface TranslationShape {
     newClient: string
     statusLabel: string
     breakdownTitle: string
+    vehicleBrandLabel: string
+    vehicleModelLabel: string
+    vehicleColorLabel: string
   }
   dashboard: {
     title: string

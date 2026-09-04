@@ -53,6 +53,9 @@ export function OwnerApp() {
   const [clientId, setClientId] = useState<string | null>(null)
   const [insurerId, setInsurerId] = useState<string | null>(null)
   const [plate, setPlate] = useState("")
+  const [vehicleBrand, setVehicleBrand] = useState("")
+  const [vehicleModel, setVehicleModel] = useState("")
+  const [vehicleColor, setVehicleColor] = useState("")
   const [notes, setNotes] = useState("")
   const [justSaved, setJustSaved] = useState(false)
 
@@ -136,6 +139,9 @@ export function OwnerApp() {
     setClientId(null)
     setInsurerId(null)
     setPlate("")
+    setVehicleBrand("")
+    setVehicleModel("")
+    setVehicleColor("")
     setNotes("")
     setJustSaved(false)
     setEditingQuoteId(null)
@@ -176,6 +182,9 @@ export function OwnerApp() {
     setClientId(quote.clientId)
     setInsurerId(quote.insurerId)
     setPlate(quote.plate)
+    setVehicleBrand(quote.vehicleBrand ?? "")
+    setVehicleModel(quote.vehicleModel ?? "")
+    setVehicleColor(quote.vehicleColor ?? "")
     setNotes(quote.notes)
     setJustSaved(false)
     setEditingQuoteId(id)
@@ -189,6 +198,9 @@ export function OwnerApp() {
       insurerId,
       vehicleType,
       plate,
+      vehicleBrand,
+      vehicleModel,
+      vehicleColor,
       notes,
       markersByView,
       partTypeByPart,
@@ -329,6 +341,12 @@ export function OwnerApp() {
                   onInsurerIdChange={setInsurerId}
                   plate={plate}
                   onPlateChange={setPlate}
+                  vehicleBrand={vehicleBrand}
+                  onVehicleBrandChange={setVehicleBrand}
+                  vehicleModel={vehicleModel}
+                  onVehicleModelChange={setVehicleModel}
+                  vehicleColor={vehicleColor}
+                  onVehicleColorChange={setVehicleColor}
                   notes={notes}
                   onNotesChange={setNotes}
                   onSave={handleSaveQuote}

@@ -13,6 +13,9 @@ export interface ClientRow {
   email: string | null
   nif: string | null
   address: string | null
+  city: string | null
+  postal_code: string | null
+  country: string | null
   legacy_id: string | null
   created_at: string
 }
@@ -35,6 +38,9 @@ export interface QuoteRow {
   insurer_id: string | null
   vehicle_type: VehicleType
   plate: string | null
+  vehicle_brand: string | null
+  vehicle_model: string | null
+  vehicle_color: string | null
   notes: string | null
   markers_by_view: ViewMarkers
   part_type_by_part: Record<string, string>

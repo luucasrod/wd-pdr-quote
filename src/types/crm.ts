@@ -11,6 +11,9 @@ export interface Client {
   email: string
   nif: string
   address: string
+  city?: string
+  postalCode?: string
+  country?: string
   createdAt: number
 }
 
@@ -48,6 +51,9 @@ export interface SavedQuote {
   insurerId: string | null
   vehicleType: VehicleType
   plate: string
+  vehicleBrand?: string
+  vehicleModel?: string
+  vehicleColor?: string
   notes: string
   /** Damage state, so reopening a quote restores the marked photo/polygon instead of just the totals. */
   markersByView?: ViewMarkers

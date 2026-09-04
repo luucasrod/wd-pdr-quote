@@ -17,6 +17,7 @@ pricing: {
     colSevere: "Fort",
     colAluminum: "Type",
     colAW: "AW",
+    colValue: "Valeur",
     subtotal: "Sous-total (pièces)",
     prep: "Préparation (0,2 AW/pièce, max 1 AW)",
     finish: "Finition (manuel)",
@@ -73,5 +74,8 @@ quoteMeta: {
     newClient: "+ Créer un nouveau client",
     statusLabel: "Statut",
     breakdownTitle: "Détail par Pièce",
+    vehicleBrandLabel: "Marque",
+    vehicleModelLabel: "Modèle",
+    vehicleColorLabel: "Couleur",
   },
 } satisfies Pick<TranslationShape, "quotePage" | "pricing" | "quotesList" | "quoteMeta">
