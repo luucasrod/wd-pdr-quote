@@ -44,8 +44,7 @@ export function OwnerApp() {
   const [finishHours, setFinishHours] = useState(0)
   const [surcharge1, setSurcharge1] = useState(false)
   const [surcharge2, setSurcharge2] = useState(false)
-  const hourlyRate = pricingConfig.hourlyRate
-  const setHourlyRate = pricingConfig.setHourlyRate
+  const [hourlyRate, setHourlyRate] = useState(pricingConfig.hourlyRate)
   const [storageWarning, setStorageWarning] = useState(false)
 
   const [clientId, setClientId] = useState<string | null>(null)
@@ -124,6 +123,7 @@ export function OwnerApp() {
     setFinishHours(0)
     setSurcharge1(false)
     setSurcharge2(false)
+    setHourlyRate(pricingConfig.hourlyRate)
     setClientId(null)
     setInsurerId(null)
     setPlate("")
@@ -160,6 +160,7 @@ export function OwnerApp() {
     setFinishHours(quote.finishHours ?? 0)
     setSurcharge1(quote.surcharge1 ?? false)
     setSurcharge2(quote.surcharge2 ?? false)
+    setHourlyRate(quote.totals.hourlyRate)
     setClientId(quote.clientId)
     setInsurerId(quote.insurerId)
     setPlate(quote.plate)

@@ -141,8 +141,8 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
     [t.pricing.subtotal, `${quote.totals.subtotalHours.toFixed(2)} AW`],
     [t.pricing.prep, `${quote.totals.prepHours.toFixed(2)} AW`],
     [t.pricing.finish, `${quote.totals.finishHours.toFixed(2)} AW`],
-    [t.pricing.totalAW, `${quote.totals.totalHours.toFixed(2)} AW`, true],
     [t.pricing.hourlyRate, money(quote.totals.hourlyRate, language)],
+    [t.pricing.totalQuote, money(quote.totals.totalPrice, language)],
   ]
 
   for (const [label, value, strong] of rows) {
@@ -168,10 +168,10 @@ export async function downloadQuotePdf({ quote, client, insurer, t, language }: 
   doc.setFont("helvetica", "normal")
   doc.setFontSize(9)
   doc.setTextColor("#ffffff")
-  doc.text(t.pricing.totalQuote, boxX + 16, y + 20)
+  doc.text(t.pricing.totalAW, boxX + 16, y + 20)
   doc.setFont("helvetica", "bold")
   doc.setFontSize(18)
-  doc.text(money(quote.totals.totalPrice, language), boxX + 16, y + 42)
+  doc.text(`${quote.totals.totalHours.toFixed(2)} AW`, boxX + 16, y + 42)
   y += boxH + 28
 
   const partsList = quote.parts ?? []

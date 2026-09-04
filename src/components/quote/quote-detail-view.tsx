@@ -178,7 +178,7 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
             <Row label={t.pricing.subtotal} value={`${quote.totals.subtotalHours.toFixed(2)} AW`} />
             <Row label={t.pricing.prep} value={`${quote.totals.prepHours.toFixed(2)} AW`} />
             <Row label={t.pricing.finish} value={`${quote.totals.finishHours.toFixed(2)} AW`} />
-            <Row label={t.pricing.totalAW} value={`${quote.totals.totalHours.toFixed(2)} AW`} />
+            <Row label={t.pricing.hourlyRate} value={quote.totals.hourlyRate.toLocaleString(language, { style: "currency", currency: "EUR" })} />
           </div>
 
           {quote.parts && quote.parts.length > 0 && (
@@ -197,11 +197,15 @@ export function QuoteDetailView({ quoteId, onBack, onEdit }: QuoteDetailViewProp
           )}
 
           <div className="flex items-center justify-between rounded-[var(--radius-md)] bg-[var(--color-ink-950)] px-4 py-3.5 text-white">
-            <span className="text-[13px] font-medium text-white/70">{t.pricing.totalQuote}</span>
+            <span className="text-[13px] font-medium text-white/70">{t.pricing.totalAW}</span>
             <span className="text-[20px] font-bold tabular-nums">
-              {quote.totals.totalPrice.toLocaleString(language, { style: "currency", currency: "EUR" })}
+              {quote.totals.totalHours.toFixed(2)} AW
             </span>
           </div>
+          <Row
+            label={t.pricing.totalQuote}
+            value={quote.totals.totalPrice.toLocaleString(language, { style: "currency", currency: "EUR" })}
+          />
         </CardContent>
       </Card>
       <DeleteDialog

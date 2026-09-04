@@ -125,13 +125,6 @@ export function QuotePricingPanel({
             />
           </label>
 
-          <div className="flex items-center justify-between border-t border-[var(--color-ink-100)] pt-3 text-[14px] font-semibold text-[var(--color-ink-950)]">
-            <span>{t.pricing.totalAW}</span>
-            <motion.span key={totals.totalHours.toFixed(2)} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }}>
-              {totals.totalHours.toFixed(2)} AW
-            </motion.span>
-          </div>
-
           <div className="flex items-center justify-between gap-3 pt-2">
             <label className="flex items-center gap-1.5 text-[13px] text-[var(--color-ink-600)]">
               <Euro className="h-3.5 w-3.5 text-[var(--color-ink-400)]" />
@@ -151,13 +144,19 @@ export function QuotePricingPanel({
           </div>
 
           <div className="flex items-center justify-between rounded-[var(--radius-md)] bg-[var(--color-ink-950)] px-4 py-3.5 text-white">
-            <span className="text-[13px] font-medium text-white/70">{t.pricing.totalQuote}</span>
+            <span className="text-[13px] font-medium text-white/70">{t.pricing.totalAW}</span>
             <motion.span
-              key={totals.totalPrice.toFixed(2)}
+              key={totals.totalHours.toFixed(2)}
               initial={{ scale: 1.08 }}
               animate={{ scale: 1 }}
               className="text-[20px] font-bold tabular-nums"
             >
+              {totals.totalHours.toFixed(2)} AW
+            </motion.span>
+          </div>
+          <div className="flex items-center justify-between px-1 pt-1 text-[14px] font-semibold text-[var(--color-ink-950)]">
+            <span>{t.pricing.totalQuote}</span>
+            <motion.span key={totals.totalPrice.toFixed(2)} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }}>
               {totals.totalPrice.toLocaleString(CURRENCY_LOCALE[language], { style: "currency", currency: "EUR" })}
             </motion.span>
           </div>
